@@ -1,0 +1,18 @@
+
+Development
+-----------
+
+* Thoroughly test new firmware with Zeta, Epsilon, Tau, HID, Rosewill, Phantom, KMAC, Orion
+  * Check Matrix, LEDs, Macros, and Schedules
+* Port rest of formerly supported boards to new firmware
+* Write documentation for developers
+* Create a proper setuptools package
+* Review code for cleanup
+* Create first package
+* Upload first open source version to Github
+
+Bugs
+----
+
+* Does FIXED_CONTROL_ENDPOINT_SIZE interfere with the basic or NKRO configurations?
+* fix NKRO not working with BIOS
