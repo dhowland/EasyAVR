@@ -1,0 +1,46 @@
+HOWTO: Easy AVR USB Keyboard Firmware - cfg file definitions
+metalliqaz@geekhack
+
+
+The cfg files allow the user to modify the layout of the keyboard.  This is
+used for keyboards that allow the builder to configure many different layouts
+with the same PCB.  For example, the Phantom can be configured for ANSI and ISO
+layouts, as well as many other custom layouts.
+
+By default, the layout mapper will show every possible key for a supported
+hardware.  Selecting an alternate layout from the config file will change the
+appearance of the layout.  Each line in the config file changes one key in the
+layout.
+
+All lines must be one of the following:
+  blank
+  comment
+  config header
+  modifier command
+
+Comments are lines that start with a #.  They are ignored.
+
+Config headers must looks like this: [name]
+  For example, [HHKB], [ANSI 87], or [Joe's Layout]
+
+Modifier commands must be one of the following:
+  MAKE_KEY(row, column, width, height)
+  MAKE_SPACER(row, column, width)
+  MAKE_BLANK(row, column, width)
+
+All arguments are integers.  Row and column are the layout numbers found at the
+top of the GUI.  Width and height are in units of 1/4 of a key.  That means a
+normal 1x key is width=4, height=4.  An ANSI backspace is width=8, height=4.
+A 6.25x space bar is width=25, height=4.
+
+MAKE_KEY() will change the size of a key at the given location.
+MAKE_SPACER() will change a given location into empty space of a given width.
+MAKE_BLANK() will change a given location into empty space of between zero and
+  the given width, depending on the surrounding keys.
+
+MAKE_BLANK is similar to MAKE_SPACER, but should only be used when clearing
+space for vertical keys (for example, the 2x1 Enter key on a number pad).
+MAKE_SPACER would be used for the space next to the escape key, for example.
+
+To remove a key, change it to a spacer with zero width.  Do not set a key to
+zero width.

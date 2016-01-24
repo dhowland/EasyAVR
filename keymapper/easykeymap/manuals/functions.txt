@@ -1,0 +1,224 @@
+HOWTO: Easy AVR USB Keyboard Firmware - Functions and layer definitions
+metalliqaz@geekhack
+
+===================
+Special functions
+=================
+
+SCANCODE_FN                Activate the "Fn" layer depending on mode
+SCANCODE_FN2               Activate the 2nd function layer
+SCANCODE_FN3               Activate the 3rd function layer
+SCANCODE_FN4               Activate the 4th function layer
+SCANCODE_FN5               Activate the 5th function layer
+SCANCODE_FN6               Activate the 6th function layer
+SCANCODE_FN7               Activate the 7th function layer
+SCANCODE_FN8               Activate the 8th function layer
+SCANCODE_FN9               Activate the 9th function layer
+
+SCANCODE_BL_DIMMER         Cycle through backlight brightness levels, also
+                           controls indicator LED brightness
+SCANCODE_BL_MODE           Cycle through the backlighting modes (static,
+                           breathing, reactive, and erosion)
+SCANCODE_BL_ENABLE         Enable/disable the backlight and cycle through the
+                           different lighting zones
+
+SCANCODE_KEYLOCK           (toggle) Disable sending scancodes to PC
+SCANCODE_WINLOCK           (toggle) Disable the windows key
+SCANCODE_ESCGRAVE          Acts like grave key if shift is pressed (to make tilde).
+                           Otherwise acts like Esc key.  Used for 60% keyboards.
+SCANCODE_BOOT              Jump to bootloader (Keyboard will not work again until it is reset)
+SCANCODE_CONFIG            Go into interactive configuration console
+
+SCANCODE_M1                Play macro 1
+SCANCODE_M2                Play macro 2
+SCANCODE_M3                Play macro 3
+SCANCODE_M4                Play macro 4
+SCANCODE_M5                Play macro 5
+SCANCODE_M6                Play macro 6
+SCANCODE_M7                Play macro 7
+SCANCODE_M8                Play macro 8
+SCANCODE_M9                Play macro 9
+SCANCODE_M10               Play macro 10
+SCANCODE_M11               Play macro 11
+SCANCODE_M12               Play macro 12
+SCANCODE_M13               Play macro 13
+SCANCODE_M14               Play macro 14
+SCANCODE_MRAM_RECORD       Start/Stop recording the RAM macro
+SCANCODE_MRAM_PLAY         Play the RAM macro
+
+SCANCODE_MOUSE1            Mouse button 1
+SCANCODE_MOUSE2            Mouse button 2
+SCANCODE_MOUSE3            Mouse button 3
+SCANCODE_MOUSEXL           Move mouse pointer left
+SCANCODE_MOUSEXR           Move mouse pointer right
+SCANCODE_MOUSEYD           Move mouse pointer down
+SCANCODE_MOUSEYU           Move mouse pointer up
+                           (Double-tap the mouse keys to move the cursor faster.
+                           Triple-tap for even more speed, and so on.)
+
+SCANCODE_BASS_BOOST        Toggle bass boost in Windows
+SCANCODE_VOL_INC           Increase main volume in Windows
+SCANCODE_VOL_DEC           Decrease main volume in Windows
+SCANCODE_MUTE              Mute main volume in Windows
+SCANCODE_STOP              Stop playback in Windows
+SCANCODE_PLAY_PAUSE        Play or Pause playback in Windows
+SCANCODE_PREV_TRACK        Skip to last track in Windows
+SCANCODE_NEXT_TRACK        Skip to next track in Windows
+SCANCODE_FORWARD           Navigate forward in Windows
+SCANCODE_BACK              Navigate backward in Windows
+SCANCODE_MEDIA             Open system media player in Windows
+SCANCODE_MAIL              Open system mail reader in Windows
+SCANCODE_CALC              Open calculator in Windows
+SCANCODE_MYCOMP            Open My Computer in Windows
+SCANCODE_SEARCH            Open system search in Windows
+SCANCODE_BROWSER           Open system web browser in Windows
+
+========
+Layers
+======
+
+The system contains ten keymap layers that may be configured by the user.
+There is a default layer which is used when no Fn keys are active.  This should
+be the most used configuration.  There is a function layer that is accessed by
+using the 'Fn' special modifier key.  Most configurations can fit into the first
+two named layers.  There are also eight further function layers.  'Layer 2'
+corresponds to the 'Fn 2' special modifier key, 'Layer 3' to 'Fn 3' and so on.
+Holding a Fn key accesses the associated layer, and using one of the lock modes
+on that Fn key can keep the associated layer active.
+
+A Fn key may be accessed from within another Fn layer.  If a layer is locked
+while another layer is already locked, then the most recent lock takes
+precedence.
+
+===========
+Key Modes
+=========
+
+Any individual key on any layer may be assigned a special operating mode.  These
+modes change the key press behavior to something different than the normal
+momentary switch behavior.  The possible settings are described in the table,
+below.  These special modes only work on standard keys (HID scancodes),
+modifiers, and Fn keys.
+
+A key 'tap' is a rapid press and release of a key by itself.  A 'double tap' is
+two taps in quick succession. Think of mouse clicks.
+
+
+Normal
+    Momentary switch.  Press to activate the key and un-press to deactivate.
+
+Toggle
+    Toggle switch.  Press to change the state of the key.  If the key is
+    deactivated, pressing will activate it and vice-versa.
+
+Tap Key
+    Also known as a 'dual use' key.  When a key is assigned to this mode, it
+    acts the same as normal but, if tapped, will send a normal scancode of your
+    choosing.  This is only available on modifiers and Fn keys.
+
+Lockable
+    Acts the same as normal but double tapping the key will toggle it active.
+    Pressing the key again will deactivate it.
+
+Rapid Fire
+    This is an auto-repeating mode.  The key acts the same as normal except it
+    will be rapidly retyped when the key is held.  Think of old video game
+    controllers.  This is only available on standard keys.
+
+When a scancode is bound to a tap key, it will be sent on the upstroke, but
+only if the mod/fn key was tapped and not combined with another key. This is
+useful in several situations.  For example, the Application key may be used as
+a function key but also retain it's use as a normal key.  In another example,
+the function keys may be used to simulate Matias half-keyboard by making the
+space bar a Fn key with Space as its tap action.
+
+======================
+Associated Modifiers
+====================
+
+Any key may be assigned an additional modifier state of any combination of
+Shift, Ctrl, Alt, and GUI (meta).  As long as the key is pressed, it will
+also hold the assigned modifiers.  This means you can create a "login" key by
+binding it to Del with Ctrl+Alt.  Or, you could create a "#" key by binding it
+to Ctrl+3.  This feature only makes sense when the key is in Normal mode.
+Remember that the modifier states can interfere with the actual modifier keys
+if they are held at the same time.
+
+============
+RAM Macros
+==========
+
+The system supports one RAM-based macro that can be recorded on the fly.  Simply
+press the 'Macro Rec' key, which will set the "Recording" LED Mode to
+indicate that the keyboard is listening.  Type the pattern to be recorded and
+then press the 'Macro Rec' key again.  To play it back, press the 'Macro Play'
+key.  The macro will be lost when the keyboard loses power.  Only normal
+scancodes are supported in the RAM macro at this time.
+
+===========
+LED Modes
+=========
+
+The LED indicators can be remapped to indicate various special states.  Mapping
+to an LED indicator is accomplished using the LED Configuration tool in the
+View menu.  In basic mode, assigning functions to LEDs is as easy as selecting
+the desired function from the drop down menus for each LED.
+
+In advanced mode, you are able to choose an action to perform for each of the
+possible indicator functions.  Rather than a simple on/off, actions can cause
+LEDs to blink a number of times.  This means that a single LED may be used to
+indicate several possible states.  Blink modes override eachother, so
+overloading an LED should only be done with mutually exclusive functions.
+
+'Num Lock', 'Caps Lock', 'Scroll Lock', 'Compose', 'Kana'
+    These are the standard USB HID host status indicators.  The last two are
+    only used on non-US keyboards.
+
+'Win Lock'
+    Lights up when the Windows Key is disabled.
+
+'Fn Active', 'Fn2 Active', 'Fn3 Active',
+'Fn4 Active', 'Fn5 Active', 'Fn6 Active',
+'Fn7 Active', 'Fn8 Active', 'Fn9 Active'
+    Lights up when the corresponding layer is selected.  Locked layers will
+    continue to indicate that the layer is active after the Fn key is lifted.
+    The default layer does not set any LED indicator.
+
+'Any Fn Active'
+    Similar to above but lights up when any non-default layer is selected.
+
+'Recording'
+    Lights up when the keyboard is recording keystrokes.
+
+'USB Init', 'USB Error', 'USB Suspend', 'USB Normal'
+    Indicates the status of the USB connection to the host.
+
+'Backlight'
+    On keyboards with backlighting, this will cause the LED to glow along with
+    the backlights.  Unlike the other LED modes, this can be assigned to more
+    than one LED in basic configuration.
+
+'Unassigned'
+    The LED will never light up.  Unlike the other LED modes, this can be
+    assigned to more than one LED in basic configuration.
+
+Keyboards with backlighting can select between one of four backlighting modes.
+Pressing the BL_MODE key will cycle through the four options.  No backlight
+effects will be observed if the user did not enable any lighting zones with the
+BL_ENABLE key.
+
+'Static'
+    Backlights are turned on and stead, with a brightness determined by the
+    user-controlled dimmer (BL_DIMMER key).
+
+'Breathing'
+    Backlight brightness will continuously wax and wane in a smooth motion.
+
+'Reactive'
+    Backlights will glow at max brightness when the user presses a key, then
+    dim to a low brightness in a smooth motion.
+
+'Erosion'
+    Backlights will be dimmed slightly on every key press, but continuously
+    grow brighter in a smooth motion.  Fast typists will be able to extinguish
+    the light.

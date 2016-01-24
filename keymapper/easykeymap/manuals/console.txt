@@ -1,0 +1,111 @@
+HOWTO: Easy AVR USB Keyboard Firmware - Config console and special features
+metalliqaz@geekhack
+
+=======================
+Configuration Options
+=====================
+
+Virtual Num Pad
+    On tenkeyless boards, the number row will act like the equivalent number
+    pad keys when Num Lock is active.  This allows the user to enter special
+    characters using Alt+num combinations.
+
+Win Lock on Scroll Lock
+    When the Scroll Lock is active the Windows key is disabled.  This is
+    useful for gaming.
+
+Default Layer
+    The layer to use at startup and when no Fn keys are active.  Usually this
+    would be set to 0.
+
+Basic Keyboard
+    This is a 3-way toggle.  When enabled, this setting will force the keyboard
+    to present itself as a normal, boot-compatible USB keyboard with 6KRO (NKRO
+    disabled).  To be even more standards-compliant it can be bumped to also
+    disable the mouse keys and media keys.  This setting will not take effect
+    until the keyboard is unplugged.
+
+Unlink Num Lock
+    Activating this setting will cause the keyboard or numpad to ignore the
+    system Num Lock and keep track of Num Lock internally.  This prevents the
+    keyboard or numpad from affecting other keyboards attached to the system.
+
+Default Dimmer Level
+    This sets the default brightness of the LED indicators and backlights.
+    Although the SCANCODE_BL_ENABLE key only cycles between five levels
+    (1, 4, 8, 12, and 16), this setting may be set anywhere between 1 (dimmest)
+    and 16 (brightest).
+
+Default Backlight Enable
+    This changes the default configuration of the backlight zones on keyboards
+    that support backlighting.  The SCANCODE_BL_ENABLE key is used to cycle
+    through the different lighting zones, in order.  The number of this setting
+    specifies where in that cycle to initialize the backlights.  This only
+    takes effect at power-up.
+
+Debounce Time
+    The number of milliseconds that the keyboard will prevent a key to change
+    state after the switch actuates or de-actuates.  Users should not change
+    this setting unless they are seeing chattering (double key presses).
+    In that case, use 10ms.  Default is 6ms.
+
+Max Hold Time for Tap
+    The maximum number of milliseconds that a key may be held for the press
+    to be detected as a tap.  The smaller this value, the faster a user has to
+    be to register a key tap.  Default is 240ms.
+
+Max Delay Time for Double Tap
+    The maximum number of milliseconds that may elapse between key taps for
+    the two actuations to be detected as a double tap.  The smaller the value,
+    the faster a user has to be to register a double or triple-tap sequence.
+    Default is 120ms.
+
+Base Mouse Movement
+    This unitless value controls the minimum speed of the mouse when the user
+    presses a mouse movement key.  It should be small enough to allow for
+    fine-point control of the mouse.  Default is 5.
+
+Mouse Movement Multiplier
+    This unitless value is added to the base mouse movement value for each
+    consecutive tap on the mouse movement key.  If a user triple-taps the key,
+    the resulting movement value will be (BASE + (MULT * 2)).  Default is 15.
+
+Min Hold Time for Repeat
+    The minimum number of milliseconds that a key must be held for rapid fire
+    mode to to kick in.  This has no effect on keys that haven't been assigned
+    rapid fire mode.  Default is 800ms.
+
+Repeat Period
+    The number of milliseconds between repeated key presses when a key is held
+    in rapid fire mode.  The smaller the value, the faster the repeat speed.
+    Default is 32ms.
+
+=======================
+Configuration Options
+=====================
+
+The configuration options are stored in non-volatile memory, which means that
+they will be saved even when the keyboard loses power.  In order to change a
+configuration option, the config console must be used.
+
+Map a key to SCANCODE_CONFIG.  With the keyboard properly programmed, open a
+text editor and place the cursor in a new file, ready to type.  Press the
+SCANCODE_CONFIG key.  The keyboard will print out a menu into the text editor.
+
+To enter commands, press a single number and press enter.  The config menu
+has functions for changing the configuration options.  Don't forget to quit
+the interactive mode before moving on to other things!
+
+The data entry interface is very simple.  Non-printed characters that don't
+show up in a text editor and typos that you correct are still seen by the
+keyboard as input.  It is necessary to type correctly to have your input
+recognized.  The interface usually only needs numbers or ENTER.  Characters
+other than 0-9 are interpreted as 0.
+
+=============================
+Clearing All Saved Settings
+===========================
+
+If you set a configuration option that renders the keyboard unusable, you can
+clear non-volatile memory by unplugging the keyboard and holding the ENTER key
+(as defined on Layer 0) while plugging it back in.

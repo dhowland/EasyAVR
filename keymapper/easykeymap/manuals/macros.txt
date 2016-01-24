@@ -1,0 +1,162 @@
+HOWTO: Easy AVR USB Keyboard Firmware - Macro definitions
+metalliqaz@geekhack
+
+==========
+Overview
+========
+
+Current Macro limits:
+    14 firmware macros
+    2000 characters total
+    (macros can be any length, as long as all of them fit in the macro buffer)
+    unlimited mods per character
+    1 RAM macro with 80 characters (40 on ATmega32U2 devices)
+
+Macro strings are specified as strings of characters that should be typed by the
+keyboard as if the keys were struck by hand.
+
+Note, it is not necessary to manually use shift to get capital letters.  The
+system knows enough to replace "A" with "\SHIFT(a)" and "+" with "\SHIFT(=)".
+(See below for more on the use of modifier keys)
+ 
+The escape character is backslash (\).
+
+There are a few special escape sequences, which must be followed by a comma.
+backslash: \\,
+newline: \n,
+tab: \t,
+
+Non printed keys are defined as an escaped string followed by a comma.  For
+example:
+
+\HOME,
+\TAB,
+\F5,
+
+See the list at the bottom of this document.
+
+Mods are specified with an escaped string followed by a string enclosed in
+parenthesis.  The modifier key will be held for the entire sub-string.  For
+example:
+
+\SHIFT(hello, world!)
+\CTRL(\ALT(\DEL,))
+
+If the substring is empty, the modifer will be pressed by itself:
+
+\WIN()
+
+Note that this scheme means you can't use a mod on ")" because it would be
+interpreted as the end of the sub-string.  But, why would you want to do that?
+Just use a zero, "0".  The ")" and the "0" are the same key!
+
+Special characters can be inserted using a macro of an Alt Code.  For example,
+\ALT(130), \ALT(0161), or \ALT(+11b).
+
+There is a special function macro, WAIT, which can pause the macro processing
+temporarily.  This is useful to slow the rapid keystroke rate when certain
+keystroke combinations require the computer to complete some processing before
+futher input can be accepted.  It takes a decimal number as an argument which
+controls the length of the pause in macro processing.  The value is stored as
+a byte so it must be between 0 and 255.
+
+\WAIT(250)
+
+The value represents the number of macro cycles to wait. On boards with a 500Hz
+macro frequency, a value of 250 should pause for about a half second.  Some
+supported boards have a 250Hz macro frequency, so 250 would pause for about one
+second.  Longer pauses will require several wait commands.
+
+There is also a HINT special function macro.  This will translate into a large
+string that displays the currently programmed keymap for a selected layer, with
+zero (0) meaning the default layer and 1-9 referring to the Fn layers.
+
+\HINT(1)
+
+==========
+Specials
+========
+
+Mod keys:
+
+CTRL       (synonym for LCTRL)
+SHIFT      (synonym for LSHIFT)
+ALT        (synonym for LALT)
+WIN        (synonym for LWIN)
+LCTRL
+LSHIFT
+LALT
+LWIN
+RCTRL
+RSHIFT
+RALT
+RWIN
+
+Special Functions:
+
+WAIT
+HINT
+
+Non-printable keys:
+
+ESC
+F1 through F24
+PRINT
+PAUSE
+SCRLK
+NUMLK
+CAPSLK
+INS
+DEL
+HOME
+END
+PGUP
+PGDN
+TAB
+BKSP
+ENTER
+UP
+DOWN
+LEFT
+RIGHT
+SPACE
+APP
+
+Media keys:
+
+MUTE
+VOLUP
+VOLDN
+BASS
+NEXT
+PREV
+STOP
+PLAY
+
+
+==========
+Examples
+========
+
+To get something like this:
+
+John Doe
+123 Main St.
+NEW YORK NY 12345
+
+You can simply type exactly that as the macro string.  But I will use some
+more examples to illustrate other features.
+
+The macro string could be:
+
+John Doe
+123 Main St.
+\SHIFT(new york ny) 12345
+
+or it could be:
+
+John Doe\n,123 Main St.\n,\SHIFT(New York NY) 12345\n,
+
+or it could be:
+
+John Doe\ENTER,123 Main St.\ENTER,\CAPSLK,new york ny 12345\CAPSLK,
