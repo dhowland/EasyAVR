@@ -10,7 +10,7 @@ https://geekhack.org/index.php?topic=51252
 Source code and downloads on Github:
 https://github.com/dhowland/EasyAVR
 
-## Requirements
+### Requirements
 
-Python 3.3+
-Atmel Studio 7
+* Python 3.3+
+* Atmel Studio 7
