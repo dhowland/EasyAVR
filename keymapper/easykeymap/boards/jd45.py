@@ -84,8 +84,8 @@ led_hardware = [
 backlighting = False
 
 bl_modes = [
-    ( 0 ),
-    ( 1 )
+    ( 0, ),
+    ( 1, )
 ]
 
 KMAC_key = None

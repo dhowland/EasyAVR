@@ -39,5 +39,6 @@ __all__ = [
 'smallfry',
 'tau',
 'techcard',
+'threekey',
 'zeta'
 ]
