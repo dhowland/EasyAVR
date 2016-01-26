@@ -35,11 +35,9 @@ num_cols = 3
 strobe_cols = False
 strobe_low = True
 
-#center switch - PB1, right switch - PB2, left switch - PB3, switch LED - PD3, program LED - PD4
-
 matrix_hardware = [
 #     Port mask     Dir mask
-    ( 0b10000111 , 0b10000000 ),    # REF_PORTB
+    ( 0b10001110 , 0b10000000 ),    # REF_PORTB
     ( 0b00000000 , 0b00000000 ),    # REF_PORTC
     ( 0b00000000 , 0b00000000 )     # REF_PORTD
 ]
@@ -51,9 +49,9 @@ matrix_strobe = [
 
 matrix_sense = [
 #      Port        Pin mask
-    ( REF_PORTB , 0b00000100 ),
-    ( REF_PORTB , 0b00000001 ),
-    ( REF_PORTB , 0b00000010 )
+    ( REF_PORTB , 0b00001000 ),
+    ( REF_PORTB , 0b00000010 ),
+    ( REF_PORTB , 0b00000100 )
 ]
 
 num_leds = 2
