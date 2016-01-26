@@ -13,4 +13,4 @@ https://github.com/dhowland/EasyAVR
 ### Requirements
 
 * Python 3.3+
-* Atmel Studio 7
+* Atmel Studio 7 (Not needed for users with no intention of hacking the C code)
