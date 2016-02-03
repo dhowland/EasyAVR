@@ -30,7 +30,7 @@
 #define REF_PORTF 4
 #define REF_PORTA 5
 
-#ifdef __AVR_AT90USB1287__
+#ifdef __AVR_AT90USB1286__
 #define NUM_PORTS 6
 #else
 #ifdef __AVR_ATmega32U4__

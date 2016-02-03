@@ -79,7 +79,8 @@ NULL_SYMBOL = '0'
 # DEBUG_NULL_SYMBOL = 'HID_KEYBOARD_SC_KEYPAD_ASTERISK'
 DEBUG_NULL_SYMBOL = NULL_SYMBOL     # disabled
 
-TEENSY_BOOT_PTR_HIGH_BYTE = 0x3F
+TEENSY2_BOOT_PTR_HIGH_BYTE = 0x3F
+TEENSY2PP_BOOT_PTR_HIGH_BYTE = 0xFE
 
 master_layers = ["Default", "Fn", "Layer 2", "Layer 3", "Layer 4",
                  "Layer 5", "Layer 6", "Layer 7", "Layer 8", "Layer 9"]
@@ -1131,7 +1132,10 @@ class GUI(object):
         if config.teensy:
             address = config.firmware.boot_ptr_map
             offset = address - start + 1
-            bytes[offset] = TEENSY_BOOT_PTR_HIGH_BYTE
+            if config.firmware.device == "AT90USB1286":
+                bytes[offset] = TEENSY2PP_BOOT_PTR_HIGH_BYTE
+            else:
+                bytes[offset] = TEENSY2_BOOT_PTR_HIGH_BYTE
         # overwrite data for version number
         address = config.firmware.prod_str_map
         offset = address - start

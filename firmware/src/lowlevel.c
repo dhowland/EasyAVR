@@ -39,6 +39,12 @@ const uint16_t PROGMEM BOOTLOADER = 0x3800;
 /* ATmega16u2 datasheet gives bootloader location as 0x1800 (word address) */
 const uint16_t PROGMEM BOOTLOADER = 0x1800;
 #endif /* ATmega16 boards */
+#if defined(__AVR_AT90USB1286__)
+/* AT90USB128 datasheet gives bootloader location as 0xF000 (word address) */
+const uint16_t PROGMEM BOOTLOADER = 0xF000;
+/* Teensy 2.0++ datasheet gives bootloader location as 0x1FC00 (byte address) */
+//const uint16_t PROGMEM BOOTLOADER = 0xFE00;
+#endif /* AT90USB128 boards */
 
 /* Disable WDT after bootloader reset (from AVR docs) */
 uint16_t boot_key __attribute__ ((section (".noinit")));

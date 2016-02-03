@@ -21,7 +21,7 @@
 #define CONFIG_SCHEDULE_H_
 
 /* 8MHz devices and large encoded matrices */
-#if defined(__AVR_ATmega32U2__) || (F_CPU == 8000000UL) || defined(BOARD_SIZE_COSTAR)
+#if defined(__AVR_ATmega32U2__) || (F_CPU == 8000000UL) || defined(BOARD_SIZE_COSTAR) || defined(BOARD_SIZE_FULLSIZE)
 #define EXPANDED_SCHEDULE
 #endif
 

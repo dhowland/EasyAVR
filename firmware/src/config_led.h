@@ -77,7 +77,7 @@ typedef enum {
 extern const uint8_t PROGMEM NUMBER_OF_LEDS;
 extern const uint8_t PROGMEM NUMBER_OF_INDICATORS;
 
-#if defined (__AVR_ATmega32U4__) && !defined(BOARD_SIZE_COSTAR)
+#if (defined(__AVR_ATmega32U4__) && !defined(BOARD_SIZE_COSTAR)) || defined(__AVR_AT90USB1286__)
 #define MAX_NUMBER_OF_BACKLIGHTS (8)
 #define MAX_BACKLIGHT_ENABLES (16)
 #define STR_MAX_BACKLIGHT_ENABLES "16"

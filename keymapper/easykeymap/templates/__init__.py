@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-max_matrix_dim = 18
 max_leds = 12
 max_indicators = 8
 max_bl_enables = 16
 
 matrix_dims = {
+    'FULLSIZE': (8, 22),
     'COSTAR': (8, 18),
     'TKL': (6, 17),
     'SIXTY': (5, 15),
@@ -28,6 +28,7 @@ matrix_dims = {
 }
 
 macro_lengths = {
+    'AT90USB1286': (1024 * 4),
     'ATmega32U4': (1024 * 2),
     'ATmega32U2': (1024 * 2),
     'ATmega16U2': (512),

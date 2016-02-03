@@ -25,7 +25,7 @@
 
 #include "scheduler.h"
 
-#if defined (__AVR_ATmega32U4__) && (defined(BOARD_SIZE_TKL) || defined(BOARD_SIZE_SIXTY) || defined(BOARD_SIZE_PAD)) && !defined(SIMPLE_DEVICE)
+#if defined(__AVR_AT90USB1286__) || (defined(__AVR_ATmega32U4__) && (defined(BOARD_SIZE_TKL) || defined(BOARD_SIZE_SIXTY) || defined(BOARD_SIZE_PAD)) && !defined(SIMPLE_DEVICE))
 #define ENABLE_DEBUG_CONSOLE
 #endif /* Debug targets */
 

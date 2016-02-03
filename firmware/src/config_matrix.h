@@ -32,8 +32,10 @@
 #define DEFAULT_HOLD_KEY_MS (800)
 #define DEFAULT_REPEAT_MS (32)
 
-#define MAX_DIMENSION (18)
-
+#ifdef BOARD_SIZE_FULLSIZE
+#define NUMBER_OF_ROWS (6)
+#define NUMBER_OF_COLS (22)
+#endif
 #ifdef BOARD_SIZE_COSTAR
 #define NUMBER_OF_ROWS (8)
 #define NUMBER_OF_COLS (18)
@@ -54,6 +56,8 @@
 #define NUMBER_OF_ROWS (1)
 #define NUMBER_OF_COLS (6)
 #endif
+
+#define MAX_DIMENSION (NUMBER_OF_COLS)
 
 #if (F_CPU == 8000000UL)
 /* 8MHz is used for KMAC and similar boards with the special key on the bootloader pin */
