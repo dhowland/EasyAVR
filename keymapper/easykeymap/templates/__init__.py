@@ -33,3 +33,10 @@ macro_lengths = {
     'ATmega32U2': (1024 * 2),
     'ATmega16U2': (512),
 }
+
+num_ports = {
+    'AT90USB1286': 6,
+    'ATmega32U4': 5,
+    'ATmega32U2': 3,
+    'ATmega16U2': 3,
+}
