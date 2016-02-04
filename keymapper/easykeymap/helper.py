@@ -28,7 +28,6 @@ def make_matrix_config(strobe_cols, strobe_low, rows, cols, device):
         strobe_set = rows
         sense_set = cols
     
-    matrix_hardware = [ [0, 0] ] * ports
     port_masks = [ 0 ] * ports
     dir_masks = [ 0 ] * ports
     for pin in strobe_set:
@@ -40,7 +39,7 @@ def make_matrix_config(strobe_cols, strobe_low, rows, cols, device):
     
     matrix_strobe = []
     if strobe_low:
-        default_state = [ m for m in dir_masks]
+        default_state = copy.copy(dir_masks)
     else:
         default_state = [ 0 ] * ports
     for pin in strobe_set:
