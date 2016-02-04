@@ -18,9 +18,10 @@
 
 import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
+from easykeymap.helper import make_matrix_config
 
 description = "GH60"
-unique_id = "GH60_003"
+unique_id = "GH60_004"
 cfg_name = "gh60revb"
 
 teensy = False
@@ -32,44 +33,16 @@ display_width = int(15*4)
 num_rows = 5
 num_cols = 14
 
-strobe_cols = True
+strobe_cols = False
 strobe_low = True
 
-matrix_hardware = [
-#     Port mask     Dir mask
-    ( 0b11111010 , 0b11111010 ),    # REF_PORTB
-    ( 0b11000000 , 0b11000000 ),    # REF_PORTC
-    ( 0b11111111 , 0b11010000 ),    # REF_PORTD
-    ( 0b01000000 , 0b01000000 ),    # REF_PORTE
-    ( 0b00000011 , 0b00000011 )     # REF_PORTF
-]
-
-matrix_strobe = [
-#     REF_PORTB    REF_PORTC    REF_PORTD    REF_PORTE   REF_PORTF
-    ( 0b11111010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000010 ),
-    ( 0b11111010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000001 ),
-    ( 0b11111010 , 0b11000000 , 0b11010000 , 0b00000000 , 0b00000011 ),
-    ( 0b11111010 , 0b01000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11111010 , 0b10000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b10111010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11111010 , 0b11000000 , 0b11000000 , 0b01000000 , 0b00000011 ),
-    ( 0b11111000 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b01111010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11011010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11101010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11111010 , 0b11000000 , 0b01010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11111010 , 0b11000000 , 0b10010000 , 0b01000000 , 0b00000011 ),
-    ( 0b11110010 , 0b11000000 , 0b11010000 , 0b01000000 , 0b00000011 )
-]
-
-matrix_sense = [
-#      Port        Pin mask
-    ( REF_PORTD , (1 << 0) ),
-    ( REF_PORTD , (1 << 1) ),
-    ( REF_PORTD , (1 << 2) ),
-    ( REF_PORTD , (1 << 3) ),
-    ( REF_PORTD , (1 << 5) )
-]
+matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
+    strobe_cols=strobe_cols,
+    strobe_low=strobe_low,
+    rows=[D0, D1, D2, D3, D5],
+    cols=[F0, F1, E6, C7, C6, B6, D4, B1, B7, B5, B4, D7, D6, B3],
+    device=firmware.device
+)
 
 num_leds = 1
 num_ind = 1
@@ -152,8 +125,8 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
-     ((7, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
-     ((4, 4), (3, 12), '0')],
+     ((7, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
+     ((4, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
 
     [((5, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((5, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
