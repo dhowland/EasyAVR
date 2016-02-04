@@ -24,6 +24,7 @@ __all__ = [
 'gh36',
 'gh60',
 'ghpad',
+'handwire',
 'jd45',
 'kmac',
 'octagon',
