@@ -37,7 +37,7 @@ strobe_low = True
 
 matrix_hardware = [
 #     Port mask     Dir mask
-    ( 0b00111111 , 0b00000000 ),    # REF_PORTB
+    ( 0b01111111 , 0b00000000 ),    # REF_PORTB
     ( 0b10000000 , 0b00000000 ),    # REF_PORTC
     ( 0b01111011 , 0b01111011 )     # REF_PORTD
 ]
