@@ -34,6 +34,13 @@ macro_lengths = {
     'ATmega16U2': (512),
 }
 
+ram_macro_lengths = {
+    'AT90USB1286': 160,
+    'ATmega32U4': 80,
+    'ATmega32U2': 40,
+    'ATmega16U2': 0,
+}
+
 num_ports = {
     'AT90USB1286': 6,
     'ATmega32U4': 5,

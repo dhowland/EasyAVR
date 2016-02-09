@@ -88,7 +88,8 @@ class PGData(object):
             if len(tup[0]) != tup[1]:
                 raise ValueError('Inconsistency in length of secret string')
             if py3k:
-                self.secrets[i] = tup[0].decode(encoding="utf-8")
+                if not isinstance(tup[0], str):
+                    self.secrets[i] = tup[0].decode(encoding="utf-8")
             else:
                 self.secrets[i] = tup[0]
             self.charsets[i]['lowers'] = bool(tup[2])

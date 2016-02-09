@@ -324,10 +324,7 @@ class GUI(object):
         limit = 0
         if self.selectedconfig:
             config = configurations[self.selectedconfig]
-            if config.uc_size == 'large':
-                limit = 40
-            elif config.uc_size == 'small':
-                limit = 20
+            limit = templates.ram_macro_lengths[config.firmware.device]
         self.password.popup(self.root, limit)
 
     def showled(self):
