@@ -37,9 +37,11 @@ except ImportError:
 import pickle
 import copy
 from array import array
+import os
 import os.path
 import importlib
 import pkg_resources
+from glob import glob
 
 from easykeymap import __version__
 from easykeymap.scancodes import scancodes, keysyms
@@ -106,6 +108,14 @@ unassigned_string = 'Unassigned'
 backlight_string = 'Backlight'
 num_led_assignments = len(led_assignments)-2
 
+required_board_attributes = [
+    'firmware', 'description', 'unique_id', 'cfg_name', 'teensy', 'hw_boot_key',
+    'display_height', 'display_width', 'num_rows', 'num_cols', 'strobe_cols',
+    'strobe_low', 'matrix_hardware', 'matrix_strobe', 'matrix_sense', 'num_leds',
+    'num_ind', 'num_bl_enab', 'led_definition', 'led_hardware', 'backlighting',
+    'bl_modes', 'KMAC_key', 'keyboard_definition', 'alt_layouts'
+]
+
 
 class GUI(object):
 
@@ -151,6 +161,7 @@ class GUI(object):
         self.activekey = None
         self.unsaved_changes = False
         self.clipboard = None
+        self.checkuserdir()
         self.pickerwindow = Picker(self)
         self.password = Password()
         self.creategui()
@@ -159,10 +170,40 @@ class GUI(object):
     def go(self):
         self.root.mainloop()
 
+    def checkuserdir(self):
+        self.userdir = os.path.join(os.path.expanduser('~'), '.EasyAVR')
+        self.userboards = os.path.join(self.userdir, 'boards')
+        self.userconfigs = os.path.join(self.userdir, 'configs')
+        for loc in [self.userdir, self.userboards, self.userconfigs]:
+            if not os.path.exists(loc):
+                os.mkdir(loc)
+        sys.path.append(self.userboards)
+        for file in glob(os.path.join(self.userboards, '*.py')):
+            board = os.path.splitext(os.path.basename(file))[0]
+            mod = importlib.import_module(board)
+            for attr in required_board_attributes:
+                if attr not in dir(mod):
+                    msg = ("Can't load user board definition '" +
+                        board + "'.  It is missing the '" + attr +
+                        "' attribute.")
+                    messagebox.showerror(title="Can't read board definition",
+                                         message=msg,
+                                         parent=self.root)
+                    break
+            else:
+                configurations[mod.unique_id] = mod
+
     def loadlayouts(self):
         for config in configurations.values():
             cfg_file = "%s.cfg" % config.cfg_name
-            cfg_path = pkg_resources.resource_filename(__name__, 'configs/' + cfg_file)
+            cfg_path = os.path.join(self.userconfigs, cfg_file)
+            # allow user configs to override built-in configs
+            if not os.path.exists(cfg_path):
+                try:
+                    cfg_path = pkg_resources.resource_filename(__name__, 'configs/' + cfg_file)
+                except KeyError:
+                    continue
+            # have to check again because above will always succeed if running from source
             if os.path.exists(cfg_path):
                 try:
                     config.alt_layouts = cfgparse.parse(cfg_path)
