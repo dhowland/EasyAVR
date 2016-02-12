@@ -54,6 +54,7 @@ extern uint8_t g_read_buffer_length;
 void init_autokey(void);
 void autokey_send(void);
 void autokey_read(void);
+void autokey_setidle(void);
 void autokey_cycle(void);
 uint8_t queue_autotext(char const * const str);
 uint8_t queue_ram_autotext(char * const str, size_t const len);
