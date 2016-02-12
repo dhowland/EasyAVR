@@ -90,10 +90,8 @@ void matrix_subscan(const int8_t start, const int8_t finish)
 				port_set_clear_mask(n, g_strobe_masks[n], pgm_read_byte(&MATRIX_STROBE_LIST[i][n]));
 			}
 		}
-#if (F_CPU == 16000000UL)
 		/* Give it time to settle */
-		_delay_loop_1(2);
-#endif
+		_delay_loop_1(g_matrix_setup_wait);
 		for (j=0; j<g_number_of_sense; j++)
 		{
 			/* Sense the input pin */

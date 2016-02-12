@@ -48,7 +48,7 @@ const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\
 const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
 									 "3) Set max delay time for double tap\n4) Set base mouse movement\n"
 									 "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
-									 "7) Set repeat period\n9) Back\n> ";
+									 "7) Set repeat period\n8) Set matrix setup wait\n9) Back\n> ";
 const char PROGMEM g_not_rec[] = "Input not recognized.\n";
 const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys when num lock is enabled.\n";
 const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
@@ -65,14 +65,15 @@ const char PROGMEM g_event_print_3[] = " S-0x";
 const char PROGMEM g_exam_prompt1[] = "Address (hex)> ";
 const char PROGMEM g_exam_prompt2[] = "Bytes (hex)> ";
 const char PROGMEM g_deflayer_prompt[] = "Enter new default layer (0-9)> ";
-const char PROGMEM g_set_print[] = "Set: ";
+const char PROGMEM g_set_print[] = "Set:";
 const char PROGMEM g_debounce_prompt[] = "Enter new debounce time in ms (1-99)> ";
-const char PROGMEM g_tap_prompt[] = "\nEnter new tap time in ms (1-999)> ";
-const char PROGMEM g_doubletap_prompt[] = "\nEnter new doubletap delay time in ms (1-999)> ";
+const char PROGMEM g_tap_prompt[] = "Enter new tap time in ms (1-999)> ";
+const char PROGMEM g_doubletap_prompt[] = "Enter new doubletap delay time in ms (1-999)> ";
 const char PROGMEM g_mouse_base_prompt[] = "Enter new base mouse movement (1-99)> ";
 const char PROGMEM g_mouse_mult_prompt[] = "Enter new mouse movement multiplier (1-99)> ";
-const char PROGMEM g_hold_prompt[] = "\nEnter new hold time in ms (1-999)> ";
-const char PROGMEM g_repeat_prompt[] = "\nEnter new repeat time in ms (1-99)> ";
+const char PROGMEM g_hold_prompt[] = "Enter new hold time in ms (1-999)> ";
+const char PROGMEM g_repeat_prompt[] = "Enter new repeat time in ms (1-99)> ";
+const char PROGMEM g_setup_prompt[] = "Enter new matrix setup wait in cycles (1-255)> ";
 const char PROGMEM g_defbl_prompt[] = "Enter new default backlight enable (1-" STR_MAX_BACKLIGHT_ENABLES ")> ";
 const char PROGMEM g_defdim_prompt[] = "Enter new default dimmer level (1-16)> ";
 const char PROGMEM g_out_of_range[] = "Out of range.\n";
@@ -259,8 +260,8 @@ void console_main(void)
 			{
 				queue_autotext(g_set_print);
 				dec_to_string(g_max_tap_ms, word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 				queue_autotext(g_tap_prompt);
 				begin_read();
 				g_console_state = CONSOLE_TAP;
@@ -269,8 +270,8 @@ void console_main(void)
 			{
 				queue_autotext(g_set_print);
 				dec_to_string(g_doubletap_delay_ms*(-1), word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 				queue_autotext(g_doubletap_prompt);
 				begin_read();
 				g_console_state = CONSOLE_DOUBLETAP;
@@ -299,8 +300,8 @@ void console_main(void)
 			{
 				queue_autotext(g_set_print);
 				dec_to_string(g_hold_key_ms, word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 				queue_autotext(g_hold_prompt);
 				begin_read();
 				g_console_state = CONSOLE_HOLD;
@@ -314,6 +315,16 @@ void console_main(void)
 				queue_autotext(g_repeat_prompt);
 				begin_read();
 				g_console_state = CONSOLE_REPEAT;
+			}
+			else if (code == 8)
+			{
+				queue_autotext(g_set_print);
+				dec_to_string(g_matrix_setup_wait, word_print);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
+				queue_autotext(g_setup_prompt);
+				begin_read();
+				g_console_state = CONSOLE_SETUP;
 			}
 			break;
 #ifdef ENABLE_DEBUG_CONSOLE
@@ -474,8 +485,8 @@ void console_main(void)
 				nvm_update_param(NVM_ID_MAX_TAP_MS);
 				queue_autotext(g_set_print);
 				dec_to_string(g_max_tap_ms, word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -491,8 +502,8 @@ void console_main(void)
 				nvm_update_param(NVM_ID_DOUBLETAP_DELAY_MS);
 				queue_autotext(g_set_print);
 				dec_to_string(g_doubletap_delay_ms*(-1), word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -542,8 +553,8 @@ void console_main(void)
 				nvm_update_param(NVM_ID_HOLD_KEY_MS);
 				queue_autotext(g_set_print);
 				dec_to_string(g_hold_key_ms, word_print);
-				//word_print[3] = '\n';
-				queue_ram_autotext(word_print, 3);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -561,6 +572,23 @@ void console_main(void)
 				dec_to_string(g_repeat_ms, word_print);
 				word_print[2] = '\n';
 				queue_ram_autotext(word_print, 3);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_TIMING;
+			break;
+		case CONSOLE_SETUP:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((word <= 255) && (word > 0))
+			{
+				g_matrix_setup_wait = (int8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_MATRIX_SETUP_WAIT);
+				queue_autotext(g_set_print);
+				dec_to_string(g_matrix_setup_wait, word_print);
+				word_print[3] = '\n';
+				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{

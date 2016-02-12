@@ -44,6 +44,7 @@ uint8_t g_mouse_min_delta;
 uint8_t g_mouse_delta_mult;
 int16_t g_hold_key_ms;
 uint8_t g_repeat_ms;
+uint8_t g_matrix_setup_wait;
 
 uint8_t g_boot_keyboard_only_latched;
 
@@ -66,7 +67,8 @@ const nvm_map_t PROGMEM NVM_MAP[NUMBER_OF_NVM_PARAMETERS] = {
 	{&g_mouse_min_delta, 13, 1},
 	{&g_mouse_delta_mult, 14, 1},
 	{&g_hold_key_ms, 15, 2},
-	{&g_repeat_ms, 17, 1}
+	{&g_repeat_ms, 17, 1},
+	{&g_matrix_setup_wait, 18, 1}
 };
 
 
@@ -121,6 +123,7 @@ void nvm_init_eeprom(void)
 	g_mouse_delta_mult = DEFAULT_MOUSE_DELTA_MULT;
 	g_hold_key_ms = DEFAULT_HOLD_KEY_MS;
 	g_repeat_ms = DEFAULT_REPEAT_MS;
+	g_matrix_setup_wait = DEFAULT_MATRIX_SETUP_WAIT;
 	
 	update_array[0] = g_eeprom_rev;
 	update_array[1] = g_winlock_on_scrolllock;
@@ -143,6 +146,7 @@ void nvm_init_eeprom(void)
 	update_array[15] = trans.bytes[0];
 	update_array[16] = trans.bytes[1];
 	update_array[17] = g_repeat_ms;
+	update_array[18] = g_matrix_setup_wait;
 	
 	eeprom_write_block(update_array, NVM_EEPROM, sizeof(update_array));
 }
@@ -186,6 +190,7 @@ void init_nvm(void)
 	g_mouse_delta_mult = DEFAULT_MOUSE_DELTA_MULT;
 	g_hold_key_ms = DEFAULT_HOLD_KEY_MS;
 	g_repeat_ms = DEFAULT_REPEAT_MS;
+	g_matrix_setup_wait = DEFAULT_MATRIX_SETUP_WAIT;
 }
 
 #endif /* SIMPLE_DEVICE */

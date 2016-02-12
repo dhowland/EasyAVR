@@ -29,10 +29,10 @@
 #define EEPROM_SIZE 1024
 #endif
 
-#define EEPROM_REV (0x18)
+#define EEPROM_REV (0x19)
 
-#define NUMBER_OF_NVM_PARAMETERS (15)
-#define LENGTH_OF_NVM_PARAMETERS (18)
+#define NUMBER_OF_NVM_PARAMETERS (16)
+#define LENGTH_OF_NVM_PARAMETERS (19)
 
 #define NVM_ID_WINLOCK_ON_SCROLLLOCK (1)
 #define NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK (2)
@@ -48,6 +48,7 @@
 #define NVM_ID_MOUSE_DELTA_MULT (12)
 #define NVM_ID_HOLD_KEY_MS (13)
 #define NVM_ID_REPEAT_MS (14)
+#define NVM_ID_MATRIX_SETUP_WAIT (15)
 
 #define KB_TYPE_6KRO_ONLY  (0b11)
 #define KB_TYPE_NKRO_ONLY  (0b10)  // not used
@@ -83,6 +84,7 @@ extern uint8_t g_mouse_min_delta;
 extern uint8_t g_mouse_delta_mult;
 extern int16_t g_hold_key_ms;
 extern uint8_t g_repeat_ms;
+extern uint8_t g_matrix_setup_wait;
 
 extern uint8_t g_boot_keyboard_only_latched;
 

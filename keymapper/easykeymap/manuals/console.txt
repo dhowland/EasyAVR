@@ -80,6 +80,12 @@ Repeat Period
     in rapid fire mode.  The smaller the value, the faster the repeat speed.
     Default is 32ms.
 
+Matrix Setup Wait
+    The number of busywait cycles to delay after setting the matrix selection
+    outputs before reading keys for a given row/column.  Increasing this value
+    can clean up unexpected keypress behavior on boards with slower matrix
+    circuitry.  Default is 5.
+
 =======================
 Configuration Options
 =====================

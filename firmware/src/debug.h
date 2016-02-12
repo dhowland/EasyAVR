@@ -80,7 +80,8 @@ typedef enum {
 	CONSOLE_MOUSEBASE,
 	CONSOLE_MOUSEMULT,
 	CONSOLE_HOLD,
-	CONSOLE_REPEAT
+	CONSOLE_REPEAT,
+	CONSOLE_SETUP
 } console_state_t;
 
 typedef struct {

@@ -134,6 +134,12 @@ void autokey_read(void)
 	}
 }
 
+void autokey_setidle(void)
+{
+	if (g_report_buffer[0] == 0)
+		g_autokey_status = AUTOKEY_IDLE;
+}
+
 void autokey_cycle(void)
 {
 	if (g_autokey_status & AUTOKEY_SENDING)
@@ -151,7 +157,7 @@ void autokey_cycle(void)
 	else if (g_autokey_status & AUTOKEY_READING)
 		autokey_read();
 	else
-		g_autokey_status = AUTOKEY_IDLE;
+		autokey_setidle();
 }
 
 uint8_t queue_autotext(char const * const str)
