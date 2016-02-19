@@ -18,6 +18,7 @@
 
 import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
+from easykeymap.helper import make_matrix_config
 
 description = "JD45"
 unique_id = "JD45_001"
@@ -35,38 +36,13 @@ num_cols = 12
 strobe_cols = True
 strobe_low = True
 
-matrix_hardware = [
-#     Port mask     Dir mask
-    ( 0b11111000 , 0b11111000 ),    # REF_PORTB
-    ( 0b11000000 , 0b11000000 ),    # REF_PORTC
-    ( 0b01001111 , 0b01001111 ),    # REF_PORTD
-    ( 0b00000000 , 0b00000000 ),    # REF_PORTE
-    ( 0b00110011 , 0b00000000 )     # REF_PORTF
-]
-
-matrix_strobe = [
-#     REF_PORTB    REF_PORTC    REF_PORTD    REF_PORTE    REF_PORTF
-    ( 0b11110000 , 0b11000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b01111000 , 0b11000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b11000000 , 0b01001110 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b11000000 , 0b01001101 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b11000000 , 0b01001011 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b11000000 , 0b01000111 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b10000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b01000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b11011000 , 0b11000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b11101000 , 0b11000000 , 0b01001111 , 0b00000000 , 0b00000000 ),
-    ( 0b11111000 , 0b11000000 , 0b00001111 , 0b00000000 , 0b00000000 ),
-    ( 0b10111000 , 0b11000000 , 0b01001111 , 0b00000000 , 0b00000000 )
-]
-
-matrix_sense = [
-#      Port        Pin mask
-    ( REF_PORTF , (1 << 0) ),
-    ( REF_PORTF , (1 << 1) ),
-    ( REF_PORTF , (1 << 4) ),
-    ( REF_PORTF , (1 << 5) )
-]
+matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
+    strobe_cols=strobe_cols,
+    strobe_low=strobe_low,
+    rows=[F0, F1, F4, F5],
+    cols=[B3, B7, D0, D1, D2, D3, C6, C7, B5, B4, D6, B6],
+    device=firmware.device
+)
 
 num_leds = 1
 num_ind = 1
