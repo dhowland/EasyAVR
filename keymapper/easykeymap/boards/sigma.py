@@ -20,8 +20,8 @@ import easykeymap.templates.ATmega32U4_16MHz_TKL as firmware
 from easykeymap.ioports import *
 
 description = "Sigma"
-unique_id = "SIGMA_002"
-cfg_name = "SIGMA"
+unique_id = "SIGMA_003"
+cfg_name = "sigma"
 
 teensy = False
 hw_boot_key = False
@@ -37,31 +37,31 @@ strobe_low = True
 
 matrix_hardware = [
 #     Port mask     Dir mask
-    ( 0b00000000 , 0b00000000 ),    # REF_PORTB
+    ( 0b10000000 , 0b10000000 ),    # REF_PORTB
     ( 0b00000000 , 0b00000000 ),    # REF_PORTC
-    ( 0b00111111 , 0b00111111 ),    # REF_PORTD
+    ( 0b00101111 , 0b00101111 ),    # REF_PORTD
     ( 0b00000000 , 0b00000000 ),    # REF_PORTE
     ( 0b11110011 , 0b00000000 )     # REF_PORTF
 ]
 
 matrix_strobe = [
 #     REF_PORTB    REF_PORTC    REF_PORTD    REF_PORTE   REF_PORTF
-    ( 0b00000000 , 0b00000000 , 0b00010000 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010001 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010010 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010011 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010100 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010101 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010110 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00010111 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011000 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011001 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011010 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011011 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011100 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011101 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011110 , 0b00000000, 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00011111 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000000 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000001 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000010 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000011 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000100 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000101 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000110 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00000111 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001000 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001001 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001010 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001011 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001100 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001101 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001110 , 0b00000000, 0b00000000 ),
+    ( 0b10000000 , 0b00000000 , 0b00001111 , 0b00000000, 0b00000000 ),
     ( 0b00000000 , 0b00000000 , 0b00100000 , 0b00000000, 0b00000000 )
 ]
 
@@ -75,22 +75,24 @@ matrix_sense = [
     ( REF_PORTF , 0b10000000 )
 ]
 
-num_leds = 11
-num_ind = 7
+num_leds = 12
+num_ind = 8
 num_bl_enab = 4
 
 led_definition = [
     ('Esc Key', 'Backlight'),
-    ('Num Key', 'Num Lock'),
-    ('Scroll Key', 'Scroll Lock'),
-    ('Caps Key', 'Caps Lock'),
+    ('Num Key', 'Backlight'),
+    ('Fn Key', 'Backlight'),
+    ('Scroll Key', 'Backlight'),
+    ('Caps Key', 'Backlight'),
     ('L Win Key', 'Backlight'),
     ('R Win Key', 'Backlight'),
-    ('Bonus Key', 'Backlight'),
+    ('App Key', 'Backlight'),
 ]
 
 led_hardware = [
 #       Port    Pin    Direction
+    ( REF_PORTD, 4, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 6, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 7, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 4, LED_DRIVER_PULLDOWN ),
@@ -107,14 +109,14 @@ led_hardware = [
 backlighting = True
 
 bl_modes = [
-#                          AlphaNum Left
-#        Indicators        |  AlphaNum Right
-#                          |  |  Mods
-#                          |  |  |  Frow
-    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-    ( 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0 ),
-    ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 )
+#                             AlphaNum Left
+#           Indicators        |  AlphaNum Right
+#                             |  |  Mods
+#                             |  |  |  Frow
+    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+    ( 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0 ),
+    ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 )
 ]
 
 KMAC_key = None
@@ -196,7 +198,10 @@ keyboard_definition = [
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
      ((9, 4), (3, 13), 'HID_KEYBOARD_SC_ENTER'),
-     (13, None, '0')],
+     (1, None, '0'),
+     ((4, 4), (3, 14), '0'),
+     ((4, 4), (3, 15), '0'),
+     ((4, 4), (3, 16), '0')],
 
     [((9, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
      ((4, 4), (4, 2), 'HID_KEYBOARD_SC_Z'),
@@ -211,9 +216,10 @@ keyboard_definition = [
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
      ((7, 4), (4, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
      ((4, 4), (4, 13), 'SCANCODE_FN'),
-     (5, None, '0'),
+     (1, None, '0'),
+     ((4, 4), (4, 14), '0'),
      ((4, 4), (4, 15), 'HID_KEYBOARD_SC_UP_ARROW'),
-     (4, None, '0')],
+     ((4, 4), (4, 16), '0')],
 
     [((6, 4), (5, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((4, 4), (5, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
