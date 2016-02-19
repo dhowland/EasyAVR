@@ -33,9 +33,16 @@
 /* Media codes in the consumer page, not defined by LUFA */
 /* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/translate.pdf */
 /* http://download.microsoft.com/download/E/3/A/E3AEC7D7-245D-491F-BB8A-E1E05A03677A/keyboard-support-windows-8.docx */
+#define SC_MAC_CP_PLAY 0xB0			/* Play */
+#define SC_MAC_CP_PAUSE 0xB1		/* Pause */
+#define SC_MAC_CP_RECORD 0xB2		/* Record */
+#define SC_MAC_CP_FFW 0xB3			/* Fast Forward */
+#define SC_MAC_CP_REW 0xB4			/* Rewind */
 #define SC_WIN_CP_NEXT_TRACK 0xB5	/* Scan Next Track One Shot Control (OSC) */
 #define SC_WIN_CP_PREV_TRACK 0xB6	/* Scan Previous Track One Shot Control (OSC) */
 #define SC_WIN_CP_STOP 0xB7			/* Stop One Shot Control (OSC) */
+#define SC_MAC_CP_EJECT 0xB8		/* Eject */
+#define SC_MAC_CP_REPEAT 0xBC		/* Repeat */
 #define SC_WIN_CP_PLAY_PAUSE 0xCD	/* Play/Pause One Shot Control (OSC) */
 #define SC_WIN_CP_BRIGHT_INC 0x6F	/* Brightness Increment Re-trigger Control (RTC) */
 #define SC_WIN_CP_BRIGHT_DEC 0x70	/* Brightness Decrement Re-trigger Control (RTC) */
