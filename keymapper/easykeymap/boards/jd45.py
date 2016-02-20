@@ -20,7 +20,7 @@ import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
-description = "JD45"
+description = "JD45 (Teensy version)"
 unique_id = "JD45_001"
 cfg_name = "jd45"
 
