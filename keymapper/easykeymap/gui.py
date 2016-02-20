@@ -648,18 +648,32 @@ class GUI(object):
                 self.selectlayer()
 
     def getkeymap(self, keyboard_definition):
-        key_map = []
-        for rowdef in keyboard_definition:
-            if isinstance(rowdef, list):
-                rowlist = []
-                for keydef in rowdef:
-                    rowlist.append(keydef[2])
-                key_map.append(rowlist)
-            elif isinstance(rowdef, int):
-                key_map.append([])
-            else:
-                raise Exception('Error: invalid keyboard_definition')
-        return key_map
+        all_maps = {}
+        for i,layer in enumerate(self.layers):
+            key_map = []
+            for rowdef in keyboard_definition:
+                if isinstance(rowdef, list):
+                    rowlist = []
+                    for keydef in rowdef:
+                        def_asmt = keydef[2]
+                        if isinstance(def_asmt, list):
+                            try:
+                                rowlist.append(def_asmt[i])
+                            except IndexError:
+                                rowlist.append('0')
+                        else:
+                            # old, single-string format (default layer only)
+                            if i == 0:
+                                rowlist.append(def_asmt)
+                            else:
+                                rowlist.append('0')
+                    key_map.append(rowlist)
+                elif isinstance(rowdef, int):
+                    key_map.append([])
+                else:
+                    raise Exception('Error: invalid keyboard_definition')
+            all_maps[layer] = key_map
+        return all_maps
 
     def initadvancedleds(self):
         self.advancedleds = [(255, 0)] * num_led_assignments
@@ -680,17 +694,12 @@ class GUI(object):
                 self.modes = {}
                 self.actions = {}
                 self.wmods = {}
-                default_keymap = self.getkeymap(config.keyboard_definition)
-                empty_keymap = [['0'] * len(x) for x in default_keymap]
-                init_modes = [[default_mode] * len(x) for x in default_keymap]
-                init_wmods = [[0] * len(x) for x in default_keymap]
-                for layer in self.layers[:2]:
-                    self.maps[layer] = copy.deepcopy(default_keymap)
-                    self.modes[layer] = copy.deepcopy(init_modes)
-                    self.actions[layer] = copy.deepcopy(empty_keymap)
-                    self.wmods[layer] = copy.deepcopy(init_wmods)
-                for layer in self.layers[2:]:
-                    self.maps[layer] = copy.deepcopy(empty_keymap)
+                default_keymaps = self.getkeymap(config.keyboard_definition)
+                empty_keymap = [['0'] * len(x) for x in default_keymaps[default_layer]]
+                init_modes = [[default_mode] * len(x) for x in default_keymaps[default_layer]]
+                init_wmods = [[0] * len(x) for x in default_keymaps[default_layer]]
+                for layer in self.layers:
+                    self.maps[layer] = copy.deepcopy(default_keymaps[layer])
                     self.modes[layer] = copy.deepcopy(init_modes)
                     self.actions[layer] = copy.deepcopy(empty_keymap)
                     self.wmods[layer] = copy.deepcopy(init_wmods)
@@ -760,10 +769,10 @@ class GUI(object):
                         self.modes = {}
                         self.wmods = {}
                         config = configurations[self.selectedconfig]
-                        default_keymap = self.getkeymap(config.keyboard_definition)
-                        empty_keymap = [['0'] * len(x) for x in default_keymap]
-                        init_modes = [[default_mode] * len(x) for x in default_keymap]
-                        init_wmods = [[0] * len(x) for x in default_keymap]
+                        default_keymaps = self.getkeymap(config.keyboard_definition)
+                        empty_keymap = [['0'] * len(x) for x in default_keymaps[default_layer]]
+                        init_modes = [[default_mode] * len(x) for x in default_keymaps[default_layer]]
+                        init_wmods = [[0] * len(x) for x in default_keymaps[default_layer]]
                         for layer in self.layers:
                             self.modes[layer] = copy.deepcopy(init_modes)
                             self.actions[layer] = copy.deepcopy(empty_keymap)
