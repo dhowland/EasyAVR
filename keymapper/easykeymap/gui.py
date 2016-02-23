@@ -1031,6 +1031,7 @@ class GUI(object):
         # overwrite data for key maps
         fw_rows,fw_cols = templates.matrix_dims[config.firmware.size]
         col_diff = fw_cols - config.num_cols
+        row_diff = (fw_rows - config.num_rows) * fw_cols
         address = config.firmware.layers_map
         offset = address - start
         for layer in self.layers:
@@ -1042,6 +1043,7 @@ class GUI(object):
                     bytes[offset] = scancodes[value][1]
                     offset += 1
                 offset += col_diff
+            offset += row_diff
         # overwrite data for key actions
         address = config.firmware.actions_map
         offset = address - start
