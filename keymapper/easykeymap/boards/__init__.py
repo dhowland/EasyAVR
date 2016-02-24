@@ -23,6 +23,7 @@ __all__ = [
 'filco104',
 'gh36',
 'gh60',
+'gh60_satan',
 'ghpad',
 'jd40',
 'jd45',
