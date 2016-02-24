@@ -21,6 +21,8 @@ keymaps can be compiled directly into functional HEX files for programming.
 
 from __future__ import print_function
 
+import sys
+
 try:
     from Tkinter import *
     from ttk import *
@@ -40,8 +42,10 @@ from array import array
 import os
 import os.path
 import importlib
-import pkg_resources
 from glob import glob
+
+if not hasattr(sys, 'frozen'):
+    import pkg_resources
 
 from easykeymap import __version__
 from easykeymap.scancodes import scancodes, keysyms
@@ -170,6 +174,12 @@ class GUI(object):
     def go(self):
         self.root.mainloop()
 
+    def get_pkg_path(self, path):
+        if hasattr(sys, 'frozen'):
+            return os.path.join(os.path.dirname(sys.executable), path)
+        else:
+            return pkg_resources.resource_filename(__name__, path)
+
     def checkuserdir(self):
         self.userdir = os.path.join(os.path.expanduser('~'), '.EasyAVR')
         self.userboards = os.path.join(self.userdir, 'boards')
@@ -200,7 +210,7 @@ class GUI(object):
             # allow user configs to override built-in configs
             if not os.path.exists(cfg_path):
                 try:
-                    cfg_path = pkg_resources.resource_filename(__name__, 'configs/' + cfg_file)
+                    cfg_path = self.get_pkg_path('configs/' + cfg_file)
                 except KeyError:
                     continue
             # have to check again because above will always succeed if running from source
@@ -220,7 +230,7 @@ class GUI(object):
         self.root.title("Easy AVR USB Keyboard Firmware Keymapper")
         self.root.option_add('*tearOff', FALSE)
         self.root.resizable(0, 0)
-        iconpath = pkg_resources.resource_filename(__name__, 'icons/' + 'keyboard.ico')
+        iconpath = self.get_pkg_path('icons/keyboard.ico')
         try:
             self.root.iconbitmap(default=iconpath)
         except:
@@ -998,7 +1008,7 @@ class GUI(object):
                     parent=self.root)
                 if not answer:
                     return
-            hex_path = pkg_resources.resource_filename(__name__, 'builds/' + config.firmware.hex_file_name)
+            hex_path = self.get_pkg_path('builds/' + config.firmware.hex_file_name)
             filename = filedialog.asksaveasfilename(
                 defaultextension=".hex",
                 filetypes=[('Intel Hex Files', '.hex')],
@@ -1236,7 +1246,7 @@ class GUI(object):
         bytes[last_spot:last_spot+2] = array('B', [0, 0])[:]
 
     def showtext(self, textfile):
-        path = pkg_resources.resource_filename(__name__, 'manuals/' + textfile)
+        path = self.get_pkg_path('manuals/' + textfile)
         if os.path.exists(path):
             filename = os.path.basename(path)
             with open(path, 'r') as fd:
