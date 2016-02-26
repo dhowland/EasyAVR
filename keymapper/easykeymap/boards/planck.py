@@ -23,6 +23,9 @@ description = "Planck"
 unique_id = "PLANCK_001"
 cfg_name = "planck"
 
+teensy = False
+hw_boot_key = False
+
 display_height = int(4*4)
 display_width = int(12*4)
 
