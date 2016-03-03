@@ -21,7 +21,7 @@ from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
 description = "GH60"
-unique_id = "GH60_004"
+unique_id = "GH60_005"
 cfg_name = "gh60revb"
 
 teensy = False
@@ -44,24 +44,32 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     device=firmware.device
 )
 
-num_leds = 1
-num_ind = 1
-num_bl_enab = 2
+num_leds = 5
+num_ind = 3
+num_bl_enab = 4
 
 led_definition = [
-    ('Caps Key', 'Caps Lock')
+    ('Caps Key', 'Caps Lock'),
+    ('Esc Key', 'Recording'),
+    ('Fn Key', 'Fn Active')
 ]
 
 led_hardware = [
 #       Port    Pin    Direction
-    ( REF_PORTB, 2, LED_DRIVER_PULLDOWN )
+    ( REF_PORTB, 2, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTF, 6, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTF, 5, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTF, 7, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTF, 4, LED_DRIVER_PULLDOWN )
 ]
 
 backlighting = False
 
 bl_modes = [
-    ( 0, ),
-    ( 1, )
+    ( 1, 1, 1, 1, 1 ),
+    ( 0, 0, 0, 0, 0 ),
+    ( 0, 0, 0, 0, 1 ),
+    ( 0, 0, 0, 1, 0 ),
 ]
 
 KMAC_key = None
