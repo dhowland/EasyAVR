@@ -31,6 +31,8 @@ const port_reg_t PORT_REG[NUM_PORTS] = {
 	{ &DDRF, &PORTF, &PINF },
 #endif
 #ifdef __AVR_AT90USB1286__
+	{ &DDRE, &PORTE, &PINE },
+	{ &DDRF, &PORTF, &PINF },
 	{ &DDRA, &PORTA, &PINA },
 #endif
 };
