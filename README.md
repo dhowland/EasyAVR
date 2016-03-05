@@ -17,6 +17,8 @@ https://github.com/dhowland/EasyAVR
 3. [Supporting Custom Boards](#supporting-custom-boards)
 4. [Developer Notes](#developer-notes)
 
+---
+
 ## Windows User Tutorial
 
 #### Requirements
@@ -44,7 +46,7 @@ Windows users have two options for using the Easy AVR keymapper.  The easiest op
 		python setup.py install
 		python -m easykeymap.gui
 
-#### Creating a keymap
+#### Creating A Keymap
 
 1. Create a new layout and select your board -or- open a previously saved layout (File menu)
 2. Copy/Paste the default layer to populate any Fn layers that you intend to use (Edit menu)
@@ -56,7 +58,7 @@ Windows users have two options for using the Easy AVR keymapper.  The easiest op
 5. Save your new layout (File menu)
 6. Build your firmware into a .hex file (File menu)
 
-#### Programming the firmware
+#### Programming The Firmware
 
 The programming of the firmware to your board depends on your hardware.  Boards based on a Teensy (e.g. Phantom) use the Teensy Loader app.  Other AVR boards use the Atmel Flip app.
 
@@ -103,7 +105,7 @@ dfu-programmer can be installed on OSX by following [these directions](http://ww
 		sudo python setup.py install
 		python -m easykeymap.gui
 
-#### Programming the firmware
+#### Programming The Firmware
 
 *dfu-programmer*
 
@@ -127,8 +129,28 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 #### Requirements
 
 * A text editor
+* Reading comprehension
 
-TODO
+#### Setup
+
+1. Download the source code from [Github](https://github.com/dhowland/EasyAVR) and extract
+2. Run the keymapper at least once (see above)
+3. The tool automatically creates `~/.EasyAVR/` (probably `/home/username/.EasyAVR` on Linux and `c:\users\username\.EasyAVR` on Windows)
+4. In the source code, find `keymapper/easykeymap/boards/handwire.py` and copy it to `~/.EasyAVR/boards/`
+5. Rename your copy of `handwire.py` to anything you like, for example `my_first_board.py`
+6. This can be done for any number of custom boards
+
+#### Configuring A Custom Layout
+
+1. Open `my_first_board.py` in a text editor
+2. This file is a pure Python script that describes the keyboard hardware -- you must use correct [Python syntax](https://docs.python.org/3/)!
+3. Read ALL comments in the file and follow those directions
+4. In particular, make sure to give your board a unique `unique_id`
+5. The example file describes the Phantom, use this as a template to configure your own board
+6. Make sure to consider and update every setting in the file
+7. Save your file, then restart the Easy AVR keymapper app
+8. Create a new layout, select the board you configured, and test it
+9. Remember that if you change the hardware description in the config file, you MUST NOT load saved keymaps created with the old config file
 
 ## Developer Notes
 
@@ -137,5 +159,6 @@ TODO
 * [Python](https://www.python.org/) 2.7 and 3.3+ (both would be needed for complete testing)
 * [Atmel Studio 7](http://www.atmel.com/tools/atmelstudio.aspx)
 
-TODO
+Abandon all hope, ye who enter here.
 
+TODO: write developer notes
