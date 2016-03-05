@@ -13,10 +13,9 @@ https://github.com/dhowland/EasyAVR
 #### Table of Contents
 
 1. [Windows User Tutorial](#windows-user-tutorial)
-2. [Linux User Tutorial](#linux-user-tutorial)
-3. [Mac User Tutorial](#mac-user-tutorial)
-4. [Supporting Custom Boards](#supporting-custom-boards)
-5. [Developer Notes](#developer-notes)
+2. [Linux and Mac User Tutorial](#linux-and-mac-user-tutorial)
+3. [Supporting Custom Boards](#supporting-custom-boards)
+4. [Developer Notes](#developer-notes)
 
 ## Windows User Tutorial
 
@@ -75,27 +74,58 @@ The programming of the firmware to your board depends on your hardware.  Boards 
 
 Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loader_vista.html)
 
-## Linux User Tutorial
+## Linux and Mac User Tutorial
 
 #### Requirements
 
-* dfu-programmer
+* [dfu-programmer](https://github.com/dfu-programmer/dfu-programmer)
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
 * [Python](https://www.python.org/) 2.7 or 3.3+
 
-TODO
+#### Installation
 
-## Mac User Tutorial
+*dfu-programmer*
 
-#### Requirements
+dfu-programmer can be installed on Linux using your chosen package manager.  Typically, it will look something like this:
 
-* whatever it is that speaks DFU on OSX
-* [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
-* [Python](https://www.python.org/) 2.7 or 3.3+
+`sudo apt-get install dfu-programmer`
 
-TODO
+dfu-programmer can be installed on OSX by following [these directions](http://www.uriahbaalke.com/?p=106) or with [Homebrew](http://brew.sh/) as follows:
+
+`brew install dfu-programmer`
+
+*Easy AVR*
+
+1. Download the source code from [Github](https://github.com/dhowland/EasyAVR) and extract
+2. Start the tool with the easykeymap.sh
+3. Optionally, the easykeymap package can be installed with setuptools
+
+		sudo python setup.py install
+		python -m easykeymap.gui
+
+#### Programming the firmware
+
+*dfu-programmer*
+1. Create a firmware as explained in [Creating a keymap](#creating-a-keymap)
+2. Put your keyboard into bootloader mode
+3. Program your .hex file (replace device type as necessary)
+
+		sudo dfu-programmer atmega32u4 erase
+		sleep 10
+		sudo dfu-programmer atmega32u4 flash /path/to/firmware.hex
+		sudo dfu-programmer atmega32u4 launch
+
+AVR-dude may also be used on Linux, as explained [here](https://geekhack.org/index.php?topic=51252.msg2066099#msg2066099).
+
+*Teensy*
+
+Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loader_linux.html)
 
 ## Supporting Custom Boards
+
+#### Requirements
+
+* A text editor
 
 TODO
 
