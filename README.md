@@ -106,6 +106,7 @@ dfu-programmer can be installed on OSX by following [these directions](http://ww
 #### Programming the firmware
 
 *dfu-programmer*
+
 1. Create a firmware as explained in [Creating a keymap](#creating-a-keymap)
 2. Put your keyboard into bootloader mode
 3. Program your .hex file (replace device type as necessary)
