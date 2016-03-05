@@ -10,6 +10,14 @@ https://geekhack.org/index.php?topic=51252
 View the source code on Github:
 https://github.com/dhowland/EasyAVR
 
+#### Table of Contents
+
+1. [Windows User Tutorial](#windows-user-tutorial)
+2. [Linux User Tutorial](#linux-user-tutorial)
+3. [Mac User Tutorial](#mac-user-tutorial)
+4. [Supporting Custom Boards](#supporting-custom-boards)
+5. [Developer Notes](#developer-notes)
+
 ## Windows User Tutorial
 
 #### Requirements
@@ -22,14 +30,50 @@ https://github.com/dhowland/EasyAVR
 
 Windows users have two options for using the Easy AVR keymapper.  The easiest option is to use the stand-alone compiled executables.  Alternatively, users familiar with the Python interpreter may run the Python scripts directly.
 
-1. Step one
-2. Step two
-3. Step three
-4. Step four
+*Compiled executables*
+
+1. Download the executables from [the wiki page](https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware#Downloads)
+2. Extract the zip to the chosen installation location
+3. Start the tool by running easykeymap.exe
+
+*Python scripts*
+
+1. Download the source code from [Github](https://github.com/dhowland/EasyAVR) and extract
+2. Start the tool with the run.bat (requires python in the PATH)
+3. Optionally, the easykeymap package can be installed with setuptools
+
+		python setup.py install
+		python -m easykeymap.gui
 
 #### Creating a keymap
 
+1. Create a new layout and select your board -or- open a previously saved layout (File menu)
+2. Copy/Paste the default layer to populate any Fn layers that you intend to use (Edit menu)
+3. Modify your layout using one of the three edit methods:
+	* Select a key in the keymapper and press the new assignment on your physical keyboard
+	* Select a key in the keymapper and then choose a new scancode from the menu
+	* Open the scancode picker, select a key in the keymapper, then select the new assignment in the picker
+4. Read the manuals for help on using advanced features of the firmware such as macros and LED assignments (Help menu)
+5. Save your new layout (File menu)
+6. Build your firmware into a .hex file (File menu)
+
 #### Programming the firmware
+
+The programming of the firmware to your board depends on your hardware.  Boards based on a Teensy (e.g. Phantom) use the Teensy Loader app.  Other AVR boards use the Atmel Flip app.
+
+*Flip*
+
+1. Open the Atmel Flip app
+2. Click the red "Load HEX File" icon and open the .hex file you created in the keymapper
+3. Click the microchip "Select a Target Device" icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)
+4. Put your keyboard into bootloader mode
+5. Click the USB "Select a Communications Medium" icon and choose "USB" from the menu
+6. With the AVR now connected, click the "Run" button to reprogram with the new firmware
+7. With a successful completion, click the "Start Application" button
+
+*Teensy*
+
+Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loader_vista.html)
 
 ## Linux User Tutorial
 
@@ -39,6 +83,8 @@ Windows users have two options for using the Easy AVR keymapper.  The easiest op
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
 * [Python](https://www.python.org/) 2.7 or 3.3+
 
+TODO
+
 ## Mac User Tutorial
 
 #### Requirements
@@ -47,9 +93,18 @@ Windows users have two options for using the Easy AVR keymapper.  The easiest op
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
 * [Python](https://www.python.org/) 2.7 or 3.3+
 
+TODO
+
+## Supporting Custom Boards
+
+TODO
+
 ## Developer Notes
 
 #### Requirements
 
-* Python 2.7 and 3.3+
-* Atmel Studio 7
+* [Python](https://www.python.org/) 2.7 and 3.3+ (both would be needed for complete testing)
+* [Atmel Studio 7](http://www.atmel.com/tools/atmelstudio.aspx)
+
+TODO
+
