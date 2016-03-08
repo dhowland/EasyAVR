@@ -43,6 +43,7 @@ import os
 import os.path
 import importlib
 from glob import glob
+import traceback
 
 if not hasattr(sys, 'frozen'):
     import pkg_resources
@@ -218,9 +219,7 @@ class GUI(object):
                 try:
                     config.alt_layouts = cfgparse.parse(cfg_path)
                 except Exception as err:
-                    msg = str(err)
-                    if len(msg) == 0:
-                        msg = str(type(err))
+                    msg = traceback.format_exc()
                     messagebox.showerror(title="Can't read config file",
                                          message='Error: ' + msg,
                                          parent=self.root)
@@ -824,9 +823,7 @@ class GUI(object):
                     self.scrub_scancodes()
                 self.unsaved_changes = False
             except Exception as err:
-                msg = str(err)
-                if len(msg) == 0:
-                    msg = str(type(err))
+                msg = traceback.format_exc()
                 messagebox.showerror(title="Can't open layout",
                                      message='Error: ' + msg,
                                      parent=self.root)
@@ -926,9 +923,7 @@ class GUI(object):
                     pickle.dump(package, fdout, protocol=2)
                 self.unsaved_changes = False
             except Exception as err:
-                msg = str(err)
-                if len(msg) == 0:
-                    msg = str(type(err))
+                msg = traceback.format_exc()
                 messagebox.showerror(title="Can't save layout",
                                      message='Error: ' + msg,
                                      parent=self.root)
@@ -1024,9 +1019,7 @@ class GUI(object):
                     message="Firmware saved successfully.",
                     parent=self.root)
             except Exception as err:
-                msg = str(err)
-                if len(msg) == 0:
-                    msg = str(type(err))
+                msg = traceback.format_exc()
                 messagebox.showerror(title="Can't build binary",
                                      message='Error: ' + msg,
                                      parent=self.root)
