@@ -37,6 +37,10 @@
 #define DEFAULT_MATRIX_SETUP_WAIT (1)
 #endif
 
+#ifdef BOARD_SIZE_JUMBO
+#define NUMBER_OF_ROWS (7)
+#define NUMBER_OF_COLS (24)
+#endif
 #ifdef BOARD_SIZE_FULLSIZE
 #define NUMBER_OF_ROWS (6)
 #define NUMBER_OF_COLS (22)

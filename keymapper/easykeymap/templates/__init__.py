@@ -19,7 +19,8 @@ max_indicators = 8
 max_bl_enables = 16
 
 matrix_dims = {
-    'FULLSIZE': (8, 22),
+    'JUMBO': (7, 24),
+    'FULLSIZE': (6, 22),
     'COSTAR': (8, 18),
     'TKL': (6, 17),
     'SIXTY': (5, 15),
