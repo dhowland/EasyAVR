@@ -74,6 +74,48 @@ void init_matrix(void)
 #endif /* KMAC_ALIKE */
 }
 
+void initial_scan(void)
+{
+#ifndef SIMPLE_DEVICE
+	int8_t i,j,n;
+	uint8_t status;
+	
+	/* This function should track the matrix_subscan() logic.
+	   Yeah, it's a messy duplicate, but it saves (real)time to do it this way. */
+	
+	for (i=0; i<g_number_of_strobe; i++)
+	{
+		for(n=0; n<NUM_PORTS; n++)
+		{
+			port_set_clear_mask(n, g_strobe_masks[n], pgm_read_byte(&MATRIX_STROBE_LIST[i][n]));
+		}
+		_delay_loop_1(g_matrix_setup_wait);
+		for (j=0; j<g_number_of_sense; j++)
+		{
+			if (g_strobe_low)
+			{
+				status = port_get_mask(pgm_read_byte(&MATRIX_SENSE_LIST[j].port_ref), pgm_read_byte(&MATRIX_SENSE_LIST[j].mask)) == 0;
+			}
+			else
+			{
+				status = port_get_mask(pgm_read_byte(&MATRIX_SENSE_LIST[j].port_ref), pgm_read_byte(&MATRIX_SENSE_LIST[j].mask)) != 0;
+			}
+			if (status)
+			{
+				if (g_strobe_cols)
+				{
+					initial_actuate(j, i);
+				}
+				else
+				{
+					initial_actuate(i, j);
+				}
+			}
+		}
+	}
+#endif /* SIMPLE_DEVICE */
+}
+
 void matrix_subscan(const int8_t start, const int8_t finish)
 {
 	int8_t i,j,n;

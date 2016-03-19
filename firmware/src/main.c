@@ -59,10 +59,8 @@ void application_init(void)
 	init_scheduler();
 	init_USB();
 	
-	/* Check for an key held while plugging in */
-	g_initial_scan = 1;
-	matrix_scan();
-	g_initial_scan = 0;
+	/* Check for an Enter key held while plugging in */
+	initial_scan();
 	
 	/* Start USB */
 	USB_Init();

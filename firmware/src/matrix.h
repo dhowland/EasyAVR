@@ -31,6 +31,7 @@
 extern int16_t g_matrixstate[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 
 void init_matrix(void);
+void initial_scan(void);
 void matrix_subscan(const int8_t start, const int8_t finish);
 void matrix_scan(void);
 void matrix_scan_first_half(void);

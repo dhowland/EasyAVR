@@ -119,7 +119,6 @@ uint16_t g_ram_macro[MACRO_RAM_SIZE];
 int8_t g_ram_macro_ptr;
 int8_t g_ram_macro_length;
 #endif /* MACRO_RAM_SIZE */
-uint8_t g_initial_scan;
 
 /* Functions for working with the keypress queue
  * This is a very simple queue implementation that uses only an array and one state var.
@@ -1135,12 +1134,6 @@ void keymap_actuate(const uint8_t row, const uint8_t col, const int16_t idle_tim
 #endif /* SIMPLE_DEVICE */
 	const uint8_t action = getaction(row,col);
 	const uint8_t tapkey = gettapkey(row,col);
-	
-	if (g_initial_scan)
-	{
-		initial_actuate(row, col);
-		return;
-	}
 	
 #ifdef KEYMAP_MEMORY_SAVE
 	g_matrixlayer[row][col] = g_layer_select;

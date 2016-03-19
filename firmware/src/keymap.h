@@ -66,7 +66,6 @@ extern uint16_t g_ram_macro[MACRO_RAM_SIZE];
 int8_t g_ram_macro_ptr;
 int8_t g_ram_macro_length;
 #endif /* MACRO_RAM_SIZE */
-extern uint8_t g_initial_scan;
 
 void enqueue_key(const uint8_t code);
 void delete_key(const uint8_t code);
