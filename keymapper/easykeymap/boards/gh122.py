@@ -24,7 +24,7 @@ description = "GH-122"
 unique_id = "GH122_001"
 cfg_name = "gh122"
 
-teensy = False
+teensy = True
 hw_boot_key = False
 
 display_height = int(7.5*4)
