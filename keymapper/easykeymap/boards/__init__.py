@@ -21,6 +21,7 @@ __all__ = [
 'filco87',
 'filco87v2',
 'filco104',
+'gh122',
 'gh36',
 'gh60',
 'gh60_satan',
