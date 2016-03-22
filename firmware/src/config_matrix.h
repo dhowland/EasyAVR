@@ -68,7 +68,7 @@
 
 #define MAX_DIMENSION (NUMBER_OF_COLS)
 
-#if (F_CPU == 8000000UL)
+#if defined(__AVR_ATmega32U4__) && (F_CPU == 8000000UL)
 /* 8MHz is used for KMAC and similar boards with the special key on the bootloader pin */
 #define KMAC_ALIKE
 #endif
