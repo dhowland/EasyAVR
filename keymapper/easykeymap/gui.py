@@ -1058,6 +1058,7 @@ class GUI(object):
                     bytes[offset] = (key_mode_map[value] | value2)
                     offset += 1
                 offset += col_diff
+            offset += row_diff
         # overwrite data for tap keys
         address = config.firmware.tapkeys_map
         offset = address - start
@@ -1067,7 +1068,8 @@ class GUI(object):
                 for value in row:
                     bytes[offset] = scancodes[value][1]
                     offset += 1
-                offset += col_diff 
+                offset += col_diff
+            offset += row_diff
         # overwrite data for macros
         self.selectmacro()
         self.assemblemacrodata(config, bytes, start)
