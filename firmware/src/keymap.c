@@ -506,10 +506,12 @@ void mod_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, cons
 	switch(action & KEY_ACTION_MASK)
 	{
 	case ACTION_TAPKEY:
+		unset_modifier(code);
 		if ((tap) && (g_last_keypress == code))
 		{
 			send_tapkey(tapkey);
 		}
+		break;
 	case ACTION_RAPIDFIRE:
 	case ACTION_NORMAL:
 		unset_modifier(code);
