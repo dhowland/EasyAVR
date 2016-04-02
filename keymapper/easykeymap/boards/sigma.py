@@ -105,7 +105,6 @@ led_hardware = [
     ( REF_PORTB, 2, LED_DRIVER_PULLUP ),
     ( REF_PORTB, 3, LED_DRIVER_PULLUP ),
     ( REF_PORTE, 6, LED_DRIVER_PULLUP )
-    
 ]
 
 backlighting = True
