@@ -81,6 +81,7 @@ num_bl_enab = 4
 
 led_definition = [
     ('Esc Key', 'Backlight'),
+    ('Bonus Key', 'Num Lock'),
     ('Scroll Key', 'Scroll Lock'),
     ('Caps Key', 'Caps Lock'),
     ('L Win Key', 'Win Lock'),
