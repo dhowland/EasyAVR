@@ -20,7 +20,7 @@ import easykeymap.templates.ATmega32U4_16MHz_TKL as firmware
 from easykeymap.ioports import *
 
 description = "Sigma"
-unique_id = "SIGMA_003"
+unique_id = "SIGMA_004"
 cfg_name = "sigma"
 
 teensy = False
@@ -75,48 +75,50 @@ matrix_sense = [
     ( REF_PORTF , 0b10000000 )
 ]
 
-num_leds = 12
+num_leds = 13
 num_ind = 8
 num_bl_enab = 4
 
 led_definition = [
     ('Esc Key', 'Backlight'),
-    ('Num Key', 'Backlight'),
-    ('Fn Key', 'Backlight'),
-    ('Scroll Key', 'Backlight'),
-    ('Caps Key', 'Backlight'),
-    ('L Win Key', 'Backlight'),
+    ('Scroll Key', 'Scroll Lock'),
+    ('Caps Key', 'Caps Lock'),
+    ('L Win Key', 'Win Lock'),
     ('R Win Key', 'Backlight'),
     ('App Key', 'Backlight'),
+    ('Fn Key', 'Fn Active')
 ]
 
 led_hardware = [
 #       Port    Pin    Direction
     ( REF_PORTD, 4, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 6, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTD, 7, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 4, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 5, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 6, LED_DRIVER_PULLDOWN ),
     ( REF_PORTC, 6, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTD, 7, LED_DRIVER_PULLDOWN ),
     ( REF_PORTC, 7, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 0, LED_DRIVER_PULLUP ),
     ( REF_PORTB, 1, LED_DRIVER_PULLUP ),
     ( REF_PORTB, 2, LED_DRIVER_PULLUP ),
-    ( REF_PORTB, 3, LED_DRIVER_PULLUP )
+    ( REF_PORTB, 3, LED_DRIVER_PULLUP ),
+    ( REF_PORTE, 6, LED_DRIVER_PULLUP )
+    
 ]
 
 backlighting = True
 
 bl_modes = [
 #                             AlphaNum Left
-#           Indicators        |  AlphaNum Right
-#                             |  |  Mods
-#                             |  |  |  Frow
-    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
-    ( 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0 ),
-    ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 )
+#                             |  AlphaNum Right
+#           Indicators        |  |  Mods
+#                             |  |  |  F Row
+#                             |  |  |  |  Underglow
+    ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+    ( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ),
+    ( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 ]
 
 KMAC_key = None
