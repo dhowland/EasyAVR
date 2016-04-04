@@ -1006,14 +1006,19 @@ class GUI(object):
             hex_path = self.get_pkg_path('builds/' + config.firmware.hex_file_name)
             filename = filedialog.asksaveasfilename(
                 defaultextension=".hex",
-                filetypes=[('Intel Hex Files', '.hex')],
+                filetypes=[('Intel Hex Files', '.hex'), ('Binary Files', '.bin')],
                 parent=self.root)
             if not filename:
                 return
             try:
                 with open(hex_path, 'r') as fdin:
+                    hexdata = self.overlay(intelhex.read(fdin))
+                if filename.lower().endswith('.bin'):
+                    with open(filename, 'wb') as fdout:
+                        hexdata[0][1].tofile(fdout)
+                else:
                     with open(filename, 'w') as fdout:
-                        self.overlay(config, fdin, fdout)
+                        intelhex.write(fdout, hexdata)
                 messagebox.showinfo(
                     title="Build complete",
                     message="Firmware saved successfully.",
@@ -1028,8 +1033,9 @@ class GUI(object):
                                  message='Create a keyboard first!',
                                  parent=self.root)
 
-    def overlay(self, config, fdin, fdout):
-        hexdata = intelhex.read(fdin)
+    def overlay(self, hexdata):
+        config = configurations[self.selectedconfig]
+        # shouldn't get more than one chunk per file
         start, bytes = hexdata[0]
         # overwrite data for key maps
         fw_rows,fw_cols = templates.matrix_dims[config.firmware.size]
@@ -1199,7 +1205,7 @@ class GUI(object):
             bytes[offset] = ord(c)
             offset += 2
         # finish up
-        intelhex.write(fdout, hexdata)
+        return hexdata
 
     def assemblemacrodata(self, config, bytes, start):
         macro_length = templates.macro_lengths[config.firmware.device]
