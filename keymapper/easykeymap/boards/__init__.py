@@ -39,6 +39,7 @@ __all__ = [
 'qfrv2',
 'qfxt',
 'rosewill',
+'sentraq',
 'sigma',
 'sixshooter',
 'smallfry',
