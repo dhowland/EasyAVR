@@ -17,10 +17,11 @@
 """Keyboard definition for a hand-wired keyboard"""
 
 # The first decision you have to make is to choose a hardware
-# layout.  Assuming you are using a Teensy2.0, this is probably
-# the best hardware layout for you.  ATmega32U4_16MHz_SIXTY might
-# also work for you, though.  Leave the rest of the imports like
-# they are here.
+# layout.  Assuming you are using a Teensy2.0, ATmega32U4_16MHz_TKL
+# is probably the best hardware layout for you.  ATmega32U4_16MHz_SIXTY
+# might also work for you, though.  The sizes are defined in the
+# templates/__init__.py file of the keymapper.
+# Leave the rest of the imports like they are here.
 import easykeymap.templates.ATmega32U4_16MHz_TKL as firmware
 from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
@@ -30,15 +31,15 @@ description = "Hand-wire"
 # Unique string to identify THIS exact hardware layout
 unique_id = "HANDWIRE_001"
 # The name of the .cfg file the system will try to find for altered
-# layout options
+# layout options.  See the configs subdir of the keymapper.
 cfg_name = "handwire"
 
 # Hand-wired boards usually use Teensy controllers.  Set this to
 # True to make sure that the bootloader works.
 teensy = True
-# If your board has an exposed switch for going into boot mode, you
-# can set this to True and the system won't prompt you to add a BOOT
-# key to your layout.
+# If your board has an exposed switch for going into the bootloader,
+# you can set this to True and the system won't prompt you to add a
+# BOOT key to your layout.
 hw_boot_key = False
 
 # These two parameters define the size of the keyboard in the display.
@@ -59,8 +60,8 @@ num_cols = 17
 # the status of every switch that crosses it (sensing).
 # strobe_cols tells the firmware which direction you have your diodes
 # installed.  If diodes go from column to row, then strobe_cols must
-# be True.  If diodes go from row to column, then strobe_cols must be
-# False.
+# be False.  If diodes go from row to column, then strobe_cols must be
+# True.
 strobe_cols = True
 # strobe_low tells the firmware if a row/column should be activated
 # by pulling the pin high or low.  Hand-wired boards will almost always
@@ -86,24 +87,28 @@ num_leds = 2
 # The number of LED indicators (for example, caps lock)
 num_ind = 2
 # The number of backlight enable modes.  This counts the number of
-# options available for the BL_ENABLE key
+# options available for the BL_ENABLE key.  Boards without backlights
+# should use the minimum value of 2.
 num_bl_enab = 2
 
 # Define the default assignments of the indicator LEDs.  The length
 # of this list must equal num_ind.  For each LED, the first string
 # is the description of the key shown in the GUI.  The second string
-# is the default function.  For valid function options, see
-# led_assignments in gui.py
+# is the default function assigned to that LED.  LED functions must
+# be strings as defined in led_assignments of gui.py.  Common choices
+# are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Win Lock', 'Fn Active',
+# 'Recording', 'Backlight', and 'Unassigned'.
 led_definition = [
     ('Caps Key', 'Caps Lock'),
     ('Scroll Key', 'Scroll Lock')
 ]
 
 # Definition of LED pins.  (indicators and backlights)  Indicators
-# must come first.  LED_DRIVER_PULLUP is used when the pin is connected
-# to the anode and the cathode is connected to ground.
+# must come first and be in the same order as defined in led_definition.
+# LED_DRIVER_PULLUP is used when the pin is connected to the anode of
+# the LED and the cathode is connected to ground.
 # LED_DRIVER_PULLDOWN is used when the pin is connected to the cathode
-# and the anode is connected to the power supply.
+# of the LED and the anode is connected to the power supply.
 led_hardware = [
 #       Port    Pin    Direction
     ( REF_PORTB, 6, LED_DRIVER_PULLUP ),
@@ -115,8 +120,10 @@ backlighting = False
 
 # This can be used to configure different backlighting zones.  Explained
 # in more detail elsewhere.  Length of list must equal num_bl_enab.
-# Length of each tuple must equal num_leds.  Uses the same ordering
-# as led_hardware
+# Length of each tuple must equal num_leds.  Tuples use the same ordering
+# as led_hardware.  Almost everyone should just use an all-on/all-off
+# configuration.  That's a list of two tuples, one with all 1s for each
+# LED, the other with all 0s for each LED.
 bl_modes = [
     ( 0, 0 ),
     ( 1, 1 )
