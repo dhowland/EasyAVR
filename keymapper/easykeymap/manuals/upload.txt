@@ -1,0 +1,76 @@
+HOWTO: Easy AVR USB Keyboard Firmware - Uploading the firmware
+metalliqaz@geekhack
+
+==========================
+Bootloader and Boot Mode
+========================
+
+Easy AVR supports a number of ways to build and upload your firmware onto your 
+device. Different devices use different bootloaders.
+
+What is a bootloader? Well, on the USB AVR, a bootloader is basically a program 
+that you put in a special part of a microcontroller's memory that allows you to 
+program the microcontroller without any other external programming hardware.
+
+Different devices also use different bootloaders and thus there are different ways 
+of uploading the firmware, each particular to the bootloader. Teensy uses its own
+HalfKay bootloader. Most other devices will be using the DFU bootloader. If in 
+boot mode and your device shows up as a Mass Storage device, then it is using the 
+LUFA Mass Storage bootloader. There are other bootloaders out there.
+
+How to put your keyboard into boot mode?  Either press the key sequence that was
+previously programmed for boot, or use a hardware reset.  Teensy controllers
+have a button.  Most bpiphany controllers have a magnetic switch.  KMAC uses
+the Caps Lock key while plugging it in.  Other PDBs have a jumper. 
+Know your hardware.
+
+=========================
+Uploading from Easy AVR
+=======================
+
+Easy AVR supports uploading directly from within the tool as well. There are 
+different ways of uploading the firmware.
+
+Upload to Mass Storage
+    Use this option if your hardware shows up as a Mass Storage when connected 
+    and in boot mode. Put the device in boot mode, select the drive, wait for the 
+    success message and then unplug & plug your device back in to see changes. Done.
+
+Upload to Teensy
+    Use this option if you are using a Teensy. Put the device in boot mode, wait 
+    for success message. Done.
+
+Upload via DFU/FLIP
+    If your device does not show up as a Mass Storage in boot mode and you are not 
+    using a Teensy, chances are this method is for you. Put the device in boot 
+    mode, wait for success message. Done.
+
+==============================
+Uploading from External Tool
+============================
+
+Easy AVR can be used in conjunction with an external tool. There are two options 
+for exporting the firmware, either as a .hex or .bin.
+
+Build your layout with "File->Build Firmware..." or  "File->Build Binary...".
+This will create a .hex or .bin file that can be loaded onto your custom keyboard.
+
+Open your programming tool.  In Windows, this is the Teensy Loader for boards
+with a Teensy controller (such as Phantom) or this is Atmel Flip for almost 
+everything else.  If you're on Mac or Unix, ask Geekhack for help.  Load the .hex 
+file you created above. If your device shows up as a Mass Storage, then replace the 
+FLASH.BIN with your newly generated .bin file. It must be named FLASH.BIN.
+
+Put your keyboard into boot mode.
+
+Once the bootloader is running, use your programming tool to connect and then
+program flash.  When that completes, use your programming tool to reboot the
+keyboard.
+
+This is the sequence in Flip:
+  Device->Select
+  Settings->Communications->USB, then press "Open"
+  File->Load HEX File
+  press "Run", let it reprogram
+  press "Start Application"
+  

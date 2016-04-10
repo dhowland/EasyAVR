@@ -44,6 +44,7 @@ import os.path
 import importlib
 from glob import glob
 import traceback
+import subprocess
 
 if not hasattr(sys, 'frozen'):
     import pkg_resources
@@ -256,9 +257,19 @@ class GUI(object):
                               command=self.showpassword)
         menu_view.add_command(label='LED Configuration', command=self.showled)
         menubar.add_cascade(menu=menu_view, label='View')
+        menu_upload = Menu(menubar)
+        menu_upload.add_command(label="Upload to Mass Storage",
+                              command=self.uploadmsd)
+        menu_upload.add_command(label="Upload to Teensy",
+                              command=self.uploadteensy)
+        menu_upload.add_command(label="Upload via DFU/FLIP",
+                              command=self.uploaddfu)
+        menubar.add_cascade(menu=menu_upload, label='Upload')
         menu_help = Menu(menubar)
         menu_help.add_command(label="Beginner's Guide",
                               command=self.helpreadme)
+        menu_help.add_command(label="Help on Uploading Firmware",
+                              command=self.helpupload)
         menu_help.add_command(label='Help on Functions and Layers',
                               command=self.helplayers)
         menu_help.add_command(label='Help on Writing Macros',
@@ -1033,6 +1044,85 @@ class GUI(object):
                                  message='Create a keyboard first!',
                                  parent=self.root)
 
+    def uploadmsd(self):
+        self.upload("msd")
+    
+    def uploadteensy(self):
+        self.upload("teensy")
+    
+    def uploaddfu(self):
+        self.upload("dfu")
+    
+    def upload(self, mode):
+        if self.selectedconfig:
+            config = configurations[self.selectedconfig]
+            if ((not self.checkforscancode('SCANCODE_BOOT')) and
+                    (config.hw_boot_key == False)):
+                answer = messagebox.askokcancel(
+                    title="BOOT key not found",
+                    message="You do not have a key bound to BOOT mode.  "
+                    "Without it you can't easily reprogram your keyboard."
+                    "  Are you sure this is what you want?",
+                    parent=self.root)
+                if not answer:
+                    return
+            hex_path = self.get_pkg_path('builds/' + config.firmware.hex_file_name)
+            try:
+                with open(hex_path, 'r') as fdin:
+                    hexdata = self.overlay(intelhex.read(fdin))
+            except Exception as err:
+                msg = traceback.format_exc()
+                self.uploadfailed(msg)            
+            if(mode == "msd"):
+                mcupath = filedialog.askdirectory(
+                    parent=self.root,
+                    title="Select location of keyboard")
+                if not mcupath:
+                    return
+                try:
+                    with open(mcupath + '/FLASH.BIN', 'wb') as fdout:
+                        hexdata[0][1].tofile(fdout)
+                    self.uploadsuccess()
+                except Exception as err:
+                    self.uploadfailed()
+            else:
+                try:
+                    with open(self.get_pkg_path('exttools/temphex.hex'), 'w') as fdout:
+                        intelhex.write(fdout, hexdata)
+                    try:
+                        if(mode == "teensy"):
+                            subprocess.check_output(self.get_pkg_path('exttools/hid_bootloader_cli') + ' -mmcu=' + config.firmware.device.lower() + ' ' + self.get_pkg_path('exttools/temphex.hex'))
+                        elif(mode == "dfu"):
+                            subprocess.call(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' erase')
+                            subprocess.check_output(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' erase')
+                            subprocess.call(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' flash ' + self.get_pkg_path('exttools/temphex.hex'))
+                            subprocess.call(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' launch')                    
+                        os.remove(self.get_pkg_path('exttools/temphex.hex'))
+                        self.uploadsuccess()
+                    except:
+                        os.remove(self.get_pkg_path('exttools/temphex.hex'))
+                        msg = 'Device not in bootloader mode'  
+                        self.uploadfailed(msg)
+                except Exception as err:
+                    self.uploadfailed()
+        else:
+            msg = 'Create a keyboard first!'  
+            self.uploadfailed(msg)
+    
+    def uploadsuccess(self):
+        messagebox.showinfo(
+            title="Upload complete",
+            message="Firmware uploaded successfully.",
+            parent=self.root)
+            
+    def uploadfailed(self, msg = ''):
+        if not msg:
+            msg = traceback.format_exc()
+        messagebox.showerror(
+            title="Upload failed",
+            message='Error: ' + msg,
+            parent=self.root)
+    
     def overlay(self, hexdata):
         config = configurations[self.selectedconfig]
         # shouldn't get more than one chunk per file
@@ -1260,6 +1350,9 @@ class GUI(object):
     def helpreadme(self):
         self.showtext('readme.txt')
 
+    def helpupload(self):
+        self.showtext('upload.txt')
+        
     def helplayers(self):
         self.showtext('functions.txt')
 

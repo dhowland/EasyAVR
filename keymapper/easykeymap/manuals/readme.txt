@@ -50,27 +50,7 @@ When you're done with your layout, save it with "File->Save Layout As...".
 Programming A Build
 ===================
 
-Build your layout with "File->Build Firmware...".  This will create a .hex file
-that can be loaded onto your custom keyboard.
+You can upload your firmware using Easy AVR or an external application.
 
-Open your programming tool.  In Windows, this is the Teensy Loader for boards
-with a Teensy controller (such as Phantom) or this is Atmel Flip for everything
-else.  If you're on Mac or Unix, ask Geekhack for help.  Load the .hex file
-you created above.
-
-Put your keyboard into boot mode.  Either press the key sequence that was
-previously programmed for boot, or use a hardware reset.  Teensy controllers
-have a button.  Most bpiphany controllers have a magnetic switch.  KMAC uses
-the Caps Lock key while plugging it in.  Other PDBs have a jumper.  Know your
-hardware.
-
-Once the bootloader is running, use your programming tool to connect and then
-program flash.  When that completes, use your programming tool to reboot the
-keyboard.
-
-This is the sequence in Flip:
-  Device->Select
-  Settings->Communications->USB, then press "Open"
-  File->Load HEX File
-  press "Run", let it reprogram
-  press "Start Application"
+To upload using EasyAVR, use the appropriate upload method for your device,
+check the "Uploading Firmware" help item for more details.
