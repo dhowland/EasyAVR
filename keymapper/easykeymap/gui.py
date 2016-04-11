@@ -45,6 +45,8 @@ import importlib
 from glob import glob
 import traceback
 import subprocess
+import serial
+from time import sleep
 
 if not hasattr(sys, 'frozen'):
     import pkg_resources
@@ -264,6 +266,8 @@ class GUI(object):
                               command=self.uploadteensy)
         menu_upload.add_command(label="Upload via DFU/FLIP",
                               command=self.uploaddfu)
+        menu_upload.add_command(label="Upload over Serial (ProMicro/CDC)",
+                              command=self.uploadcdc)
         menubar.add_cascade(menu=menu_upload, label='Upload')
         menu_help = Menu(menubar)
         menu_help.add_command(label="Beginner's Guide",
@@ -1053,6 +1057,9 @@ class GUI(object):
     def uploaddfu(self):
         self.upload("dfu")
     
+    def uploadcdc(self):
+        self.upload("cdc")
+               
     def upload(self, mode):
         if self.selectedconfig:
             config = configurations[self.selectedconfig]
@@ -1086,6 +1093,12 @@ class GUI(object):
                 except Exception as err:
                     self.uploadfailed()
             else:
+                if(mode == "cdc"):
+                    comport = SelectCOM(self.root, "Select COM Port")
+                    try:
+                        port = comport.comport               
+                    except:
+                        return
                 try:
                     with open(self.get_pkg_path('exttools/temphex.hex'), 'w') as fdout:
                         intelhex.write(fdout, hexdata)
@@ -1097,6 +1110,8 @@ class GUI(object):
                             subprocess.check_output(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' erase')
                             subprocess.call(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' flash ' + self.get_pkg_path('exttools/temphex.hex'))
                             subprocess.call(self.get_pkg_path('exttools/dfu-programmer') + ' ' + config.firmware.device.lower() + ' launch')                    
+                        else:
+                            subprocess.check_output(self.get_pkg_path('exttools/avrdude') + ' -p ' + config.firmware.device.lower() + ' -P ' + port + '  -c avr109  -U flash:w:"' + self.get_pkg_path('exttools/temphex.hex') + '":i')
                         os.remove(self.get_pkg_path('exttools/temphex.hex'))
                         self.uploadsuccess()
                     except:
@@ -1402,6 +1417,50 @@ class KeyButton(object):
             self.fnbound = True
 
 
+class SelectCOM(simpledialog.Dialog):
+
+    """A dialog window to select from a list of available COM Ports."""
+
+    def body(self, master):
+        self.resizable(0, 0)
+        Label(master, text="Available Serial Ports: ").pack(side=TOP)
+        self.comportvar = StringVar()
+        self.layoutbox = Combobox(master)
+        self.ports = self.serialports()
+        if not self.ports:
+            Label(master, text="No Serial Ports Found").pack(side=TOP)
+        else:
+            self.layoutbox['values'] = self.ports
+            self.layoutbox['textvariable'] = self.comportvar
+            self.layoutbox.current(0)
+            self.layoutbox.state(['readonly'])
+            self.layoutbox.pack(side=TOP)         
+            
+    def apply(self):
+        self.comport = self.comportvar.get()
+        if self.comport == "":
+            self.comport = None
+
+    def serialports(self):
+        if sys.platform.startswith('win'):
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            ports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise EnvironmentError('Unsupported platform')
+        result = []
+        for port in ports:
+            try:
+                s = serial.Serial(port)
+                s.close()
+                result.append(port)
+            except (OSError, serial.SerialException):
+                pass
+        return result   
+        
+        
 class NewWindow(simpledialog.Dialog):
 
     """A dialog window to select from a list of available layouts."""
@@ -1677,6 +1736,7 @@ class AboutWindow(simpledialog.Dialog):
         self.bind("<Escape>", self.cancel)
         box.pack()
 
+        
 def main():
     GUI().go()
 
