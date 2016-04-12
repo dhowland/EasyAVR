@@ -1096,7 +1096,23 @@ class GUI(object):
                 if(mode == "cdc"):
                     comport = SelectCOM(self.root, "Select COM Port")
                     try:
-                        port = comport.comport               
+                        port = comport.comport
+                        if (port == 'Autodetect'):
+                            portsbef = serialports()
+                            inbootmode = messagebox.askokcancel(
+                                title="Put device in bootloader mode",
+                                message="Please put your device in bootloader boot. Wait for a second, then press OK.",
+                                parent=self.root)
+                            if not inbootmode:
+                                return
+                            sleep(2)
+                            portsaft = serialports()
+                            try:
+                                port = set(portsaft).difference(portsbef).pop()
+                            except:
+                                msg = 'Unable to detect serial port. Please choose serial port manually'
+                                self.uploadfailed(msg)
+                                return
                     except:
                         return
                 try:
@@ -1426,11 +1442,11 @@ class SelectCOM(simpledialog.Dialog):
         Label(master, text="Available Serial Ports: ").pack(side=TOP)
         self.comportvar = StringVar()
         self.layoutbox = Combobox(master)
-        self.ports = self.serialports()
+        self.ports = serialports()
         if not self.ports:
             Label(master, text="No Serial Ports Found").pack(side=TOP)
         else:
-            self.layoutbox['values'] = self.ports
+            self.layoutbox['values'] = ['Autodetect'] + self.ports
             self.layoutbox['textvariable'] = self.comportvar
             self.layoutbox.current(0)
             self.layoutbox.state(['readonly'])
@@ -1439,26 +1455,7 @@ class SelectCOM(simpledialog.Dialog):
     def apply(self):
         self.comport = self.comportvar.get()
         if self.comport == "":
-            self.comport = None
-
-    def serialports(self):
-        if sys.platform.startswith('win'):
-            ports = ['COM%s' % (i + 1) for i in range(256)]
-        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            ports = glob.glob('/dev/tty[A-Za-z]*')
-        elif sys.platform.startswith('darwin'):
-            ports = glob.glob('/dev/tty.*')
-        else:
-            raise EnvironmentError('Unsupported platform')
-        result = []
-        for port in ports:
-            try:
-                s = serial.Serial(port)
-                s.close()
-                result.append(port)
-            except (OSError, serial.SerialException):
-                pass
-        return result   
+            self.comport = None 
         
         
 class NewWindow(simpledialog.Dialog):
@@ -1736,7 +1733,27 @@ class AboutWindow(simpledialog.Dialog):
         self.bind("<Escape>", self.cancel)
         box.pack()
 
-        
+
+def serialports():
+    if sys.platform.startswith('win'):
+        ports = ['COM%s' % (i + 1) for i in range(256)]
+    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+        ports = glob.glob('/dev/tty[A-Za-z]*')
+    elif sys.platform.startswith('darwin'):
+        ports = glob.glob('/dev/tty.*')
+    else:
+        raise EnvironmentError('Unsupported platform')
+    result = []
+    for port in ports:
+        try:
+            s = serial.Serial(port)
+            s.close()
+            result.append(port)
+        except (OSError, serial.SerialException):
+            pass
+    return result     
+
+    
 def main():
     GUI().go()
 
