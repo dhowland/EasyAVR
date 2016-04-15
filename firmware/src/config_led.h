@@ -72,7 +72,7 @@ typedef enum {
 #define DYNAMIC_BACKLIGHT_TROUGH (4)
 #define BACKLIGHT_ERODE_SKIP (4)
 
-#define MAX_NUMBER_OF_LEDS (12)
+#define MAX_NUMBER_OF_LEDS (16)
 #define MAX_NUMBER_OF_INDICATORS (8)
 extern const uint8_t PROGMEM NUMBER_OF_LEDS;
 extern const uint8_t PROGMEM NUMBER_OF_INDICATORS;

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-max_leds = 12
+max_leds = 16
 max_indicators = 8
 max_bl_enables = 16
 
