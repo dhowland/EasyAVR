@@ -60,7 +60,7 @@ void autokey_send(void)
 			if (g_send_wait == 0)
 			{
 				/* Make sure that every key comes up to allow for repeated keystrokes */
-				if ((g_autokey_buffer == 0) && (g_autokey_modifier == 0))
+				if (g_autokey_buffer == 0)
 				{
 					/* Check to see if we're done */
 					if (g_send_buffer_pos == g_send_buffer_length)
@@ -84,7 +84,6 @@ void autokey_send(void)
 					if (g_autokey_buffer)
 						delete_key(g_autokey_buffer);
 					g_autokey_buffer = 0;
-					g_autokey_modifier = 0;
 				}
 			} else {
 				/* Wait for a pause action to time out */
@@ -94,7 +93,10 @@ void autokey_send(void)
 	} else {
 		/* Wait for the final keystroke to get sent */
 		if (!g_keyboard_service)
+		{
+			g_autokey_modifier = 0;
 			g_autokey_status = AUTOKEY_ENDSEND;
+		}
 	}
 	/* We have seen that the USB has taken a report */
 	if (!g_keyboard_service)
