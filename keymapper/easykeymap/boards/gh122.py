@@ -21,7 +21,7 @@ from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
 description = "GH-122"
-unique_id = "GH122_001"
+unique_id = "GH122_002"
 cfg_name = "gh122"
 
 teensy = True
@@ -170,6 +170,7 @@ keyboard_definition = [
      ((4, 4), (3, 12), 'HID_KEYBOARD_SC_P'),
      ((4, 4), (3, 13), 'HID_KEYBOARD_SC_OPENING_BRACKET_AND_OPENING_BRACE'),
      ((4, 4), (3, 14), 'HID_KEYBOARD_SC_CLOSING_BRACKET_AND_CLOSING_BRACE'),
+     (0, None, '0'),
      ((6, 4), (3, 16), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
      (1, None, '0'),
      ((4, 4), (3, 17), 'HID_KEYBOARD_SC_DELETE'),
@@ -196,8 +197,8 @@ keyboard_definition = [
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_L'),
      ((4, 4), (4, 12), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (4, 13), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
-     ((4, 4), (4, 14), 'HID_KEYBOARD_SC_NON_US_HASHMARK_AND_TILDE'),
-     ((5, 4), (4, 16), 'HID_KEYBOARD_SC_ENTER'),
+     ((9, 4), (4, 14), 'HID_KEYBOARD_SC_ENTER'),
+     (0, None, '0'),
      (1, None, '0'),
      ((4, 4), (4, 17), '0'),
      ((4, 4), (4, 18), '0'),
