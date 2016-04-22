@@ -68,7 +68,7 @@ void get_mcusr(void)
 		boot_key = 0;
 		((void (*)(void))pgm_read_ptr(&BOOTLOADER))();
 	}
-#ifdef __AVR_ATmega32U4__
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_AT90USB1286__)
 	/* Also disable JTAG so I get my Port F back */
 	MCUCR |= (1<<JTD);
 	MCUCR |= (1<<JTD);

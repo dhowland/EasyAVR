@@ -25,8 +25,15 @@
 #ifdef ENABLE_DEBUG_CONSOLE
 #define SP_L_ADR (0x005D)
 #define SAVED_STACK_SIZE (0x80) /* Stack has been observed to take up to 128 bytes */
-#define LAST_RAM_ADR (0x0AFF)  /* Atmega32U4 */
-//#define LAST_RAM_ADR (0x04FF)  /* Atmega32U2 */
+#ifdef __AVR_AT90USB1286__
+#define LAST_RAM_ADR (0x20FF)
+#endif
+#ifdef __AVR_ATmega32U4__
+#define LAST_RAM_ADR (0x0AFF)
+#endif
+#ifdef __AVR_ATmega32U2__
+#define LAST_RAM_ADR (0x04FF)
+#endif
 extern uint16_t fault_word;
 extern uint8_t * saved_stack_ptr;
 extern uint8_t saved_stack[];
