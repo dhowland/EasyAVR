@@ -52,6 +52,10 @@ void init_matrix(void)
 	{
 		/* set port directions for inputs and outputs */
 		port_mask = pgm_read_byte(&MATRIX_INIT_LIST[i].port_mask);
+#ifdef PULLUP_UNUSED_PINS
+		if (g_strobe_low)
+			port_mask = 0xFF;
+#endif
 		port_dir = pgm_read_byte(&MATRIX_INIT_LIST[i].port_dir);
 		port_dir_mask(i, port_mask, port_dir);
 		/* save the mask for later to save cycles */

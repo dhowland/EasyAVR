@@ -37,6 +37,8 @@
 #define DEFAULT_MATRIX_SETUP_WAIT (1)
 #endif
 
+#define PULLUP_UNUSED_PINS
+
 #ifdef BOARD_SIZE_JUMBO
 #define NUMBER_OF_ROWS (7)
 #define NUMBER_OF_COLS (24)

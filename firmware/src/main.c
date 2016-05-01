@@ -50,8 +50,8 @@ void application_init(void)
 	init_lowlevel();
 	init_debug();
 	init_nvm();
-	init_led();
 	init_matrix();
+	init_led();
 	init_keymap();
 	init_mouse();
 	init_autokey();
