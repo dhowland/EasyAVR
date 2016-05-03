@@ -57,6 +57,7 @@ import easykeymap.macroparse as macroparse
 import easykeymap.cfgparse as cfgparse
 import easykeymap.templates as templates
 import easykeymap.boards as boards
+import easykeymap.programming as programming
 
 ABOUT = """Easy AVR USB Keyboard Firmware Keymapper  (Version %s)
 
@@ -244,6 +245,7 @@ class GUI(object):
                               command=self.openfile)
         menu_file.add_command(label='Save Layout As...', command=self.savefile)
         menu_file.add_command(label='Build Firmware...', command=self.build)
+        menu_file.add_command(label='Build and Reprogram...', command=self.buildandupload)
         menu_file.add_command(label='Exit', command=self.checksave)
         menubar.add_cascade(menu=menu_file, label='File')
         menu_edit = Menu(menubar)
@@ -990,7 +992,14 @@ class GUI(object):
             macro_list.append(''.join(string_list))
         return macro_list
 
-    def build(self):
+    def buildandupload(self):
+        filename = self.build(sub=True)
+        if filename is None:
+            return
+        config = configurations[self.selectedconfig]
+        programming.popup(self.root, filename, config)
+
+    def build(self, sub=False):
         if self.selectedconfig:
             config = configurations[self.selectedconfig]
             if ((not self.checkforscancode('SCANCODE_BOOT')) and
@@ -1019,10 +1028,13 @@ class GUI(object):
                 else:
                     with open(filename, 'w') as fdout:
                         intelhex.write(fdout, hexdata)
-                messagebox.showinfo(
-                    title="Build complete",
-                    message="Firmware saved successfully.",
-                    parent=self.root)
+                if sub:
+                    return filename
+                else:
+                    messagebox.showinfo(
+                        title="Build complete",
+                        message="Firmware saved successfully.",
+                        parent=self.root)
             except Exception as err:
                 msg = traceback.format_exc()
                 messagebox.showerror(title="Can't build binary",
