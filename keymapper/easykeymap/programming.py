@@ -20,6 +20,8 @@ various AVRs.
 
 from __future__ import print_function
 
+import os
+import os.path
 import sys
 import subprocess
 import traceback
@@ -27,6 +29,8 @@ try:
     import queue
 except:
     import Queue as queue
+if not hasattr(sys, 'frozen'):
+    import pkg_resources
 
 try:
     from Tkinter import *
@@ -52,11 +56,47 @@ def popup(root, filename, config):
     return new_win.result
 
 def execute(args, logger):
+    logger(args)
     p = subprocess.Popen(args,
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in iter(p.stdout.readline, ''):
         logger(line.rstrip())
     return p.wait()
+
+def get_pkg_path(self, path):
+    if hasattr(sys, 'frozen'):
+        return os.path.join(os.path.dirname(sys.executable), path)
+    else:
+        return pkg_resources.resource_filename(__name__, path)
+    
+def findpath(name):
+    # check for absolute path
+    path = os.path.expandvars(os.path.expanduser(name))
+    if os.path.isabs(path):
+        if os.path.exists(path):
+            return path
+        else:
+            return None
+    # search all directories in the path
+    for path in os.getenv('PATH').split(os.pathsep):
+        path = os.path.expanduser(path)
+        path = os.path.expandvars(path)
+        path = os.path.realpath(path)
+        path = os.path.join(path, name)
+        if os.path.exists(path):
+            return path
+    # search in the exttools directory
+    path = get_pkg_path('exttools/' + name)
+    if os.path.exists(path):
+        return path
+    return None
+
+def findallpaths(names):
+    for name in names:
+        path = findpath(name)
+        if path is not None:
+            return path
+    return None
 
 
 class ProgrammingTask(object):
@@ -64,24 +104,34 @@ class ProgrammingTask(object):
     def __init__(self, logger, info):
         self.logger = logger
         self.info = info
+        self.tool_path = findallpaths(self.loader_tools)
 
     def run(self):
         # override this method
         pass
 
 
-class TeensyWindows(ProgrammingTask):
+class TeensyLoader(ProgrammingTask):
 
     description = "Upload to Teensy"
     windows = True
-    posix = False
+    posix = True
     teensy = True
+
+    loader_tools = [
+        'teensy_loader_cli.exe',
+        'teensy_loader_cli',
+        'hid_bootloader_cli.exe',
+        'hid_bootloader_cli'
+    ]
 
     def run(self):
         if self.info.binformat:
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
-        cmd = "teensy_loader_cli -mmcu=%s -w -v %s" % (
-                self.info.device.lower(), self.info.filename)
+        if self.tool_path is None:
+            raise ProgrammingException("Can't find teensy_loader_cli executable.")
+        cmd = "%s -mmcu=%s -w -v %s" % (
+                self.tool_path, self.info.device.lower(), self.info.filename)
         execute(cmd, self.logger)
 
 
@@ -92,8 +142,21 @@ class FlipWindows(ProgrammingTask):
     posix = False
     teensy = False
 
+    loader_tools = [
+        '%ProgramFiles(x86)%\\Atmel\\Flip 3.4.7\\bin\\batchisp.exe'
+    ]
+
     def run(self):
-        pass
+        if self.info.binformat:
+            raise ProgrammingException("Teensy Loader requires a build in HEX format.")
+        if self.tool_path is None:
+            raise ProgrammingException("Can't find Atmel Flip executable.")
+        cmd = ('"%s" -device %s -hardware USB -operation '
+               'onfail abort loadbuffer "%s" memory FLASH erase F '
+               'blankcheck program verify start reset 0') % (
+            self.tool_path, self.info.device.lower(), self.info.filename)
+        self.logger(cmd)
+        # el = execute(cmd, self.logger)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -103,12 +166,30 @@ class AvrdudePosix(ProgrammingTask):
     posix = True
     teensy = False
 
+    loader_tools = [
+    ]
+
     def run(self):
-        pass
+        self.logger("Not implemented.")
+
+
+class DfuProgrammer(ProgrammingTask):
+
+    description = "Upload to USB AVR with DFU-programmer"
+    windows = True
+    posix = True
+    teensy = False
+
+    loader_tools = [
+    ]
+
+    def run(self):
+        self.logger("Not implemented.")
 
 
 class ProgrammingException(Exception):
     pass
+
 
 class ProgrammingInfo(object):
     pass
@@ -117,33 +198,44 @@ class ProgrammingInfo(object):
 class ProgrammingWindow(simpledialog.Dialog):
 
     def __init__(self, root, title, info):
-        # in the future this should be automatically scanned from a directory
-        taskclasses = [
-            TeensyWindows,
-            FlipWindows,
-            AvrdudePosix
-        ]
-        self.tasks = [t for t in taskclasses if t.windows]
         self.info = info
         self.queue = queue.Queue()
+        self.collecttasks()
         simpledialog.Dialog.__init__(self, root, title)
+
+    def collecttasks(self):
+        # in the future this should be automatically scanned from a directory
+        taskclasses = [
+            TeensyLoader,
+            FlipWindows,
+            AvrdudePosix,
+            DfuProgrammer
+        ]
+        self.tasks = [t for t in taskclasses
+                        if (((t.windows and self.info.windows) or
+                             (t.posix and not self.info.windows)) and
+                            (t.teensy == self.info.teensy))]
 
     def body(self, master):
         self.taskvar = StringVar()
-        Label(master, text="Task:  ").grid(column=0, row=0, sticky=(E))
+        Label(master, text="Board:  ").grid(column=0, row=0, sticky=(E))
+        Label(master, text=self.info.description).grid(column=1, row=0, columnspan=3, sticky=(E,W))
+        Label(master, text="File:  ").grid(column=0, row=1, sticky=(E))
+        Label(master, text=self.info.filename).grid(column=1, row=1, columnspan=3, sticky=(E,W))
+        Label(master, text="Task:  ").grid(column=0, row=2, sticky=(E))
         self.combo = Combobox(master, textvariable=self.taskvar, state='readonly')
         self.combo['values'] = [t.description for t in self.tasks]
         self.combo.bind('<<ComboboxSelected>>', self.taskselect)
-        self.combo.grid(column=1, row=0, sticky=(E,W))
+        self.combo.grid(column=1, row=2, sticky=(E,W))
         self.button = Button(master, text="Run", command=self.run)
         self.button.state(['disabled'])
-        self.button.grid(column=2, row=0, columnspan=2, sticky=(W))
+        self.button.grid(column=2, row=2, columnspan=2, sticky=(W))
         master.columnconfigure(1, weight=1)
         
         self.text = Text(master, width=80, height=20, wrap=WORD)
-        self.text.grid(column=0, row=1, columnspan=3, sticky=(N, W, E, S))
+        self.text.grid(column=0, row=3, columnspan=3, sticky=(N, W, E, S))
         self.scroll = Scrollbar(master, orient=VERTICAL, command=self.text.yview)
-        self.scroll.grid(column=3, row=1, sticky=(N, W, E, S))
+        self.scroll.grid(column=3, row=3, sticky=(N, W, E, S))
         self.text["yscrollcommand"] = self.scroll.set
         
         self.bodyframe = master
@@ -156,11 +248,11 @@ class ProgrammingWindow(simpledialog.Dialog):
                 self.selectedtask = t
                 self.button.state(['!disabled'])
                 break
-        
+
     def run(self):
         self.combo.state(['disabled'])
         self.button.state(['disabled'])
-        msg = 'Running task "%s"\n\n' % (self.taskvar.get(),)
+        msg = 'Running task "%s"\n' % (self.taskvar.get(),)
         self.logtext(msg)
         try:
             self.selectedtask(self.logtext, self.info).run()
@@ -171,7 +263,7 @@ class ProgrammingWindow(simpledialog.Dialog):
                                  parent=self.parent)
         except Exception as err:
             msg = traceback.format_exc()
-            messagebox.showerror(title="Can't complete programming",
+            messagebox.showerror(title="Process Error",
                                  message='Error: ' + msg,
                                  parent=self.parent)
 
