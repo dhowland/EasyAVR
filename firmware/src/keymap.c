@@ -108,7 +108,7 @@ uint8_t g_mousebutton_state;
 int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
-uint8_t g_numlock_flag;
+uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
 uint8_t g_double_tap_key;
@@ -694,13 +694,16 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		alpha_down(code, action);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_CAPS_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_CAPS_LOCK, g_modifier_state);
+		if (!(g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK))
+			queue_autokeys(HID_KEYBOARD_SC_CAPS_LOCK, g_modifier_state);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_NUM_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_NUM_LOCK, g_modifier_state);
+		if (!(g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK))
+			queue_autokeys(HID_KEYBOARD_SC_NUM_LOCK, g_modifier_state);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_SCROLL_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_SCROLL_LOCK, g_modifier_state);
+		if (!(g_hid_lock_flags & HID_KEYBOARD_LED_SCROLLLOCK))
+			queue_autokeys(HID_KEYBOARD_SC_SCROLL_LOCK, g_modifier_state);
 		break;
 #ifdef MAX_NUMBER_OF_BACKLIGHTS
 	case SCANCODE_BL_DIMMER:
@@ -971,13 +974,16 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 		alpha_up(code, action, tapkey, tap);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_CAPS_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_CAPS_LOCK, g_modifier_state);
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK)
+			queue_autokeys(HID_KEYBOARD_SC_CAPS_LOCK, g_modifier_state);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_NUM_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_NUM_LOCK, g_modifier_state);
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK)
+			queue_autokeys(HID_KEYBOARD_SC_NUM_LOCK, g_modifier_state);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_SCROLL_LOCK:
-		queue_autokeys(HID_KEYBOARD_SC_SCROLL_LOCK, g_modifier_state);
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_SCROLLLOCK)
+			queue_autokeys(HID_KEYBOARD_SC_SCROLL_LOCK, g_modifier_state);
 		break;
 	case SCANCODE_BL_DIMMER:
 	case SCANCODE_BL_MODE:
@@ -1087,7 +1093,8 @@ uint8_t translate_code(uint8_t code)
 	
 	/* I'm thinking a translation table might be better for this, so I can also get
 	   things like Enter, plus, minus, and dot.  Maybe its own layer */
-	if ( (g_swap_num_row_on_numlock) && (g_numlock_flag) && (noshift) &&
+	if ( (g_swap_num_row_on_numlock) && (noshift) &&
+	     (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK) &&
 		 (code >= HID_KEYBOARD_SC_1_AND_EXCLAMATION) &&
 		 (code <= HID_KEYBOARD_SC_0_AND_CLOSING_PARENTHESIS) )
 	{
@@ -1099,8 +1106,8 @@ uint8_t translate_code(uint8_t code)
 		if (code == HID_KEYBOARD_SC_NUM_LOCK)
 		{
 			code = 0;
-			g_numlock_flag ^= 1;
-			if (g_numlock_flag)
+			g_hid_lock_flags ^= HID_KEYBOARD_LED_NUMLOCK;
+			if (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK)
 				led_host_on(LED_NUM_LOCK);
 			else
 				led_host_off(LED_NUM_LOCK);
@@ -1108,7 +1115,7 @@ uint8_t translate_code(uint8_t code)
 		else if ( (code >= HID_KEYBOARD_SC_KEYPAD_1_AND_END) &&
 		          (code <= HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE) )
 		{
-			if ((g_numlock_flag) && (noshift))
+			if ((g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK) && (noshift))
 				code = pgm_read_byte(&KP_MAP[code-HID_KEYBOARD_SC_KEYPAD_1_AND_END].numcode);
 			else
 				code = pgm_read_byte(&KP_MAP[code-HID_KEYBOARD_SC_KEYPAD_1_AND_END].navcode);

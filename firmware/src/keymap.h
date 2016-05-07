@@ -59,7 +59,7 @@ extern uint8_t g_mousebutton_state;
 extern int8_t g_mouse_req_X;
 extern int8_t g_mouse_req_Y;
 extern uint16_t g_media_key;
-extern uint8_t g_numlock_flag;
+extern uint8_t g_hid_lock_flags;
 extern uint8_t g_winlock_flag;
 #if MACRO_RAM_SIZE
 extern uint16_t g_ram_macro[MACRO_RAM_SIZE];

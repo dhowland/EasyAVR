@@ -844,32 +844,24 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
                                           const void* ReportData,
                                           const uint16_t ReportSize)
 {
-	uint8_t* LEDReport = (uint8_t*)ReportData;
+	g_hid_lock_flags = *(uint8_t*)ReportData;
 
 	if (HIDInterfaceInfo == &Keyboard_HID_Interface)
 	{
 		if (!g_virtual_numlock)
 		{
-			if (*LEDReport & HID_KEYBOARD_LED_NUMLOCK)
-			{
-				if (g_swap_num_row_on_numlock)
-					g_numlock_flag = 1;
+			if (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK)
 				led_host_on(LED_NUM_LOCK);
-			}
 			else
-			{
-				if (g_swap_num_row_on_numlock)
-					g_numlock_flag = 0;
 				led_host_off(LED_NUM_LOCK);
-			}
 		}
 
-		if (*LEDReport & HID_KEYBOARD_LED_CAPSLOCK)
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK)
 			led_host_on(LED_CAPS_LOCK);
 		else
 			led_host_off(LED_CAPS_LOCK);
 
-		if (*LEDReport & HID_KEYBOARD_LED_SCROLLLOCK)
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_SCROLLLOCK)
 		{
 			led_host_on(LED_SCROLL_LOCK);
 			if (g_winlock_on_scrolllock)
@@ -888,12 +880,12 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
 			}
 		}
 
-		if (*LEDReport & HID_KEYBOARD_LED_COMPOSE)
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_COMPOSE)
 			led_host_on(LED_COMPOSE);
 		else
 			led_host_off(LED_COMPOSE);
 
-		if (*LEDReport & HID_KEYBOARD_LED_KANA)
+		if (g_hid_lock_flags & HID_KEYBOARD_LED_KANA)
 			led_host_on(LED_KANA);
 		else
 			led_host_off(LED_KANA);
