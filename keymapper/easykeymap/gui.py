@@ -256,7 +256,7 @@ class GUI(object):
         menu_edit.add_command(label='Paste Layer', command=self.pastelayer)
         menubar.add_cascade(menu=menu_edit, label='Edit')
         menu_view = Menu(menubar)
-        menu_view.add_command(label='Picker', command=self.showpicker)
+        menu_view.add_command(label='Scancode Picker', command=self.showpicker)
         menu_view.add_command(label='Password Generator',
                               command=self.showpassword)
         menu_view.add_command(label='LED Configuration', command=self.showled)
