@@ -127,6 +127,8 @@ for hw in hardware_table:
         write_symbol(outfile, symbols, 'TAPKEYS')
         outfile.write("\nmacro_map = ")
         write_symbol(outfile, symbols, 'MACRO_BUFFER')
+        outfile.write("\nled_layers_map = ")
+        write_symbol(outfile, symbols, 'LED_LAYERS')
         outfile.write("\nnum_leds_map = ")
         write_symbol(outfile, symbols, 'NUMBER_OF_LEDS')
         outfile.write("\nnum_ind_map = ")

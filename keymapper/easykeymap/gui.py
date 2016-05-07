@@ -76,7 +76,7 @@ for board in boards.__all__:
     configurations[mod.unique_id] = mod
 
 # save file layout revision
-SAVE_VERSION = 13
+SAVE_VERSION = 14
 
 #pixels for 1/4x key size
 UNIT = 12
@@ -89,6 +89,8 @@ DEBUG_NULL_SYMBOL = NULL_SYMBOL     # disabled
 
 TEENSY2_BOOT_PTR_HIGH_BYTE = 0x3F
 TEENSY2PP_BOOT_PTR_HIGH_BYTE = 0xFE
+
+FIRST_FN_CODE = 0xF0
 
 master_layers = ["Default", "Fn", "Layer 2", "Layer 3", "Layer 4",
                  "Layer 5", "Layer 6", "Layer 7", "Layer 8", "Layer 9"]
@@ -138,6 +140,7 @@ class GUI(object):
         self.leds = []
         self.advancedleds = []
         self.useadvancedleds = False
+        self.ledlayers = []
         self.macros = [''] * MACRO_NUM
         self.selectedconfig = None
         self.selectedlayoutmod = None
@@ -257,6 +260,7 @@ class GUI(object):
         menu_view.add_command(label='Password Generator',
                               command=self.showpassword)
         menu_view.add_command(label='LED Configuration', command=self.showled)
+        menu_view.add_command(label='LED Auto-Fn Configuration', command=self.showledlayers)
         menubar.add_cascade(menu=menu_view, label='View')
         menu_help = Menu(menubar)
         menu_help.add_command(label="Beginner's Guide",
@@ -382,6 +386,14 @@ class GUI(object):
     def showled(self):
         if self.selectedconfig:
             LEDWindow(self.root, self)
+        else:
+            messagebox.showerror(title="Can't Configure LEDs",
+                                 message='Create a keyboard first!',
+                                 parent=self.root)
+
+    def showledlayers(self):
+        if self.selectedconfig:
+            LEDLayersWindow(self.root, self)
         else:
             messagebox.showerror(title="Can't Configure LEDs",
                                  message='Create a keyboard first!',
@@ -717,6 +729,7 @@ class GUI(object):
                 self.layervar.set(default_layer)
                 self.leds = [x[1] for x in config.led_definition]
                 self.initadvancedleds()
+                self.ledlayers = [0, 0, 0, 0, 0]
                 del self.password
                 self.password = Password()
                 self.selectlayer()
@@ -802,6 +815,10 @@ class GUI(object):
                         self.useadvancedleds = data[12]
                     else:
                         self.initadvancedleds()
+                    if len(data) > 13:
+                        self.ledlayers = data[13]
+                    else:
+                        self.ledlayers = [0, 0, 0, 0, 0]
                     if version <= 3:
                         self.adapt_v3()
                     if version <= 4:
@@ -822,6 +839,8 @@ class GUI(object):
                         self.adapt_v11()
                     if version <= 12:
                         self.adapt_v12()
+                    if version <= 13:
+                        self.adapt_v13()
                     self.scrub_scancodes()
                 self.unsaved_changes = False
             except Exception as err:
@@ -894,6 +913,9 @@ class GUI(object):
     def adapt_v12(self):
         print("Adapting save file v12->v13")
 
+    def adapt_v13(self):
+        print("Adapting save file v13->v14")
+
     def scrub_scancodes(self):
         for layer in self.maps:
             for row in self.maps[layer]:
@@ -913,7 +935,8 @@ class GUI(object):
                        self.wmods, None,
                        self.selectedlayoutmod, self.leds,
                        self.password.getstruct(),
-                       self.advancedleds, self.useadvancedleds)
+                       self.advancedleds, self.useadvancedleds,
+                       self.ledlayers)
             filename = filedialog.asksaveasfilename(
                 defaultextension=".dat",
                 filetypes=[('Saved Layouts', '.dat')],
@@ -1088,6 +1111,15 @@ class GUI(object):
                     offset += 1
                 offset += col_diff
             offset += row_diff
+        # overwrite data for led layers
+        address = config.firmware.led_layers_map
+        offset = address - start
+        for layer in self.ledlayers:
+            if layer:
+                bytes[offset] = FIRST_FN_CODE + layer
+            else:
+                bytes[offset] = 0
+            offset += 1
         # overwrite data for macros
         self.selectmacro()
         self.assemblemacrodata(config, bytes, start)
@@ -1370,6 +1402,32 @@ class NewWindow(simpledialog.Dialog):
             self.layout = None
         if self.layout == "":
             self.layout = None
+
+
+class LEDLayersWindow(simpledialog.Dialog):
+
+    """A dialog window to configure LED layers settings"""
+
+    def __init__(self, parent, gui=None):
+        self.gui = gui
+        self.textvars = []
+        self.selections = ['No Action']
+        for i in range(1, len(master_layers)):
+            self.selections.append('Layer %d' % (i,))
+        simpledialog.Dialog.__init__(self, parent, "LED Auto-Fn Configuration")
+
+    def body(self, master):
+        self.resizable(0, 0)
+        for i,name in [(0,'Num Lock'), (1,'Caps Lock'), (2,'Scroll Lock'), (3,'Compose'), (4,'Kana')]:
+            Label(master, text="%s LED Auto-Fn:  " % (name,)).grid(row=i, column=0, sticky=(E))
+            s = StringVar()
+            self.textvars.append(s)
+            Combobox(master, values=self.selections, textvariable=s, state='readonly').grid(row=i, column=1, sticky=(E,W))
+            s.set(self.selections[self.gui.ledlayers[i]])
+
+    def apply(self):
+        for i,s in enumerate(self.textvars):
+            self.gui.ledlayers[i] = self.selections.index(s.get())
 
 
 class LEDWindow(simpledialog.Dialog):
