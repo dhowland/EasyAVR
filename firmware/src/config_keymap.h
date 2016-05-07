@@ -30,6 +30,9 @@
 
 #define FN_BUFFER_SIZE (4)
 
+/* This shall equal the number of the HID report LEDs (num, caps, scroll, compose, kana) */
+#define LED_LAYERS_SIZE (5)
+
 /* Media codes in the consumer page, not defined by LUFA */
 /* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/translate.pdf */
 /* http://download.microsoft.com/download/E/3/A/E3AEC7D7-245D-491F-BB8A-E1E05A03677A/keyboard-support-windows-8.docx */
@@ -194,5 +197,6 @@ extern const uint16_t PROGMEM MACRO_BUFFER[MACRO_BUFFER_SIZE];
 extern const uint8_t PROGMEM LAYERS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
 extern const uint8_t PROGMEM ACTIONS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
 extern const uint8_t PROGMEM TAPKEYS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
+extern const uint8_t PROGMEM LED_LAYERS[LED_LAYERS_SIZE];
 
 #endif /* CONFIG_KEYMAP_H_ */

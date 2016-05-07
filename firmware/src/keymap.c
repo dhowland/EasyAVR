@@ -435,6 +435,22 @@ void inline send_tapkey(const uint8_t code)
 	}
 }
 
+void led_fn_activate(const uint8_t bit)
+{
+	const uint8_t code = pgm_read_byte(&LED_LAYERS[bit]);
+	
+	if (code)
+		fn_down(code, 0);
+}
+
+void led_fn_deactivate(const uint8_t bit)
+{
+	const uint8_t code = pgm_read_byte(&LED_LAYERS[bit]);
+	
+	if (code)
+		fn_up(code, 0, 0, 0);
+}
+
 void fn_down(const uint8_t code, const uint8_t action)
 {
 	enqueue_fn(code);

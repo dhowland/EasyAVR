@@ -844,51 +844,100 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
                                           const void* ReportData,
                                           const uint16_t ReportSize)
 {
-	g_hid_lock_flags = *(uint8_t*)ReportData;
-
+	static uint8_t hid_lock_flags_lpv;
+	uint8_t hid_lock_flags_new;
+	
 	if (HIDInterfaceInfo == &Keyboard_HID_Interface)
 	{
-		if (!g_virtual_numlock)
+		g_hid_lock_flags = *(uint8_t*)ReportData;
+		hid_lock_flags_new = g_hid_lock_flags ^ hid_lock_flags_lpv;
+		hid_lock_flags_lpv = g_hid_lock_flags;
+		
+		if (hid_lock_flags_new)
 		{
-			if (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK)
-				led_host_on(LED_NUM_LOCK);
-			else
-				led_host_off(LED_NUM_LOCK);
-		}
-
-		if (g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK)
-			led_host_on(LED_CAPS_LOCK);
-		else
-			led_host_off(LED_CAPS_LOCK);
-
-		if (g_hid_lock_flags & HID_KEYBOARD_LED_SCROLLLOCK)
-		{
-			led_host_on(LED_SCROLL_LOCK);
-			if (g_winlock_on_scrolllock)
+			if (!g_virtual_numlock)
 			{
-				g_winlock_flag = 1;
-				led_host_on(LED_WIN_LOCK);
+				if (hid_lock_flags_new & HID_KEYBOARD_LED_NUMLOCK)
+				{
+					if (g_hid_lock_flags & HID_KEYBOARD_LED_NUMLOCK)
+					{
+						led_host_on(LED_NUM_LOCK);
+						led_fn_activate(LED_NUM_LOCK);
+					}
+					else
+					{
+						led_host_off(LED_NUM_LOCK);
+						led_fn_deactivate(LED_NUM_LOCK);
+					}
+				}
+			}
+
+			if (hid_lock_flags_new & HID_KEYBOARD_LED_CAPSLOCK)
+			{
+				if (g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK)
+				{
+					led_host_on(LED_CAPS_LOCK);
+					led_fn_activate(LED_CAPS_LOCK);
+				}
+				else
+				{
+					led_host_off(LED_CAPS_LOCK);
+					led_fn_deactivate(LED_CAPS_LOCK);
+				}
+			}
+
+			if (hid_lock_flags_new & HID_KEYBOARD_LED_SCROLLLOCK)
+			{
+				if (g_hid_lock_flags & HID_KEYBOARD_LED_SCROLLLOCK)
+				{
+					led_host_on(LED_SCROLL_LOCK);
+					led_fn_activate(LED_SCROLL_LOCK);
+					if (g_winlock_on_scrolllock)
+					{
+						g_winlock_flag = 1;
+						led_host_on(LED_WIN_LOCK);
+					}
+				}
+				else
+				{
+					led_host_off(LED_SCROLL_LOCK);
+					led_fn_deactivate(LED_SCROLL_LOCK);
+					if (g_winlock_on_scrolllock)
+					{
+						g_winlock_flag = 0;
+						led_host_off(LED_WIN_LOCK);
+					}
+				}
+			}
+
+			if (hid_lock_flags_new & HID_KEYBOARD_LED_COMPOSE)
+			{
+				if (g_hid_lock_flags & HID_KEYBOARD_LED_COMPOSE)
+				{
+					led_host_on(LED_COMPOSE);
+					led_fn_activate(LED_COMPOSE);
+				}
+				else
+				{
+					led_host_off(LED_COMPOSE);
+					led_fn_deactivate(LED_COMPOSE);
+				}
+			}
+
+			if (hid_lock_flags_new & HID_KEYBOARD_LED_KANA)
+			{
+				if (g_hid_lock_flags & HID_KEYBOARD_LED_KANA)
+				{
+					led_host_on(LED_KANA);
+					led_fn_activate(LED_KANA);
+				}
+				else
+				{
+					led_host_off(LED_KANA);
+					led_fn_deactivate(LED_KANA);
+				}
 			}
 		}
-		else
-		{
-			led_host_off(LED_SCROLL_LOCK);
-			if (g_winlock_on_scrolllock)
-			{
-				g_winlock_flag = 0;
-				led_host_off(LED_WIN_LOCK);
-			}
-		}
-
-		if (g_hid_lock_flags & HID_KEYBOARD_LED_COMPOSE)
-			led_host_on(LED_COMPOSE);
-		else
-			led_host_off(LED_COMPOSE);
-
-		if (g_hid_lock_flags & HID_KEYBOARD_LED_KANA)
-			led_host_on(LED_KANA);
-		else
-			led_host_off(LED_KANA);
 	}
 }
 
