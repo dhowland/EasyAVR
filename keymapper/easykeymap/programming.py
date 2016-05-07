@@ -25,6 +25,7 @@ import os.path
 import subprocess
 import sys
 import threading
+import time
 import traceback
 try:
     import queue
@@ -56,66 +57,88 @@ def popup(root, filename, config):
     new_win = ProgrammingWindow(root, "AVR Programming", info)
     return new_win.result
 
-def execute(args, logger):
-    p = subprocess.Popen(args,
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in iter(p.stdout.readline, b''):
-        logger(line.rstrip())
-    return p.wait()
-
 def get_pkg_path(path):
     if hasattr(sys, 'frozen'):
         return os.path.join(os.path.dirname(sys.executable), path)
     else:
         return pkg_resources.resource_filename(__name__, path)
-    
-def findpath(name):
-    # check for absolute path
-    path = os.path.expandvars(os.path.expanduser(name))
-    if os.path.isabs(path):
-        if os.path.exists(path):
-            return path
-        else:
-            return None
-    # search all directories in the path
-    for path in os.getenv('PATH').split(os.pathsep):
-        path = os.path.expanduser(path)
-        path = os.path.expandvars(path)
-        path = os.path.realpath(path)
-        path = os.path.join(path, name)
-        if os.path.exists(path):
-            return path
-    # search in the exttools directory
-    path = get_pkg_path('exttools/' + name)
-    if os.path.exists(path):
-        return path
-    return None
 
-def findallpaths(names):
-    for name in names:
-        path = findpath(name)
-        if path is not None:
-            return path
-    return None
-
-def bootmsg(logger):
-    msg = ("The keyboard should be in bootloader mode prior to programming.\n"
-    "If the bootloader has not been activated then the programmer will\n"
-    "not be able to connect and the process will fail.  Activate the\n"
-    "bootloader by using the BOOT key (if it is programmed) or use the\n"
-    "reset switch on your microcontroller.\n")
-    logger(msg)
 
 class ProgrammingTask(object):
 
     def __init__(self, logger, info):
         self.logger = logger
         self.info = info
-        self.tool_path = findallpaths(self.loader_tools)
+        self.tool_path = self.findallpaths(self.loader_tools)
+        self.die = False
+        self.busy = False
 
     def run(self):
         # override this method
         pass
+
+    def watchproc(self, p):
+        while True:
+            time.sleep(0.5)
+            if self.die:
+                if p.poll() is None:
+                    p.terminate()
+                return
+            if not self.busy:
+                return
+
+    def execute(self, args):
+        if self.die:
+            return
+        self.busy = True
+        p = subprocess.Popen(args,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        th = threading.Thread(target=self.watchproc, args=(p,))
+        th.start()
+        for line in iter(p.stdout.readline, b''):
+            self.logger(line.rstrip())
+        self.busy = False
+        th.join()
+        return p.wait()
+
+    def findpath(self, name):
+        # check for absolute path
+        path = os.path.expandvars(os.path.expanduser(name))
+        if os.path.isabs(path):
+            if os.path.exists(path):
+                return path
+            else:
+                return None
+        # search all directories in the path
+        for path in os.getenv('PATH').split(os.pathsep):
+            path = os.path.expanduser(path)
+            path = os.path.expandvars(path)
+            path = os.path.realpath(path)
+            path = os.path.join(path, name)
+            if os.path.exists(path):
+                return path
+        # search in the exttools directory
+        path = get_pkg_path('exttools/' + name)
+        if os.path.exists(path):
+            return path
+        return None
+
+    def findallpaths(self, names):
+        for name in names:
+            path = self.findpath(name)
+            if path is not None:
+                return path
+        return None
+
+    def bootmsg(self, logger):
+        msg = ("The keyboard should be in bootloader mode prior to programming.\n"
+        "If the bootloader has not been activated then the programmer will\n"
+        "not be able to connect and the process will fail.  Activate the\n"
+        "bootloader by using the BOOT key (if it is programmed) or use the\n"
+        "reset switch on your microcontroller.  If the process fails, make\n"
+        "sure the keyboard is in bootloader mode and then try again.\n")
+        logger(msg)
+        time.sleep(1)
 
 
 class TeensyLoader(ProgrammingTask):
@@ -137,11 +160,11 @@ class TeensyLoader(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = "%s -mmcu=%s -w -v %s" % (
                 self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
-        execute(cmd, self.logger)
+        self.execute(cmd)
 
 
 class FlipWindows(ProgrammingTask):
@@ -160,12 +183,12 @@ class FlipWindows(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = ('"%s" -device %s -hardware USB -operation '
                'onfail abort loadbuffer "%s" memory FLASH erase F '
                'blankcheck program verify start reset 0') % (
             self.tool_path, self.info.device.lower(), self.info.filename)
-        execute(cmd, self.logger)
+        self.execute(cmd)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -199,16 +222,16 @@ class DfuProgrammer(ProgrammingTask):
             raise ProgrammingException("dfu-programmer requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find dfu-programmer executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = ('"%s" %s erase') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
-        execute(cmd, self.logger)
+        self.execute(cmd)
         cmd = ('"%s" %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
-        execute(cmd, self.logger)
+        self.execute(cmd)
         cmd = ('"%s" %s launch') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
-        execute(cmd, self.logger)
+        self.execute(cmd)
 
 
 class ProgrammingException(Exception):
@@ -225,6 +248,7 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.info = info
         self.queue = queue.Queue()
         self.collecttasks()
+        self.runthread = None
         simpledialog.Dialog.__init__(self, root, title)
 
     def collecttasks(self):
@@ -240,6 +264,7 @@ class ProgrammingWindow(simpledialog.Dialog):
                              (t.posix and not self.info.windows)) and
                             (t.teensy == self.info.teensy))]
 
+    # overrides simpledialog.Dialog.body()
     def body(self, master):
         self.resizable(0, 0)
         self.taskvar = StringVar()
@@ -266,10 +291,18 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.bodyframe = master
         self.bodyframe.after(250, self.showtext)
 
+    # overrides simpledialog.Dialog.buttonbox()
     def buttonbox(self):
         w = Button(self, text="Close", width=10, command=self.ok, default=ACTIVE)
         w.pack(padx=5, pady=5)
         self.bind("<Escape>", self.ok)
+
+    # overrides simpledialog.Dialog.apply()
+    def apply(self):
+        if (self.runthread is not None) and (self.runthread.is_alive()):
+            if self.runningtask.busy:
+                self.runningtask.die = True
+                time.sleep(1)
 
     def taskselect(self, event):
         taskdesc = self.taskvar.get()
@@ -286,11 +319,12 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.logtext(msg)
         self.runthread = threading.Thread(target=self.process)
         self.runthread.start()
-        self.bodyframe.after(1000, self.waitprocess)
+        self.bodyframe.after(500, self.waitprocess)
 
     def process(self):
         try:
-            self.selectedtask(self.logtext, self.info).run()
+            self.runningtask = self.selectedtask(self.logtext, self.info)
+            self.runningtask.run()
         except ProgrammingException as err:
             msg = str(err)
             messagebox.showerror(title="Can't complete programming",
@@ -304,7 +338,7 @@ class ProgrammingWindow(simpledialog.Dialog):
 
     def waitprocess(self):
         if self.runthread and self.runthread.isAlive():
-            self.bodyframe.after(1000,self.waitprocess)
+            self.bodyframe.after(500,self.waitprocess)
         else:
             self.logtext('\n\n')
             self.combo.state(['!disabled'])
