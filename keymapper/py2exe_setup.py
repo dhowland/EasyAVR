@@ -74,6 +74,7 @@ data_files = [
     # ("Microsoft.VC90.CRT", glob("Microsoft.VC90.CRT\\*.*")),
     ("builds", glob("easykeymap\\builds\\*.hex")),
     ("configs", glob("easykeymap\\configs\\*.cfg")),
+    ("exttools", glob("easykeymap\\exttools\\*.exe")),
     ("icons", glob("easykeymap\\icons\\*.ico")),
     ("manuals", glob("easykeymap\\manuals\\*.txt"))
 ]
