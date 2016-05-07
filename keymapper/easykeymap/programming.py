@@ -56,66 +56,67 @@ def popup(root, filename, config):
     new_win = ProgrammingWindow(root, "AVR Programming", info)
     return new_win.result
 
-def execute(args, logger):
-    p = subprocess.Popen(args,
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in iter(p.stdout.readline, b''):
-        logger(line.rstrip())
-    return p.wait()
-
 def get_pkg_path(path):
     if hasattr(sys, 'frozen'):
         return os.path.join(os.path.dirname(sys.executable), path)
     else:
         return pkg_resources.resource_filename(__name__, path)
-    
-def findpath(name):
-    # check for absolute path
-    path = os.path.expandvars(os.path.expanduser(name))
-    if os.path.isabs(path):
-        if os.path.exists(path):
-            return path
-        else:
-            return None
-    # search all directories in the path
-    for path in os.getenv('PATH').split(os.pathsep):
-        path = os.path.expanduser(path)
-        path = os.path.expandvars(path)
-        path = os.path.realpath(path)
-        path = os.path.join(path, name)
-        if os.path.exists(path):
-            return path
-    # search in the exttools directory
-    path = get_pkg_path('exttools/' + name)
-    if os.path.exists(path):
-        return path
-    return None
 
-def findallpaths(names):
-    for name in names:
-        path = findpath(name)
-        if path is not None:
-            return path
-    return None
-
-def bootmsg(logger):
-    msg = ("The keyboard should be in bootloader mode prior to programming.\n"
-    "If the bootloader has not been activated then the programmer will\n"
-    "not be able to connect and the process will fail.  Activate the\n"
-    "bootloader by using the BOOT key (if it is programmed) or use the\n"
-    "reset switch on your microcontroller.\n")
-    logger(msg)
 
 class ProgrammingTask(object):
 
     def __init__(self, logger, info):
         self.logger = logger
         self.info = info
-        self.tool_path = findallpaths(self.loader_tools)
+        self.tool_path = self.findallpaths(self.loader_tools)
 
     def run(self):
         # override this method
         pass
+
+    def execute(self, args):
+        p = subprocess.Popen(args,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in iter(p.stdout.readline, b''):
+            self.logger(line.rstrip())
+        return p.wait()
+
+    def findpath(self, name):
+        # check for absolute path
+        path = os.path.expandvars(os.path.expanduser(name))
+        if os.path.isabs(path):
+            if os.path.exists(path):
+                return path
+            else:
+                return None
+        # search all directories in the path
+        for path in os.getenv('PATH').split(os.pathsep):
+            path = os.path.expanduser(path)
+            path = os.path.expandvars(path)
+            path = os.path.realpath(path)
+            path = os.path.join(path, name)
+            if os.path.exists(path):
+                return path
+        # search in the exttools directory
+        path = get_pkg_path('exttools/' + name)
+        if os.path.exists(path):
+            return path
+        return None
+
+    def findallpaths(self, names):
+        for name in names:
+            path = self.findpath(name)
+            if path is not None:
+                return path
+        return None
+
+    def bootmsg(self, logger):
+        msg = ("The keyboard should be in bootloader mode prior to programming.\n"
+        "If the bootloader has not been activated then the programmer will\n"
+        "not be able to connect and the process will fail.  Activate the\n"
+        "bootloader by using the BOOT key (if it is programmed) or use the\n"
+        "reset switch on your microcontroller.\n")
+        logger(msg)
 
 
 class TeensyLoader(ProgrammingTask):
@@ -137,11 +138,10 @@ class TeensyLoader(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = "%s -mmcu=%s -w -v %s" % (
                 self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
-        execute(cmd, self.logger)
 
 
 class FlipWindows(ProgrammingTask):
@@ -160,12 +160,11 @@ class FlipWindows(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = ('"%s" -device %s -hardware USB -operation '
                'onfail abort loadbuffer "%s" memory FLASH erase F '
                'blankcheck program verify start reset 0') % (
             self.tool_path, self.info.device.lower(), self.info.filename)
-        execute(cmd, self.logger)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -199,16 +198,13 @@ class DfuProgrammer(ProgrammingTask):
             raise ProgrammingException("dfu-programmer requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find dfu-programmer executable.")
-        bootmsg(self.logger)
+        self.bootmsg(self.logger)
         cmd = ('"%s" %s erase') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
-        execute(cmd, self.logger)
         cmd = ('"%s" %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
-        execute(cmd, self.logger)
         cmd = ('"%s" %s launch') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
-        execute(cmd, self.logger)
 
 
 class ProgrammingException(Exception):
