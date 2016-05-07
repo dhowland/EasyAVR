@@ -22,8 +22,9 @@ from __future__ import print_function
 
 import os
 import os.path
-import sys
 import subprocess
+import sys
+import threading
 import traceback
 try:
     import queue
@@ -46,7 +47,7 @@ except ImportError:
 
 def popup(root, filename, config):
     info = ProgrammingInfo()
-    info.filename = filename
+    info.filename = os.path.normpath(filename)
     info.binformat = filename.endswith('bin')
     info.description = config.description
     info.device = config.firmware.device
@@ -56,14 +57,13 @@ def popup(root, filename, config):
     return new_win.result
 
 def execute(args, logger):
-    logger(args)
     p = subprocess.Popen(args,
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in iter(p.stdout.readline, ''):
+    for line in iter(p.stdout.readline, b''):
         logger(line.rstrip())
     return p.wait()
 
-def get_pkg_path(self, path):
+def get_pkg_path(path):
     if hasattr(sys, 'frozen'):
         return os.path.join(os.path.dirname(sys.executable), path)
     else:
@@ -98,6 +98,13 @@ def findallpaths(names):
             return path
     return None
 
+def bootmsg(logger):
+    msg = ("The keyboard should be in bootloader mode prior to programming.\n"
+    "If the bootloader has not been activated then the programmer will\n"
+    "not be able to connect and the process will fail.  Activate the\n"
+    "bootloader by using the BOOT key (if it is programmed) or use the\n"
+    "reset switch on your microcontroller.\n")
+    logger(msg)
 
 class ProgrammingTask(object):
 
@@ -130,8 +137,10 @@ class TeensyLoader(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
+        bootmsg(self.logger)
         cmd = "%s -mmcu=%s -w -v %s" % (
                 self.tool_path, self.info.device.lower(), self.info.filename)
+        self.logger(cmd)
         execute(cmd, self.logger)
 
 
@@ -151,12 +160,12 @@ class FlipWindows(ProgrammingTask):
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
+        bootmsg(self.logger)
         cmd = ('"%s" -device %s -hardware USB -operation '
                'onfail abort loadbuffer "%s" memory FLASH erase F '
                'blankcheck program verify start reset 0') % (
             self.tool_path, self.info.device.lower(), self.info.filename)
-        self.logger(cmd)
-        # el = execute(cmd, self.logger)
+        execute(cmd, self.logger)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -175,16 +184,31 @@ class AvrdudePosix(ProgrammingTask):
 
 class DfuProgrammer(ProgrammingTask):
 
-    description = "Upload to USB AVR with DFU-programmer"
+    description = "Upload to USB AVR with dfu-programmer"
     windows = True
     posix = True
     teensy = False
 
     loader_tools = [
+        'dfu-programmer.exe',
+        'dfu-programmer',
     ]
 
     def run(self):
-        self.logger("Not implemented.")
+        if self.info.binformat:
+            raise ProgrammingException("dfu-programmer requires a build in HEX format.")
+        if self.tool_path is None:
+            raise ProgrammingException("Can't find dfu-programmer executable.")
+        bootmsg(self.logger)
+        cmd = ('"%s" %s erase') % (self.tool_path, self.info.device.lower())
+        self.logger(cmd)
+        execute(cmd, self.logger)
+        cmd = ('"%s" %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
+        self.logger(cmd)
+        execute(cmd, self.logger)
+        cmd = ('"%s" %s launch') % (self.tool_path, self.info.device.lower())
+        self.logger(cmd)
+        execute(cmd, self.logger)
 
 
 class ProgrammingException(Exception):
@@ -217,6 +241,7 @@ class ProgrammingWindow(simpledialog.Dialog):
                             (t.teensy == self.info.teensy))]
 
     def body(self, master):
+        self.resizable(0, 0)
         self.taskvar = StringVar()
         Label(master, text="Board:  ").grid(column=0, row=0, sticky=(E))
         Label(master, text=self.info.description).grid(column=1, row=0, columnspan=3, sticky=(E,W))
@@ -232,7 +257,7 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.button.grid(column=2, row=2, columnspan=2, sticky=(W))
         master.columnconfigure(1, weight=1)
         
-        self.text = Text(master, width=80, height=20, wrap=WORD)
+        self.text = Text(master, width=90, height=20, wrap=WORD)
         self.text.grid(column=0, row=3, columnspan=3, sticky=(N, W, E, S))
         self.scroll = Scrollbar(master, orient=VERTICAL, command=self.text.yview)
         self.scroll.grid(column=3, row=3, sticky=(N, W, E, S))
@@ -240,6 +265,11 @@ class ProgrammingWindow(simpledialog.Dialog):
         
         self.bodyframe = master
         self.bodyframe.after(250, self.showtext)
+
+    def buttonbox(self):
+        w = Button(self, text="Close", width=10, command=self.ok, default=ACTIVE)
+        w.pack(padx=5, pady=5)
+        self.bind("<Escape>", self.ok)
 
     def taskselect(self, event):
         taskdesc = self.taskvar.get()
@@ -254,6 +284,11 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.button.state(['disabled'])
         msg = 'Running task "%s"\n' % (self.taskvar.get(),)
         self.logtext(msg)
+        self.runthread = threading.Thread(target=self.process)
+        self.runthread.start()
+        self.bodyframe.after(1000, self.waitprocess)
+
+    def process(self):
         try:
             self.selectedtask(self.logtext, self.info).run()
         except ProgrammingException as err:
@@ -267,12 +302,20 @@ class ProgrammingWindow(simpledialog.Dialog):
                                  message='Error: ' + msg,
                                  parent=self.parent)
 
+    def waitprocess(self):
+        if self.runthread and self.runthread.isAlive():
+            self.bodyframe.after(1000,self.waitprocess)
+        else:
+            self.logtext('\n\n')
+            self.combo.state(['!disabled'])
+            self.button.state(['!disabled'])
+
     def logtext(self, text):
         self.queue.put(text)
         self.queue.put('\n')
 
     def showtext(self):
-        if self.queue.qsize != 0:
+        if self.queue.qsize() != 0:
             try:
                 while True:
                     line = self.queue.get_nowait()
