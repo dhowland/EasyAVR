@@ -142,6 +142,7 @@ class TeensyLoader(ProgrammingTask):
         cmd = "%s -mmcu=%s -w -v %s" % (
                 self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
+        self.execute(cmd)
 
 
 class FlipWindows(ProgrammingTask):
@@ -165,6 +166,7 @@ class FlipWindows(ProgrammingTask):
                'onfail abort loadbuffer "%s" memory FLASH erase F '
                'blankcheck program verify start reset 0') % (
             self.tool_path, self.info.device.lower(), self.info.filename)
+        self.execute(cmd)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -201,10 +203,13 @@ class DfuProgrammer(ProgrammingTask):
         self.bootmsg(self.logger)
         cmd = ('"%s" %s erase') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
+        self.execute(cmd)
         cmd = ('"%s" %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
+        self.execute(cmd)
         cmd = ('"%s" %s launch') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
+        self.execute(cmd)
 
 
 class ProgrammingException(Exception):
