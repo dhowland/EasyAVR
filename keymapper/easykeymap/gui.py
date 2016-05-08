@@ -44,6 +44,7 @@ import os.path
 import importlib
 from glob import glob
 import traceback
+import webbrowser
 
 if not hasattr(sys, 'frozen'):
     import pkg_resources
@@ -76,7 +77,7 @@ for board in boards.__all__:
     configurations[mod.unique_id] = mod
 
 # save file layout revision
-SAVE_VERSION = 14
+SAVE_VERSION = 15
 
 #pixels for 1/4x key size
 UNIT = 12
@@ -141,6 +142,7 @@ class GUI(object):
         self.advancedleds = []
         self.useadvancedleds = False
         self.ledlayers = []
+        self.rgb = []
         self.macros = [''] * MACRO_NUM
         self.selectedconfig = None
         self.selectedlayoutmod = None
@@ -261,6 +263,7 @@ class GUI(object):
                               command=self.showpassword)
         menu_view.add_command(label='LED Configuration', command=self.showled)
         menu_view.add_command(label='LED Auto-Fn Configuration', command=self.showledlayers)
+        menu_view.add_command(label='RGB Configuration', command=self.showrgb)
         menubar.add_cascade(menu=menu_view, label='View')
         menu_help = Menu(menubar)
         menu_help.add_command(label="Beginner's Guide",
@@ -394,6 +397,22 @@ class GUI(object):
     def showledlayers(self):
         if self.selectedconfig:
             LEDLayersWindow(self.root, self)
+        else:
+            messagebox.showerror(title="Can't Configure LEDs",
+                                 message='Create a keyboard first!',
+                                 parent=self.root)
+
+    def showrgb(self):
+        if self.selectedconfig:
+            try:
+                if configurations[self.selectedconfig].use_rgb:
+                    RGBWindow(self.root, self, "RGB Configuration", self.rgb)
+                else:
+                    raise AttributeError
+            except AttributeError:
+                messagebox.showerror(title="Can't Configure RGB",
+                                 message="This keyboard doesn't currently have support for RGB.",
+                                 parent=self.root)
         else:
             messagebox.showerror(title="Can't Configure LEDs",
                                  message='Create a keyboard first!',
@@ -841,6 +860,8 @@ class GUI(object):
                         self.adapt_v12()
                     if version <= 13:
                         self.adapt_v13()
+                    if version <= 14:
+                        self.adapt_v14()
                     self.scrub_scancodes()
                 self.unsaved_changes = False
             except Exception as err:
@@ -916,6 +937,9 @@ class GUI(object):
     def adapt_v13(self):
         print("Adapting save file v13->v14")
 
+    def adapt_v14(self):
+        print("Adapting save file v14->v15")
+
     def scrub_scancodes(self):
         for layer in self.maps:
             for row in self.maps[layer]:
@@ -936,7 +960,7 @@ class GUI(object):
                        self.selectedlayoutmod, self.leds,
                        self.password.getstruct(),
                        self.advancedleds, self.useadvancedleds,
-                       self.ledlayers)
+                       self.ledlayers, self.rgb)
             filename = filedialog.asksaveasfilename(
                 defaultextension=".dat",
                 filetypes=[('Saved Layouts', '.dat')],
@@ -1215,7 +1239,7 @@ class GUI(object):
             for i in range(config.num_leds - config.num_ind):
                 bytes[offset] = 1
                 offset += 1
-            # overwrite data for backlight enables
+        # overwrite data for backlight enables
             led_diff = templates.max_leds - config.num_leds
             address = config.firmware.bl_mode_map
             offset = address - start
@@ -1248,6 +1272,27 @@ class GUI(object):
         for c in __version__:
             bytes[offset] = ord(c)
             offset += 2
+
+        # overwrite rgb-led data
+        try:
+            if config.use_rgb:
+                address = config.firmware.rgb_pin
+                offset = address - start
+                bytes[offset] = config.rgb_pin
+                
+                address = config.firmware.rgb_count
+                offset = address - start
+                bytes[offset] = config.rgb_count
+                
+                address = config.firmware.rgb_map
+                offset = address - start
+                for n in range(len(self.rgb)):
+                    bytes[offset+n] = self.rgb[n]
+            else:
+                raise AttributeError
+        except AttributeError:
+            print("Test")
+            
         # finish up
         return hexdata
 
@@ -1577,6 +1622,60 @@ class LEDWindow(simpledialog.Dialog):
         self.bind("<Return>", self.ok)
         box.pack()
 
+class RGBWindow(simpledialog.Dialog):
+
+    def __init__(self, parent, gui, title=None, data=None):
+        self.data = data
+        self.gui = gui
+        self.config = configurations[self.gui.selectedconfig]
+        simpledialog.Dialog.__init__(self, parent, title)
+
+    def callback(self, event):
+        webbrowser.open_new(self.config.rgb_url)
+
+    def body(self, master):
+        self.style = Style()
+        self.style.configure("Link.TLabel", foreground="blue")
+        self.l = Label(master, text="Configurator/Instructions", style="Link.TLabel", cursor="hand2")
+        self.l.pack()
+        self.l.bind("<Button-1>", self.callback)
+        
+        self.t = Text(master, height=20, width=30)
+        self.t.pack()
+
+    # hack to get KLE import
+    def colorparse(self, string, order):
+	currentcolor = ''
+	colors = []
+	for x in range(len(string)-2):
+		if string[x:x+2] == "c:":
+			currentcolor = string[x+4:x+10]
+		elif string[x:x+3] == ',""':
+			colors.append(currentcolor)
+	rgb = []
+	for y in order:
+		x = colors[y]
+		r = int(x[0:2], 16)
+		g = int(x[2:4], 16)
+		b = int(x[4:6], 16)
+		total = r+g+b+1
+		if (total > self.config.rgb_max):
+                    r = int(r * self.config.rgb_max/total)
+                    g = int(g * self.config.rgb_max/total)
+                    b = int(b * self.config.rgb_max/total)
+		rgb.extend([g,r,b])
+	return rgb
+
+    def apply(self):
+        self.gui.rgb = self.colorparse(eval('"""' + self.t.get(1.0, END) + '"""'), self.config.rgb_order)
+
+    def buttonbox(self):
+        box = Frame(self)
+        w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
+        w.pack(side=LEFT, padx=5, pady=5)
+        self.bind("<Return>", self.ok)
+        self.bind("<Escape>", self.cancel)
+        box.pack()
 
 class MultiSelectWindow(simpledialog.Dialog):
 

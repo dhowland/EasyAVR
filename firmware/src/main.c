@@ -36,7 +36,9 @@
 #include "autokey.h"
 #include "password.h"
 #include "nvm.h"
+#include "rgb.h"
 #include "USB.h"
+
 
 /* Foward declarations to avoid warnings */
 void application_init(void);
@@ -58,6 +60,7 @@ void application_init(void)
 	init_password();
 	init_scheduler();
 	init_USB();
+	init_rgb();
 	
 	/* Check for an Enter key held while plugging in */
 	initial_scan();

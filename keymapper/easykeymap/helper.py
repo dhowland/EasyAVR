@@ -55,3 +55,6 @@ def make_matrix_config(strobe_cols, strobe_low, rows, cols, device):
         matrix_sense.append((pin[0], (1 << pin[1])))
     
     return (matrix_hardware, matrix_strobe, matrix_sense)
+
+def pin_to_binary(pin):
+    return (1 << pin[1])
