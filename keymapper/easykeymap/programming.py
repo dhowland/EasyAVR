@@ -143,7 +143,7 @@ class ProgrammingTask(object):
 
 class TeensyLoader(ProgrammingTask):
 
-    description = "Upload to Teensy"
+    description = "Upload to Teensy with Teensy/HID Loader"
     windows = True
     posix = True
     teensy = True
@@ -253,16 +253,20 @@ class ProgrammingWindow(simpledialog.Dialog):
 
     def collecttasks(self):
         # in the future this should be automatically scanned from a directory
-        taskclasses = [
+        self.tasks = [
             TeensyLoader,
             FlipWindows,
-            AvrdudePosix,
-            DfuProgrammer
+            DfuProgrammer,
+            AvrdudePosix
         ]
-        self.tasks = [t for t in taskclasses
-                        if (((t.windows and self.info.windows) or
-                             (t.posix and not self.info.windows)) and
-                            (t.teensy == self.info.teensy))]
+        # the first matching task will be pre-selected for the user
+        self.besttask = None
+        for t in self.tasks:
+            if (((t.windows and self.info.windows) or
+                 (t.posix and not self.info.windows)) and
+                (t.teensy == self.info.teensy)):
+                self.besttask = t
+                break
 
     # overrides simpledialog.Dialog.body()
     def body(self, master):
@@ -281,6 +285,10 @@ class ProgrammingWindow(simpledialog.Dialog):
         self.button.state(['disabled'])
         self.button.grid(column=2, row=2, columnspan=2, sticky=(W))
         master.columnconfigure(1, weight=1)
+        
+        if self.besttask is not None:
+            self.taskvar.set(self.besttask.description)
+            self.taskselect(None)
         
         self.text = Text(master, width=90, height=20, wrap=WORD)
         self.text.grid(column=0, row=3, columnspan=3, sticky=(N, W, E, S))
