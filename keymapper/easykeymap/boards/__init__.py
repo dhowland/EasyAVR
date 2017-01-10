@@ -31,6 +31,7 @@ __all__ = [
 'jd45',
 'jd45v2',
 'kmac',
+'minorca',
 'monarch',
 'octagon',
 'orion',
