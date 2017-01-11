@@ -18,6 +18,7 @@
 
 import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
+from easykeymap.helper import make_matrix_config
 
 description = "Atreus"
 unique_id = "ATREUS_001"
@@ -35,38 +36,13 @@ num_cols = 11
 strobe_cols = False
 strobe_low = True
 
-matrix_hardware = [
-#     Port mask     Dir mask
-    ( 0b11110000 , 0b00000000 ),    # REF_PORTB
-    ( 0b01000000 , 0b00000000 ),    # REF_PORTC
-    ( 0b11011111 , 0b00001111 ),    # REF_PORTD
-    ( 0b01000000 , 0b00000000 ),    # REF_PORTE
-    ( 0b11000000 , 0b00000000 )     # REF_PORTF
-]
-
-matrix_strobe = [
-#     REF_PORTB    REF_PORTC    REF_PORTD    REF_PORTE    REF_PORTF
-    ( 0b00000000 , 0b00000000 , 0b00001110 , 0b00000000 , 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00001101 , 0b00000000 , 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00000111 , 0b00000000 , 0b00000000 ),
-    ( 0b00000000 , 0b00000000 , 0b00001011 , 0b00000000 , 0b00000000 )
-]
-
-matrix_sense = [
-#      Port        Pin mask
-    ( REF_PORTB , (1 << 7) ),
-    ( REF_PORTB , (1 << 6) ),
-    ( REF_PORTF , (1 << 7) ),
-    ( REF_PORTF , (1 << 6) ),
-    ( REF_PORTD , (1 << 6) ),
-    ( REF_PORTD , (1 << 4) ),
-    ( REF_PORTE , (1 << 6) ),
-    ( REF_PORTB , (1 << 4) ),
-    ( REF_PORTB , (1 << 5) ),
-    ( REF_PORTC , (1 << 6) ),
-    ( REF_PORTD , (1 << 7) )
-]
-
+matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
+    strobe_cols=strobe_cols,
+    strobe_low=strobe_low,
+    rows=[D0, D1, D3, D2],
+    cols=[D7, C6, B5, B4, E6, D4, B6, F6, F7, D6, B7],
+    device=firmware.device
+)
 num_leds = 1
 num_ind = 1
 num_bl_enab = 2
@@ -134,8 +110,8 @@ keyboard_definition = [
      ((4, 4), (3, 2), 'HID_KEYBOARD_SC_LEFT_GUI'),
      ((4, 4), (3, 3), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
      ((4, 4), (3, 4), 'HID_KEYBOARD_SC_BACKSPACE'),
-     ((4, -6), (3, 5), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
-     ((4, -6), (2, 5), 'HID_KEYBOARD_SC_RIGHT_ALT'),
+     ((4, -6), (2, 5), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
+     ((4, -6), (3, 5), 'HID_KEYBOARD_SC_RIGHT_ALT'),
      ((4, 4), (3, 6), 'HID_KEYBOARD_SC_SPACE'),
      ((4, 4), (3, 7), 'SCANCODE_FN'),
      ((4, 4), (3, 8), 'HID_KEYBOARD_SC_EQUAL_AND_PLUS'),
