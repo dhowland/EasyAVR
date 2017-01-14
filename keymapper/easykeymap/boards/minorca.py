@@ -48,17 +48,11 @@ num_leds = 2
 num_ind = 1
 num_bl_enab = 2
 
-led_definition = [
-    ('Underside', 'Backlight')
-]
+led_definition = []
 
-led_hardware = [
-#       Port    Pin    Direction
-    ( REF_PORTE, 6, LED_DRIVER_PULLUP ),
-    ( REF_PORTB, 7, LED_DRIVER_PULLUP )
-]
+led_hardware = []
 
-backlighting = True
+backlighting = False
 
 bl_modes = [
     ( 1, 1 ),
