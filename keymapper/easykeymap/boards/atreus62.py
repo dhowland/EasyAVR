@@ -62,7 +62,6 @@ bl_modes = [
 KMAC_key = None
 
 keyboard_definition = [
-	# { KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS },
     [((4, 4), (0, 0), 'HID_KEYBOARD_SC_ESCAPE'),
      ((4, 4), (0, 1), 'HID_KEYBOARD_SC_1_AND_EXCLAMATION'),
      ((4, 4), (0, 2), 'HID_KEYBOARD_SC_2_AND_AT'),
@@ -78,7 +77,6 @@ keyboard_definition = [
      ((4, 4), (0, 11), 'HID_KEYBOARD_SC_0_AND_CLOSING_PARENTHESIS'),
      ((4, 4), (0, 12), 'HID_KEYBOARD_SC_MINUS_AND_UNDERSCORE')],
 
-	# { KC_BSLS,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_TRNS,  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC },
     [((4, 4), (1, 0), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
      ((4, 4), (1, 1), 'HID_KEYBOARD_SC_Q'),
      ((4, 4), (1, 2), 'HID_KEYBOARD_SC_W'),
@@ -94,7 +92,6 @@ keyboard_definition = [
      ((4, 4), (1, 11), 'HID_KEYBOARD_SC_P'),
      ((4, 4), (1, 12), 'HID_KEYBOARD_SC_OPENING_BRACKET_AND_OPENING_BRACE')],
 
-	# { KC_TAB,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_TRNS,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT },
     [((4, 4), (2, 0), 'HID_KEYBOARD_SC_TAB'),
      ((4, 4), (2, 1), 'HID_KEYBOARD_SC_A'),
      ((4, 4), (2, 2), 'HID_KEYBOARD_SC_S'),
@@ -110,7 +107,6 @@ keyboard_definition = [
      ((4, 4), (2, 11), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (2, 12), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE')],
 
-	# { KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_DELT,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LBRC },
     [((4, 4), (3, 0), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
      ((4, 4), (3, 1), 'HID_KEYBOARD_SC_Z'),
      ((4, 4), (3, 2), 'HID_KEYBOARD_SC_X'),
@@ -126,7 +122,6 @@ keyboard_definition = [
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
      ((4, 4), (3, 12), 'HID_KEYBOARD_SC_CLOSING_BRACKET_AND_CLOSING_BRACE')],
 
-	# { KC_LCTL,  KC_LGUI, KC_LALT, KC_GRV,  MO(_NAV),KC_BSPC, KC_ENT,   KC_SPC,  KC_EQL,  KC_MINS, KC_QUOT, KC_ENT,  KC_RGUI }
     [((4, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((4, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
      ((4, 4), (4, 2), 'HID_KEYBOARD_SC_LEFT_ALT'),
