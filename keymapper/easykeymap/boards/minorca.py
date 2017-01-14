@@ -23,7 +23,7 @@ from easykeymap.helper import make_matrix_config
 description = "Minorca (Switch Top)"
 unique_id = "MINORCA_01"
 cfg_name = "minorca"
-qwrtyuiow
+
 teensy = True
 hw_boot_key = True
 
