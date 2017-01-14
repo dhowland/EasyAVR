@@ -173,6 +173,7 @@ class GUI(object):
         self.checkuserdir()
         self.pickerwindow = Picker(self)
         self.password = Password()
+        self.filename = None
         self.creategui()
         self.loadlayouts()
 
@@ -242,13 +243,17 @@ class GUI(object):
         # menu bar
         menubar = Menu(self.root)
         menu_file = Menu(menubar)
-        menu_file.add_command(label='New Default Layout...',
+        menu_file.add_command(label='New Layout...',
                               command=self.newfile)
-        menu_file.add_command(label='Open Saved Layout...',
+        menu_file.add_command(label='Open Layout...',
                               command=self.openfile)
-        menu_file.add_command(label='Save Layout As...', command=self.savefile)
-        menu_file.add_command(label='Build Firmware...', command=self.build)
+        menu_file.add_command(label='Save Layout', command=self.savefile)
+        menu_file.add_command(label='Save Layout As...', command=self.savefileAs)
+        menu_file.add_separator()
+        menu_file.add_command(label='Build Firmware', command=self.build)
+        menu_file.add_command(label='Build Firmware As...', command=self.buildAs)
         menu_file.add_command(label='Build and Reprogram...', command=self.buildandupload)
+        menu_file.add_separator()
         menu_file.add_command(label='Exit', command=self.checksave)
         menubar.add_cascade(menu=menu_file, label='File')
         menu_edit = Menu(menubar)
@@ -273,6 +278,7 @@ class GUI(object):
                               command=self.helpconsole)
         menu_help.add_command(label='Help on the Password Generator',
                               command=self.helppasswords)
+        menu_help.add_separator()
         menu_help.add_command(label='About',
                               command=self.about)
         menubar.add_cascade(menu=menu_help, label='Help')
@@ -735,6 +741,7 @@ class GUI(object):
                 self.selectlayer()
                 self.resetmacros()
                 self.unsaved_changes = False
+                self.filename = None
 
     def openfile(self):
         if self.askchanges():
@@ -843,6 +850,7 @@ class GUI(object):
                         self.adapt_v13()
                     self.scrub_scancodes()
                 self.unsaved_changes = False
+                self.filename = filename
             except Exception as err:
                 msg = traceback.format_exc()
                 messagebox.showerror(title="Can't open layout",
@@ -927,31 +935,45 @@ class GUI(object):
                     elif k not in scancodes:
                         row[i] = '0'
 
+    def savefileReal(self, filename):
+        self.selectmacro()
+        package = (SAVE_VERSION, self.selectedconfig, self.maps,
+                   self.macros, self.actions, self.modes,
+                   self.wmods, None,
+                   self.selectedlayoutmod, self.leds,
+                   self.password.getstruct(),
+                   self.advancedleds, self.useadvancedleds,
+                   self.ledlayers)
+        try:
+            with open(filename, 'wb') as fdout:
+                pickle.dump(package, fdout, protocol=2)
+            self.unsaved_changes = False
+            self.filename = filename
+        except Exception as err:
+            msg = traceback.format_exc()
+            messagebox.showerror(title="Can't save layout",
+                                 message='Error: ' + msg,
+                                 parent=self.root)
+
     def savefile(self):
         if self.selectedconfig:
-            self.selectmacro()
-            package = (SAVE_VERSION, self.selectedconfig, self.maps,
-                       self.macros, self.actions, self.modes,
-                       self.wmods, None,
-                       self.selectedlayoutmod, self.leds,
-                       self.password.getstruct(),
-                       self.advancedleds, self.useadvancedleds,
-                       self.ledlayers)
+            if self.filename == None:
+                self.savefileAs()
+            else:
+                self.savefileReal(self.filename)
+        else:
+            messagebox.showerror(title="Can't save layout",
+                                 message='Create a keyboard first!',
+                                 parent=self.root)
+    def savefileAs(self):
+        if self.selectedconfig:
             filename = filedialog.asksaveasfilename(
                 defaultextension=".dat",
                 filetypes=[('Saved Layouts', '.dat')],
                 parent=self.root)
             if not filename:
                 return
-            try:
-                with open(filename, 'wb') as fdout:
-                    pickle.dump(package, fdout, protocol=2)
-                self.unsaved_changes = False
-            except Exception as err:
-                msg = traceback.format_exc()
-                messagebox.showerror(title="Can't save layout",
-                                     message='Error: ' + msg,
-                                     parent=self.root)
+            self.savefileReal(filename)
         else:
             messagebox.showerror(title="Can't save layout",
                                  message='Create a keyboard first!',
@@ -1022,7 +1044,35 @@ class GUI(object):
         config = configurations[self.selectedconfig]
         programming.popup(self.root, filename, config)
 
+    def buildReal(self, filename, config, sub=False):
+        try:
+            hex_path = self.get_pkg_path('builds/' + config.firmware.hex_file_name)
+            with open(hex_path, 'r') as fdin:
+                hexdata = self.overlay(intelhex.read(fdin))
+            if filename.lower().endswith('.bin'):
+                with open(filename, 'wb') as fdout:
+                    hexdata[0][1].tofile(fdout)
+            else:
+                with open(filename, 'w') as fdout:
+                    intelhex.write(fdout, hexdata)
+            if sub:
+                return filename
+            else:
+                messagebox.showinfo(
+                    title="Build complete",
+                    message="Firmware saved successfully.",
+                    parent=self.root)
+        except Exception as err:
+            msg = traceback.format_exc()
+            messagebox.showerror(title="Can't build binary",
+                                 message='Error: ' + msg,
+                                 parent=self.root)
+
     def build(self, sub=False):
+        if self.filename == None:
+            self.buildAs(sub)
+            return
+
         if self.selectedconfig:
             config = configurations[self.selectedconfig]
             if ((not self.checkforscancode('SCANCODE_BOOT')) and
@@ -1035,34 +1085,32 @@ class GUI(object):
                     parent=self.root)
                 if not answer:
                     return
-            hex_path = self.get_pkg_path('builds/' + config.firmware.hex_file_name)
+            filename = os.path.splitext(self.filename)[0] + '.hex'
+            self.buildReal(filename, config, sub)
+
+    def buildAs(self, sub=False):
+        if self.selectedconfig:
+            config = configurations[self.selectedconfig]
+            if ((not self.checkforscancode('SCANCODE_BOOT')) and
+                    (config.hw_boot_key == False)):
+                answer = messagebox.askokcancel(
+                    title="BOOT key not found",
+                    message="You do not have a key bound to BOOT mode.  "
+                    "Without it you can't easily reprogram your keyboard."
+                    "  Are you sure this is what you want?",
+                    parent=self.root)
+                if not answer:
+                    return
+            defaultFilename = 'Untitled.hex'
+            if self.filename != None:
+                defaultFilename = os.path.splitext(os.path.basename(self.filename))[0] + '.hex'
             filename = filedialog.asksaveasfilename(
-                defaultextension=".hex",
+                defaultextension=".hex", initialfile=defaultFilename,
                 filetypes=[('Intel Hex Files', '.hex'), ('Binary Files', '.bin')],
                 parent=self.root)
             if not filename:
                 return
-            try:
-                with open(hex_path, 'r') as fdin:
-                    hexdata = self.overlay(intelhex.read(fdin))
-                if filename.lower().endswith('.bin'):
-                    with open(filename, 'wb') as fdout:
-                        hexdata[0][1].tofile(fdout)
-                else:
-                    with open(filename, 'w') as fdout:
-                        intelhex.write(fdout, hexdata)
-                if sub:
-                    return filename
-                else:
-                    messagebox.showinfo(
-                        title="Build complete",
-                        message="Firmware saved successfully.",
-                        parent=self.root)
-            except Exception as err:
-                msg = traceback.format_exc()
-                messagebox.showerror(title="Can't build binary",
-                                     message='Error: ' + msg,
-                                     parent=self.root)
+            self.buildReal(filename, config, sub)
         else:
             messagebox.showerror(title="Can't build binary",
                                  message='Create a keyboard first!',
@@ -1474,7 +1522,7 @@ class LEDWindow(simpledialog.Dialog):
         Checkbutton(master,
             text="Use Advanced Settings",
             variable=self.advancedvar, onvalue='True', offvalue='False').pack()
-        
+
         self.basicframe = Frame(master)
         Label(self.basicframe, text='Function').grid(row=0, column=1, sticky=W)
         self.basicvars = []
@@ -1494,7 +1542,7 @@ class LEDWindow(simpledialog.Dialog):
             setbox['textvariable'] = setvar
             setbox.state(['readonly'])
             setbox.grid(row=i+1, column=1, sticky=W)
-        
+
         self.advancedframe = Frame(master)
         Label(self.advancedframe, text='LED Location').grid(row=0, column=1, sticky=W)
         Label(self.advancedframe, text='Active Action').grid(row=0, column=2, sticky=W)
@@ -1523,7 +1571,7 @@ class LEDWindow(simpledialog.Dialog):
             cb.state(['readonly'])
             cb.grid(row=i+1, column=2, sticky=W)
             self.advancedvars.append((i, assignvar, actionvar))
-        
+
         self.swap(None, None, None)
 
     def swap(self, name, index, mode):
