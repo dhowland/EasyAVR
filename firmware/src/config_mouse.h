@@ -22,9 +22,9 @@
 
 #include "scheduler.h"
 
-#ifndef SIMPLE_DEVICE
+//#ifndef SIMPLE_DEVICE
 #define ENABLE_MOUSE
-#endif /* SIMPLE_DEVICE */
+//#endif /* SIMPLE_DEVICE */
 
 #define DEFAULT_MOUSE_DELTA_MULT (15)
 #define DEFAULT_MOUSE_MIN_DELTA (5)
