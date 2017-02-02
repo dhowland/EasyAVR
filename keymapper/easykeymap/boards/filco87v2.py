@@ -37,7 +37,7 @@ strobe_low = True
 
 matrix_hardware = [
 #     Port mask     Dir mask
-    ( 0b11111111 , 0b00000000 ),    # REF_PORTB
+    ( 0b01111111 , 0b00000000 ),    # REF_PORTB
     ( 0b10000000 , 0b00000000 ),    # REF_PORTC
     ( 0b01111011 , 0b01111011 )     # REF_PORTD
 ]
@@ -66,14 +66,14 @@ matrix_strobe = [
 
 matrix_sense = [
 #      Port        Pin mask
-    ( REF_PORTB , 0b00100000 ),
-    ( REF_PORTC , 0b10000000 ),
-    ( REF_PORTB , 0b00010000 ),
-    ( REF_PORTB , 0b01000000 ),
-    ( REF_PORTB , 0b00000010 ),
-    ( REF_PORTB , 0b00000100 ),
-    ( REF_PORTB , 0b00001000 ),
-    ( REF_PORTB , 0b00000001 )
+    ( REF_PORTB , (1 << 5) ),
+    ( REF_PORTC , (1 << 7) ),
+    ( REF_PORTB , (1 << 4) ),
+    ( REF_PORTB , (1 << 6) ),
+    ( REF_PORTB , (1 << 1) ),
+    ( REF_PORTB , (1 << 2) ),
+    ( REF_PORTB , (1 << 3) ),
+    ( REF_PORTB , (1 << 0) )
 ]
 
 num_leds = 2
