@@ -44,7 +44,7 @@ const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu
 const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\n2) Toggle win lock on scroll lock\n"
 									 "3) Set default layer\n4) Toggle basic keyboard\n"
 									 "5) Toggle unlink num lock\n6) Set default dimmer level\n"
-									 "7) Set default backlight enable\n9) Back\n> ";
+									 "7) Set default backlight enable\n8) Toggle debounce style\n9) Back\n> ";
 const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
 									 "3) Set max delay time for double tap\n4) Set base mouse movement\n"
 									 "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
@@ -59,6 +59,8 @@ const char PROGMEM g_bootkeyboard_half[] = "Keyboard acts as 6KRO keyboard plus 
 const char PROGMEM g_bootkeyboard_none[] = "Keyboard acts as extended NKRO keyboard with mouse and media keys.\n";
 const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
 const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
+const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm.\n";
+const char PROGMEM g_dbstyle_no[] = "Using default \"hair trigger\" debounce algorithm.\n";
 const char PROGMEM g_event_print_1[] = "\n[";
 const char PROGMEM g_event_print_2[] = "] C-0x";
 const char PROGMEM g_event_print_3[] = " S-0x";
@@ -228,6 +230,15 @@ void console_main(void)
 				queue_autotext(g_defbl_prompt);
 				begin_read();
 				g_console_state = CONSOLE_DEAFAULTBACKLIGHT;
+			}
+			else if (code == 8)
+			{
+				g_debounce_style ^= 1;
+				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
+				if (g_debounce_style)
+					queue_autotext(g_dbstyle_yes);
+				else
+					queue_autotext(g_dbstyle_no);
 			}
 			else
 			{

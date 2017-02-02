@@ -36,6 +36,7 @@ int16_t g_matrixstate[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 uint8_t g_kmac_row;
 uint8_t g_kmac_col;
 #endif /* KMAC_ALIKE */
+void (*debounce_logic)(const uint8_t, const uint8_t, const uint8_t);
 
 void init_matrix(void)
 {
@@ -76,6 +77,17 @@ void init_matrix(void)
 	g_kmac_col = pgm_read_byte(&KMAC_KEY[1]);
 	pin_set(REF_PORTE, 2);
 #endif /* KMAC_ALIKE */
+	/* Select the debounce logic */
+	if (g_debounce_style)
+	{
+		debounce_logic = &debounce_logic_slow;
+		if (g_debounce_ms > 30)
+			g_debounce_ms = 30;
+	}
+	else
+	{
+		debounce_logic = &debounce_logic_fast;
+	}
 }
 
 void initial_scan(void)
@@ -205,7 +217,7 @@ void matrix_scan_fourth_quarter(void)
 	matrix_subscan(((3*g_number_of_strobe)/4), g_number_of_strobe);
 }
 
-void debounce_logic(const uint8_t read_status, const uint8_t row, const uint8_t col)
+void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uint8_t col)
 {
 	const int16_t state = g_matrixstate[row][col];
 	int16_t * const matrixptr = &g_matrixstate[row][col];
@@ -274,6 +286,49 @@ void debounce_logic(const uint8_t read_status, const uint8_t row, const uint8_t 
 			/* Key is being ignored */
 			{
 			}
+		}
+	}
+}
+
+void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uint8_t col)
+{
+	packed_state_t * const matrixptr = (packed_state_t *)&g_matrixstate[row][col];
+	
+	if (read_status == matrixptr->latched_status)
+	/* Switch is holding steady */
+	{
+		matrixptr->bounce_count = 0;
+		if (matrixptr->hold_count >= g_hold_key_ms)
+		{
+			if (read_status)
+			/* Switch is closed */
+			{
+				keymap_interrupt(row,col);
+				matrixptr->hold_count -= g_repeat_ms;
+			}
+		}
+		else
+		{
+			matrixptr->hold_count += MATRIX_REPEAT_MS;
+		}
+	}
+	else
+	/* Switch is transitioning */
+	{
+		matrixptr->bounce_count += MATRIX_REPEAT_MS;
+		if (matrixptr->bounce_count >= g_debounce_ms)
+		{
+			if (read_status)
+			{
+				keymap_actuate(row,col,matrixptr->hold_count);
+			}
+			else
+			{
+				keymap_deactuate(row,col,matrixptr->hold_count);
+			}
+			matrixptr->latched_status = read_status;
+			matrixptr->hold_count = matrixptr->bounce_count;
+			matrixptr->bounce_count = 0;
 		}
 	}
 }
