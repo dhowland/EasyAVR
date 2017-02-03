@@ -31,6 +31,7 @@ __all__ = [
 'jd40',
 'jd45',
 'jd45v2',
+'kc60',
 'kmac',
 'minorca',
 'monarch',
