@@ -42,6 +42,7 @@ __all__ = [
 'rosewill',
 'sentraq',
 'sigma',
+'sixkeyboard',
 'sixshooter',
 'smallfry',
 'tau',
