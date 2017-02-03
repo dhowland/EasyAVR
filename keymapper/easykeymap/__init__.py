@@ -15,6 +15,6 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Version is functionally required to be formatted as #.##.##
-__version__ = '2.03.02'
+__version__ = '2.04.01'
 
 __all__ = ['gui']
