@@ -29,6 +29,7 @@ __all__ = [
 'gh60_satan',
 'ghpad',
 'jd40',
+'jd40v2',
 'jd45',
 'jd45v2',
 'kc60',
