@@ -30,10 +30,13 @@
 
 extern int16_t g_matrixstate[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 
-typedef struct {
-	unsigned latched_status : 1;
-	unsigned bounce_count : 5;
-	unsigned hold_count : 10;
+typedef union {
+	struct {
+		unsigned hold_count : 10;
+		unsigned bounce_count : 5;
+		unsigned latched_status : 1;
+	} packed_state;
+	uint16_t state_word;
 } packed_state_t;
 
 void init_matrix(void);

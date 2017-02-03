@@ -81,8 +81,8 @@ void init_matrix(void)
 	if (g_debounce_style)
 	{
 		debounce_logic = &debounce_logic_slow;
-		if (g_debounce_ms > 30)
-			g_debounce_ms = 30;
+		if (g_debounce_ms > 32)
+			g_debounce_ms = 32;
 	}
 	else
 	{
@@ -290,45 +290,78 @@ void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uin
 	}
 }
 
+/*
+	EasyAVR's original timer-based debounce algorithm was a large departure from a typical
+	debounce algorithm.  It exploited a knowledge of how keyboard switches are used in order
+	to increase the responsiveness of key actuation.  In addition, it allowed key presses to
+	be timed in order to support held keys and tap keys.  However, for fast typing on marginal
+	switches, that algorithm can lead to chatter.  Therefore, this "slow" algorithm is added
+	to implement a more classical approach to debounce.  It uses a confirmation time before
+	an actuation is detected, however it still allows the timer-based features to work.
+	
+	What follows in this function is a ridiculous effort to fit into the AVR's extremely
+	limited memory space.  The 16-bit matrix state from the "fast" algorithm is used, but
+	it is split into two counters and a latched state bit.
+	
+	packed layout: lbbb bbhh hhhh hhhh
+	
+	The 10 bits for the hold counter are required to be able to time out 1 second.
+	The 5 bits left over for the debounce counter restrict the debounce time to 31ms.
+	
+	Honestly, I consider it better to increase the debounce time on the fast algorithm
+	than to use the slow algorithm, but this may be useful for certain use cases.
+*/
 void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uint8_t col)
 {
 	packed_state_t * const matrixptr = (packed_state_t *)&g_matrixstate[row][col];
 	
-	if (read_status == matrixptr->latched_status)
-	/* Switch is holding steady */
+	if ((read_status == 0) && (matrixptr->packed_state.latched_status == 0))
+	/* Switch is holding steady open */
 	{
-		matrixptr->bounce_count = 0;
-		if (matrixptr->hold_count >= g_hold_key_ms)
+		uint16_t hold_count = matrixptr->packed_state.hold_count;
+		if (hold_count < g_doubletap_delay_ms)
 		{
-			if (read_status)
-			/* Switch is closed */
-			{
-				keymap_interrupt(row,col);
-				matrixptr->hold_count -= g_repeat_ms;
-			}
+			hold_count += MATRIX_REPEAT_MS;
+		}
+		matrixptr->state_word = hold_count;
+	}
+	else if ((read_status == 1) && (matrixptr->packed_state.latched_status != 0))
+	/* Switch is holding steady closed */
+	{
+		uint16_t hold_count = matrixptr->packed_state.hold_count;
+		if (hold_count >= g_hold_key_ms)
+		{
+			keymap_interrupt(row,col);
+			hold_count -= g_repeat_ms;
 		}
 		else
 		{
-			matrixptr->hold_count += MATRIX_REPEAT_MS;
+			hold_count += MATRIX_REPEAT_MS;
 		}
+		matrixptr->state_word = hold_count;
+		matrixptr->packed_state.latched_status = read_status;
 	}
 	else
 	/* Switch is transitioning */
 	{
-		matrixptr->bounce_count += MATRIX_REPEAT_MS;
-		if (matrixptr->bounce_count >= g_debounce_ms)
+		const uint8_t bounce_count = matrixptr->packed_state.bounce_count + MATRIX_REPEAT_MS;
+		if (bounce_count >= g_debounce_ms)
 		{
 			if (read_status)
 			{
-				keymap_actuate(row,col,matrixptr->hold_count);
+				keymap_actuate(row,col,matrixptr->packed_state.hold_count);
 			}
 			else
 			{
-				keymap_deactuate(row,col,matrixptr->hold_count);
+				keymap_deactuate(row,col,matrixptr->packed_state.hold_count);
 			}
-			matrixptr->latched_status = read_status;
-			matrixptr->hold_count = matrixptr->bounce_count;
-			matrixptr->bounce_count = 0;
+			matrixptr->state_word = bounce_count;
+			matrixptr->packed_state.latched_status = read_status;
+		}
+		else
+		{
+			matrixptr->packed_state.bounce_count = bounce_count;
 		}
 	}
 }
+
