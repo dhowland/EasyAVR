@@ -17,7 +17,7 @@
 
 """Keyboard definition for the GH60 custom keyboard."""
 
-import easykeymap.templates.ATmega32U4_16MHz_TKL as firmware
+import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
@@ -40,12 +40,10 @@ strobe_low = True
 matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     strobe_cols=strobe_cols,
     strobe_low=strobe_low,
-#	   3,  2, RX, TX, ?? 
     rows=[D0, D1, D2, D3, D5],
-#	  A5, A4,  7, 13, ??,  5, 
     cols=[F0, F1, E6, C7, C6, B6, D4, B1, B7, B5, B4, D7, D6, B3],
     device=firmware.device
-) 
+)
 
 num_leds = 5
 num_ind = 5
