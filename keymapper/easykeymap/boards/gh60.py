@@ -22,8 +22,8 @@ from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
 description = "GH60"
-unique_id = "GH60_001"
-cfg_name = "gh60revc"
+unique_id = "GH60_006"
+cfg_name = "gh60revb"
 
 teensy = False
 hw_boot_key = True
