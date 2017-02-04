@@ -1,5 +1,6 @@
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
+# Copyright (C) 2016 suicidal_orange
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,11 +22,11 @@ from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
 description = "GH60"
-unique_id = "GH60_005"
+unique_id = "GH60_006"
 cfg_name = "gh60revb"
 
 teensy = False
-hw_boot_key = False
+hw_boot_key = True
 
 display_height = int(5*4)
 display_width = int(15*4)
@@ -45,22 +46,24 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
 )
 
 num_leds = 5
-num_ind = 3
+num_ind = 5
 num_bl_enab = 4
 
 led_definition = [
     ('Caps Key', 'Caps Lock'),
-    ('Esc Key', 'Recording'),
-    ('Fn Key', 'Fn Active')
+    ('Esc Key', 'Num Lock'),
+    ('WASD', 'Fn Active'),
+    ('Poker Arrows', 'Fn2 Active'),
+    ('Fn Key', 'Fn3 Active')
 ]
 
 led_hardware = [
 #       Port    Pin    Direction
     ( REF_PORTB, 2, LED_DRIVER_PULLDOWN ),
     ( REF_PORTF, 6, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 5, LED_DRIVER_PULLDOWN ),
     ( REF_PORTF, 7, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 4, LED_DRIVER_PULLDOWN )
+    ( REF_PORTF, 4, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTF, 5, LED_DRIVER_PULLDOWN )
 ]
 
 backlighting = False
@@ -89,7 +92,7 @@ keyboard_definition = [
      ((4, 4), (0, 11), 'HID_KEYBOARD_SC_MINUS_AND_UNDERSCORE'),
      ((4, 4), (0, 12), 'HID_KEYBOARD_SC_EQUAL_AND_PLUS'),
      ((4, 4), (0, 13), 'HID_KEYBOARD_SC_BACKSPACE'),
-     ((4, 4), (4, 9), '0')],
+     ((4, 4), (4, 9), 'HID_KEYBOARD_SC_DELETE')],
 
     [((6, 4), (1, 0), 'HID_KEYBOARD_SC_TAB'),
      ((4, 4), (1, 1), 'HID_KEYBOARD_SC_Q'),
@@ -118,11 +121,11 @@ keyboard_definition = [
      ((4, 4), (2, 9), 'HID_KEYBOARD_SC_L'),
      ((4, 4), (2, 10), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (2, 11), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
-     ((4, 4), (2, 12), '0'),
+     ((4, 4), (2, 12), 'HID_KEYBOARD_SC_NON_US_HASHMARK_AND_TILDE'),
      ((5, 4), (2, 13), 'HID_KEYBOARD_SC_ENTER')],
 
     [((5, 4), (3, 0), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
-     ((4, 4), (3, 1), '0'),
+     ((4, 4), (3, 1), 'HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE'),
      ((4, 4), (3, 2), 'HID_KEYBOARD_SC_Z'),
      ((4, 4), (3, 3), 'HID_KEYBOARD_SC_X'),
      ((4, 4), (3, 4), 'HID_KEYBOARD_SC_C'),
@@ -133,8 +136,8 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
-     ((7, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
-     ((4, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
+     ((7, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
+     ((4, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
 
     [((5, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((5, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
