@@ -173,7 +173,8 @@ class GUI(object):
         self.checkuserdir()
         self.pickerwindow = Picker(self)
         self.password = Password()
-        self.filename = None
+        self.layoutfilename = None
+        self.buildfilename = None
         self.creategui()
         self.loadlayouts()
 
@@ -741,7 +742,7 @@ class GUI(object):
                 self.selectlayer()
                 self.resetmacros()
                 self.unsaved_changes = False
-                self.filename = None
+                self.layoutfilename = None
 
     def openfile(self):
         if self.askchanges():
@@ -850,7 +851,7 @@ class GUI(object):
                         self.adapt_v13()
                     self.scrub_scancodes()
                 self.unsaved_changes = False
-                self.filename = filename
+                self.layoutfilename = filename
             except Exception as err:
                 msg = traceback.format_exc()
                 messagebox.showerror(title="Can't open layout",
@@ -948,7 +949,7 @@ class GUI(object):
             with open(filename, 'wb') as fdout:
                 pickle.dump(package, fdout, protocol=2)
             self.unsaved_changes = False
-            self.filename = filename
+            self.layoutfilename = filename
         except Exception as err:
             msg = traceback.format_exc()
             messagebox.showerror(title="Can't save layout",
@@ -957,10 +958,10 @@ class GUI(object):
 
     def savefile(self):
         if self.selectedconfig:
-            if self.filename == None:
+            if self.layoutfilename is None:
                 self.savefileAs()
             else:
-                self.savefileReal(self.filename)
+                self.savefileReal(self.layoutfilename)
         else:
             messagebox.showerror(title="Can't save layout",
                                  message='Create a keyboard first!',
@@ -1069,7 +1070,7 @@ class GUI(object):
                                  parent=self.root)
 
     def build(self, sub=False):
-        if self.filename == None:
+        if self.buildfilename is None:
             self.buildAs(sub)
             return
 
@@ -1085,8 +1086,7 @@ class GUI(object):
                     parent=self.root)
                 if not answer:
                     return
-            filename = os.path.splitext(self.filename)[0] + '.hex'
-            self.buildReal(filename, config, sub)
+            self.buildReal(self.buildfilename, config, sub)
 
     def buildAs(self, sub=False):
         if self.selectedconfig:
@@ -1110,7 +1110,8 @@ class GUI(object):
                 parent=self.root)
             if not filename:
                 return
-            self.buildReal(filename, config, sub)
+            self.buildfilename = filename
+            self.buildReal(self.buildfilename, config, sub)
         else:
             messagebox.showerror(title="Can't build binary",
                                  message='Create a keyboard first!',
