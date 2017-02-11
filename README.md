@@ -65,10 +65,10 @@ The programming of the firmware to your board depends on your hardware.  Boards 
 *Flip*
 
 1. Open the Atmel Flip app
-2. Click the red "Load HEX File" icon and open the .hex file you created in the keymapper
-3. Click the microchip "Select a Target Device" icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)
-4. Put your keyboard into bootloader mode
-5. Click the USB "Select a Communications Medium" icon and choose "USB" from the menu
+2. Click the microchip "Select a Target Device" icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)
+3. Put your keyboard into bootloader mode
+4. Click the USB "Select a Communications Medium" icon and choose "USB" from the menu
+5. Click the red "Load HEX File" icon and open the .hex file you created in the keymapper
 6. With the AVR now connected, click the "Run" button to reprogram with the new firmware
 7. With a successful completion, click the "Start Application" button
 

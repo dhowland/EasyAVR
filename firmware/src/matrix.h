@@ -30,6 +30,15 @@
 
 extern int16_t g_matrixstate[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 
+typedef union {
+	struct {
+		unsigned hold_count : 10;
+		unsigned bounce_count : 5;
+		unsigned latched_status : 1;
+	} packed_state;
+	uint16_t state_word;
+} packed_state_t;
+
 void init_matrix(void);
 void initial_scan(void);
 void matrix_subscan(const int8_t start, const int8_t finish);
@@ -40,6 +49,7 @@ void matrix_scan_first_quarter(void);
 void matrix_scan_second_quarter(void);
 void matrix_scan_third_quarter(void);
 void matrix_scan_fourth_quarter(void);
-void debounce_logic(uint8_t read_status, uint8_t row, uint8_t col);
+void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uint8_t col);
+void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uint8_t col);
 
 #endif /* MATRIX_H_ */

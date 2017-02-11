@@ -26,7 +26,8 @@
 
 #include "io_ref.h"
 
-#define DEFAULT_DEBOUNCE_MS (6)
+#define DEFAULT_DEBOUNCE_MS (12)
+#define DEFAULT_ALT_DEBOUNCE_MS (6)
 #define DEFAULT_TAP_MAX_MS (240)
 #define DEFAULT_DOUBLETAP_DELAY_MS (-120)
 #define DEFAULT_HOLD_KEY_MS (800)

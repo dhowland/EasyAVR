@@ -36,6 +36,7 @@ int16_t g_matrixstate[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 uint8_t g_kmac_row;
 uint8_t g_kmac_col;
 #endif /* KMAC_ALIKE */
+void (*debounce_logic)(const uint8_t, const uint8_t, const uint8_t);
 
 void init_matrix(void)
 {
@@ -76,6 +77,17 @@ void init_matrix(void)
 	g_kmac_col = pgm_read_byte(&KMAC_KEY[1]);
 	pin_set(REF_PORTE, 2);
 #endif /* KMAC_ALIKE */
+	/* Select the debounce logic */
+	if (g_debounce_style)
+	{
+		debounce_logic = &debounce_logic_slow;
+		if (g_debounce_ms > 32)
+			g_debounce_ms = 32;
+	}
+	else
+	{
+		debounce_logic = &debounce_logic_fast;
+	}
 }
 
 void initial_scan(void)
@@ -205,7 +217,7 @@ void matrix_scan_fourth_quarter(void)
 	matrix_subscan(((3*g_number_of_strobe)/4), g_number_of_strobe);
 }
 
-void debounce_logic(const uint8_t read_status, const uint8_t row, const uint8_t col)
+void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uint8_t col)
 {
 	const int16_t state = g_matrixstate[row][col];
 	int16_t * const matrixptr = &g_matrixstate[row][col];
@@ -277,3 +289,79 @@ void debounce_logic(const uint8_t read_status, const uint8_t row, const uint8_t 
 		}
 	}
 }
+
+/*
+	EasyAVR's original timer-based debounce algorithm was a large departure from a typical
+	debounce algorithm.  It exploited a knowledge of how keyboard switches are used in order
+	to increase the responsiveness of key actuation.  In addition, it allowed key presses to
+	be timed in order to support held keys and tap keys.  However, for fast typing on marginal
+	switches, that algorithm can lead to chatter.  Therefore, this "slow" algorithm is added
+	to implement a more classical approach to debounce.  It uses a confirmation time before
+	an actuation is detected, however it still allows the timer-based features to work.
+	
+	What follows in this function is a ridiculous effort to fit into the AVR's extremely
+	limited memory space.  The 16-bit matrix state from the "fast" algorithm is used, but
+	it is split into two counters and a latched state bit.
+	
+	packed layout: lbbb bbhh hhhh hhhh
+	
+	The 10 bits for the hold counter are required to be able to time out 1 second.
+	The 5 bits left over for the debounce counter restrict the debounce time to 31ms.
+	
+	Honestly, I consider it better to increase the debounce time on the fast algorithm
+	than to use the slow algorithm, but this may be useful for certain use cases.
+*/
+void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uint8_t col)
+{
+	packed_state_t * const matrixptr = (packed_state_t *)&g_matrixstate[row][col];
+	
+	if ((read_status == 0) && (matrixptr->packed_state.latched_status == 0))
+	/* Switch is holding steady open */
+	{
+		uint16_t hold_count = matrixptr->packed_state.hold_count;
+		if (hold_count < g_doubletap_delay_ms)
+		{
+			hold_count += MATRIX_REPEAT_MS;
+		}
+		matrixptr->state_word = hold_count;
+	}
+	else if ((read_status == 1) && (matrixptr->packed_state.latched_status != 0))
+	/* Switch is holding steady closed */
+	{
+		uint16_t hold_count = matrixptr->packed_state.hold_count;
+		if (hold_count >= g_hold_key_ms)
+		{
+			keymap_interrupt(row,col);
+			hold_count -= g_repeat_ms;
+		}
+		else
+		{
+			hold_count += MATRIX_REPEAT_MS;
+		}
+		matrixptr->state_word = hold_count;
+		matrixptr->packed_state.latched_status = read_status;
+	}
+	else
+	/* Switch is transitioning */
+	{
+		const uint8_t bounce_count = matrixptr->packed_state.bounce_count + MATRIX_REPEAT_MS;
+		if (bounce_count >= g_debounce_ms)
+		{
+			if (read_status)
+			{
+				keymap_actuate(row,col,matrixptr->packed_state.hold_count);
+			}
+			else
+			{
+				keymap_deactuate(row,col,matrixptr->packed_state.hold_count);
+			}
+			matrixptr->state_word = bounce_count;
+			matrixptr->packed_state.latched_status = read_status;
+		}
+		else
+		{
+			matrixptr->packed_state.bounce_count = bounce_count;
+		}
+	}
+}
+

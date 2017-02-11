@@ -15,18 +15,18 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Keyboard definition for the GH60 custom keyboard."""
+"""Keyboard definition for the KC60 custom keyboard."""
 
 import easykeymap.templates.ATmega32U4_16MHz_SIXTY as firmware
 from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
-description = "GH60"
-unique_id = "GH60_006"
+description = "KC60"
+unique_id = "KC60_002"
 cfg_name = "gh60revb"
 
 teensy = False
-hw_boot_key = True
+hw_boot_key = False
 
 display_height = int(5*4)
 display_width = int(15*4)
@@ -40,39 +40,33 @@ strobe_low = True
 matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     strobe_cols=strobe_cols,
     strobe_low=strobe_low,
-    rows=[D0, D1, D2, D3, D5],
-    cols=[F0, F1, E6, C7, C6, B6, D4, B1, B7, B5, B4, D7, D6, B3],
+    rows=[D0, D1, F6, F7, D5],
+#q  cols=[F0, F1, E6, C7, C6, B7, D4, B1, B0, B5, B4, D7, D6, B3],
+#o  cols=[F1, F0, E6, D7, D6, D4, C7, C6, B7, B5, B4, B3, B1, B0],
+#j  cols=[F1, F0, E6, D4, B1, B0, B7, D6, B3, B5, B4, C7, C6, D7],
+    cols=[F0, F1, E6, C7, C6, B7, D4, B1, B0, B5, B4, D7, D6, B3],
     device=firmware.device
 )
 
-num_leds = 5
-num_ind = 5
-num_bl_enab = 4
+num_leds = 2
+num_ind = 1
+num_bl_enab = 2
 
 led_definition = [
-    ('Caps Key', 'Caps Lock'),
-    ('Esc Key', 'Num Lock'),
-    ('WASD', 'Fn Active'),
-    ('Poker Arrows', 'Fn2 Active'),
-    ('Fn Key', 'Fn3 Active')
+    ('Caps Key', 'Caps Lock')
 ]
 
 led_hardware = [
 #       Port    Pin    Direction
     ( REF_PORTB, 2, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 6, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 7, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 4, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTF, 5, LED_DRIVER_PULLDOWN )
+    ( REF_PORTB, 6, LED_DRIVER_PULLUP )
 ]
 
-backlighting = False
+backlighting = True
 
 bl_modes = [
-    ( 1, 1, 1, 1, 1 ),
-    ( 0, 0, 0, 0, 0 ),
-    ( 0, 0, 0, 0, 1 ),
-    ( 0, 0, 0, 1, 0 ),
+    ( 1, 1 ),
+    ( 0, 0 )
 ]
 
 KMAC_key = None
@@ -92,7 +86,7 @@ keyboard_definition = [
      ((4, 4), (0, 11), 'HID_KEYBOARD_SC_MINUS_AND_UNDERSCORE'),
      ((4, 4), (0, 12), 'HID_KEYBOARD_SC_EQUAL_AND_PLUS'),
      ((4, 4), (0, 13), 'HID_KEYBOARD_SC_BACKSPACE'),
-     ((4, 4), (4, 9), 'HID_KEYBOARD_SC_DELETE')],
+     ((4, 4), (4, 9), '0')],
 
     [((6, 4), (1, 0), 'HID_KEYBOARD_SC_TAB'),
      ((4, 4), (1, 1), 'HID_KEYBOARD_SC_Q'),
@@ -121,11 +115,11 @@ keyboard_definition = [
      ((4, 4), (2, 9), 'HID_KEYBOARD_SC_L'),
      ((4, 4), (2, 10), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (2, 11), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
-     ((4, 4), (2, 12), 'HID_KEYBOARD_SC_NON_US_HASHMARK_AND_TILDE'),
+     ((4, 4), (2, 12), '0'),
      ((5, 4), (2, 13), 'HID_KEYBOARD_SC_ENTER')],
 
     [((5, 4), (3, 0), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
-     ((4, 4), (3, 1), 'HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE'),
+     ((4, 4), (3, 1), '0'),
      ((4, 4), (3, 2), 'HID_KEYBOARD_SC_Z'),
      ((4, 4), (3, 3), 'HID_KEYBOARD_SC_X'),
      ((4, 4), (3, 4), 'HID_KEYBOARD_SC_C'),
@@ -136,15 +130,15 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
-     ((7, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
-     ((4, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
+     ((7, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
+     ((4, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
 
     [((5, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((5, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
      ((5, 4), (4, 2), 'HID_KEYBOARD_SC_LEFT_ALT'),
      ((25, 4), (4, 5), 'HID_KEYBOARD_SC_SPACE'),
-     ((5, 4), (4, 10), 'HID_KEYBOARD_SC_RIGHT_ALT'),
-     ((5, 4), (4, 11), 'HID_KEYBOARD_SC_RIGHT_GUI'),
+     ((5, 4), (4, 10), 'HID_KEYBOARD_SC_RIGHT_GUI'),
+     ((5, 4), (4, 11),'HID_KEYBOARD_SC_RIGHT_ALT'),
      ((5, 4), (4, 12), 'HID_KEYBOARD_SC_APPLICATION'),
      ((5, 4), (4, 13), 'HID_KEYBOARD_SC_RIGHT_CONTROL')]
 ]

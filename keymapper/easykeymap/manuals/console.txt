@@ -43,11 +43,21 @@ Default Backlight Enable
     specifies where in that cycle to initialize the backlights.  This only
     takes effect at power-up.
 
+Debounce Style
+    This toggles between two debounce algorithms.  By default, key presses are
+    detected with a "hair trigger" for minimum response time.  It is recommended
+    that users set the debounce time to at least 12ms using this option.  The
+    alternate algorithm is more traditional, detecting a key press after a
+    confirmation time.  The alternate setting limits Debounce Time to 32ms or
+    less.  This setting will not take effect until the keyboard is unplugged.
+    Changing this setting resets the debounce time to default (see below).
+
 Debounce Time
     The number of milliseconds that the keyboard will prevent a key to change
     state after the switch actuates or de-actuates.  Users should not change
     this setting unless they are seeing chattering (double key presses).
-    In that case, use 10ms.  Default is 6ms.
+    In that case, increase the time by a few ms.  Default is 12ms, or 6ms for
+    the alternate debounce algorithm.
 
 Max Hold Time for Tap
     The maximum number of milliseconds that a key may be held for the press
@@ -86,9 +96,9 @@ Matrix Setup Wait
     can clean up unexpected keypress behavior on boards with slower matrix
     circuitry.  Default is 5.
 
-=======================
-Configuration Options
-=====================
+=============================
+Using Configuration Options
+===========================
 
 The configuration options are stored in non-volatile memory, which means that
 they will be saved even when the keyboard loses power.  In order to change a
