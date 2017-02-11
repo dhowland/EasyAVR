@@ -975,6 +975,7 @@ class GUI(object):
             if not filename:
                 return
             self.savefileReal(filename)
+            self.buildfilename = None
         else:
             messagebox.showerror(title="Can't save layout",
                                  message='Create a keyboard first!',
@@ -1071,8 +1072,7 @@ class GUI(object):
 
     def build(self, sub=False):
         if self.buildfilename is None:
-            self.buildAs(sub)
-            return
+            return self.buildAs(sub)
 
         if self.selectedconfig:
             config = configurations[self.selectedconfig]
@@ -1086,7 +1086,7 @@ class GUI(object):
                     parent=self.root)
                 if not answer:
                     return
-            self.buildReal(self.buildfilename, config, sub)
+            return self.buildReal(self.buildfilename, config, sub)
 
     def buildAs(self, sub=False):
         if self.selectedconfig:
@@ -1102,8 +1102,8 @@ class GUI(object):
                 if not answer:
                     return
             defaultFilename = 'Untitled.hex'
-            if self.filename != None:
-                defaultFilename = os.path.splitext(os.path.basename(self.filename))[0] + '.hex'
+            if self.layoutfilename is not None:
+                defaultFilename = os.path.splitext(os.path.basename(self.layoutfilename))[0] + '.hex'
             filename = filedialog.asksaveasfilename(
                 defaultextension=".hex", initialfile=defaultFilename,
                 filetypes=[('Intel Hex Files', '.hex'), ('Binary Files', '.bin')],
@@ -1111,7 +1111,7 @@ class GUI(object):
             if not filename:
                 return
             self.buildfilename = filename
-            self.buildReal(self.buildfilename, config, sub)
+            return self.buildReal(self.buildfilename, config, sub)
         else:
             messagebox.showerror(title="Can't build binary",
                                  message='Create a keyboard first!',
