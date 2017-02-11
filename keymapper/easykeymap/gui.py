@@ -63,7 +63,7 @@ ABOUT = """Easy AVR USB Keyboard Firmware Keymapper  (Version %s)
 
 To ask questions contact me on geekhack.org, username 'metalliqaz'.
 
-Copyright (C) 2013-2016 David Howland.
+Copyright (C) 2013-2017 David Howland.
 
 This program comes with ABSOLUTELY NO WARRANTY.  This is free software,
 and you are welcome to redistribute it under certain conditions.  See
