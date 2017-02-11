@@ -50,12 +50,14 @@ Debounce Style
     alternate algorithm is more traditional, detecting a key press after a
     confirmation time.  The alternate setting limits Debounce Time to 32ms or
     less.  This setting will not take effect until the keyboard is unplugged.
+    Changing this setting resets the debounce time to default (see below).
 
 Debounce Time
     The number of milliseconds that the keyboard will prevent a key to change
     state after the switch actuates or de-actuates.  Users should not change
     this setting unless they are seeing chattering (double key presses).
-    In that case, use 12ms.  Default is 6ms.
+    In that case, increase the time by a few ms.  Default is 12ms, or 6ms for
+    the alternate debounce algorithm.
 
 Max Hold Time for Tap
     The maximum number of milliseconds that a key may be held for the press

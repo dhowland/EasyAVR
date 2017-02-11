@@ -59,8 +59,8 @@ const char PROGMEM g_bootkeyboard_half[] = "Keyboard acts as 6KRO keyboard plus 
 const char PROGMEM g_bootkeyboard_none[] = "Keyboard acts as extended NKRO keyboard with mouse and media keys.\n";
 const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
 const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
-const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm.\n";
-const char PROGMEM g_dbstyle_no[] = "Using default \"hair trigger\" debounce algorithm.\n";
+const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm. (debounce time reset)\n";
+const char PROGMEM g_dbstyle_no[] = "Using default \"hair trigger\" debounce algorithm. (debounce time reset)\n";
 const char PROGMEM g_event_print_1[] = "\n[";
 const char PROGMEM g_event_print_2[] = "] C-0x";
 const char PROGMEM g_event_print_3[] = " S-0x";
@@ -236,9 +236,17 @@ void console_main(void)
 				g_debounce_style ^= 1;
 				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
 				if (g_debounce_style)
+				{
+					g_debounce_ms = DEFAULT_ALT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
 					queue_autotext(g_dbstyle_yes);
+				}
 				else
+				{
+					g_debounce_ms = DEFAULT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
 					queue_autotext(g_dbstyle_no);
+				}
 			}
 			else
 			{
