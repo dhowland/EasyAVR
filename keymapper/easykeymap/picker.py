@@ -132,7 +132,10 @@ class Picker(object):
         Selector(rowframe, self.main, 4, "HID_KEYBOARD_SC_PRINT_SCREEN")
         Selector(rowframe, self.main, 4, "HID_KEYBOARD_SC_SCROLL_LOCK")
         Selector(rowframe, self.main, 4, "HID_KEYBOARD_SC_PAUSE")
-        Spacer(rowframe, 13, 4)
+        Spacer(rowframe, 1, 4)
+        Selector(rowframe, self.main, 4, "SCANCODE_POWER")
+        Selector(rowframe, self.main, 4, "SCANCODE_SLEEP")
+        Selector(rowframe, self.main, 4, "SCANCODE_WAKE")
         Selector(rowframe, self.main, 4, "HID_KEYBOARD_SC_POWER")
 
         rowframe = Frame(self.toplevel,

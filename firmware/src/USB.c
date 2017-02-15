@@ -124,6 +124,23 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM MediaReport[] =
 	HID_RI_END_COLLECTION(0)
 };
 
+const USB_Descriptor_HIDReport_Datatype_t PROGMEM PowerReport[] =
+{
+	/* http://msdn.microsoft.com/en-us/library/windows/hardware/gg463446.aspx */
+	HID_RI_USAGE_PAGE(8, 0x01),				// Generic
+	HID_RI_USAGE(8, 0x80),					// System Control
+	HID_RI_COLLECTION(8, 0x01),				// Application
+		HID_RI_USAGE_PAGE(8, 0x01),			// Generic
+		HID_RI_LOGICAL_MINIMUM(16, 0x81),	// System Power
+		HID_RI_LOGICAL_MAXIMUM(16, 0x83),	// System Wake
+		HID_RI_USAGE_MINIMUM(8, 0x81),		// System Power
+		HID_RI_USAGE_MAXIMUM(8, 0x83),		// System Wake
+		HID_RI_REPORT_SIZE(8, 0x08),		// 8 bits
+		HID_RI_REPORT_COUNT(8, 0x01),		// one report
+		HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_ARRAY | HID_IOF_ABSOLUTE),
+	HID_RI_END_COLLECTION(0)
+};
+
 /** Device descriptor structure. This descriptor, located in FLASH memory, describes the overall
  *  device characteristics, including the supported USB version, control endpoint size and the
  *  number of device configurations. The descriptor is read out by the USB host when the enumeration
@@ -284,6 +301,43 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 		.EndpointSize           = HID_EPSIZE_MEDIA,
 		.PollingIntervalMS      = USB_MEDIA_UPDATE_RATE_MS
+	},
+
+	.HID4_PowerInterface =
+	{
+		.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
+
+		.InterfaceNumber        = POWER_INTERFACE,
+		.AlternateSetting       = 0x00,
+
+		.TotalEndpoints         = 1,
+
+		.Class                  = HID_CSCP_HIDClass,
+		.SubClass               = HID_CSCP_NonBootSubclass,
+		.Protocol               = HID_CSCP_NonBootProtocol,
+
+		.InterfaceStrIndex      = NO_DESCRIPTOR
+	},
+
+	.HID4_PowerHID =
+	{
+		.Header                 = {.Size = sizeof(USB_HID_Descriptor_HID_t), .Type = HID_DTYPE_HID},
+
+		.HIDSpec                = VERSION_BCD(1,11,0),
+		.CountryCode            = 0x00,
+		.TotalReportDescriptors = 1,
+		.HIDReportType          = HID_DTYPE_Report,
+		.HIDReportLength        = sizeof(PowerReport)
+	},
+
+	.HID4_ReportINEndpoint =
+	{
+		.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
+
+		.EndpointAddress        = POWER_IN_EPADDR,
+		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
+		.EndpointSize           = HID_EPSIZE_POWER,
+		.PollingIntervalMS      = USB_POWER_UPDATE_RATE_MS
 	}
 };
 
@@ -338,7 +392,7 @@ const USB_Descriptor_Configuration_t PROGMEM SemiConfigurationDescriptor =
 
 		.EndpointAddress        = KEYBOARD_IN_EPADDR,
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
-		.EndpointSize           = 0x08,
+		.EndpointSize           = HID_EPSIZE_BOOT_KEYBOARD,
 		.PollingIntervalMS      = USB_KEYBOARD_UPDATE_RATE_MS
 	},
 
@@ -416,7 +470,44 @@ const USB_Descriptor_Configuration_t PROGMEM SemiConfigurationDescriptor =
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 		.EndpointSize           = HID_EPSIZE_MEDIA,
 		.PollingIntervalMS      = USB_MEDIA_UPDATE_RATE_MS
-		}
+	},
+
+	.HID4_PowerInterface =
+	{
+		.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
+
+		.InterfaceNumber        = POWER_INTERFACE,
+		.AlternateSetting       = 0x00,
+
+		.TotalEndpoints         = 1,
+
+		.Class                  = HID_CSCP_HIDClass,
+		.SubClass               = HID_CSCP_NonBootSubclass,
+		.Protocol               = HID_CSCP_NonBootProtocol,
+
+		.InterfaceStrIndex      = NO_DESCRIPTOR
+	},
+
+	.HID4_PowerHID =
+	{
+		.Header                 = {.Size = sizeof(USB_HID_Descriptor_HID_t), .Type = HID_DTYPE_HID},
+
+		.HIDSpec                = VERSION_BCD(1,11,0),
+		.CountryCode            = 0x00,
+		.TotalReportDescriptors = 1,
+		.HIDReportType          = HID_DTYPE_Report,
+		.HIDReportLength        = sizeof(PowerReport)
+	},
+
+	.HID4_ReportINEndpoint =
+	{
+		.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
+
+		.EndpointAddress        = POWER_IN_EPADDR,
+		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
+		.EndpointSize           = HID_EPSIZE_POWER,
+		.PollingIntervalMS      = USB_POWER_UPDATE_RATE_MS
+	}
 };
 
 const USB_Descriptor_Configuration_boot_t PROGMEM BootConfigurationDescriptor =
@@ -469,7 +560,7 @@ const USB_Descriptor_Configuration_boot_t PROGMEM BootConfigurationDescriptor =
 
 		.EndpointAddress        = KEYBOARD_IN_EPADDR,
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
-		.EndpointSize           = 0x08,
+		.EndpointSize           = HID_EPSIZE_BOOT_KEYBOARD,
 		.PollingIntervalMS      = USB_KEYBOARD_UPDATE_RATE_MS
 	}
 };
@@ -581,6 +672,10 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 					Address = &ConfigurationDescriptor.HID3_MediaHID;
 					Size    = sizeof(USB_HID_Descriptor_HID_t);
 					break;
+				case POWER_INTERFACE:
+					Address = &ConfigurationDescriptor.HID4_PowerHID;
+					Size    = sizeof(USB_HID_Descriptor_HID_t);
+					break;
 			}
 			break;
 		case HID_DTYPE_Report:
@@ -610,6 +705,10 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 					Address = &MediaReport;
 					Size    = sizeof(MediaReport);
 					break;
+				case POWER_INTERFACE:
+					Address = &PowerReport;
+					Size    = sizeof(PowerReport);
+					break;
 			}
 			break;
 	}
@@ -628,6 +727,8 @@ static uint8_t PrevMouseHIDReportBuffer[sizeof(USB_MouseReport_Data_t)];
 #endif /* ENABLE_MOUSE */
 
 static uint8_t PrevMediaHIDReportBuffer[sizeof(USB_MediaReport_Data_t)];
+
+static uint8_t PrevPowerHIDReportBuffer[sizeof(USB_PowerReport_Data_t)];
 
 /** LUFA HID Class driver interface configuration and state information. This structure is
  *  passed to all HID Class driver functions, so that multiple instances of the same class
@@ -688,6 +789,22 @@ USB_ClassInfo_HID_Device_t Media_HID_Interface =
 	},
 };
 
+USB_ClassInfo_HID_Device_t Power_HID_Interface =
+{
+	.Config =
+	{
+		.InterfaceNumber              = POWER_INTERFACE,
+		.ReportINEndpoint             =
+		{
+			.Address              = POWER_IN_EPADDR,
+			.Size                 = HID_EPSIZE_POWER,
+			.Banks                = 1,
+		},
+		.PrevReportINBuffer           = PrevPowerHIDReportBuffer,
+		.PrevReportINBufferSize       = sizeof(PrevPowerHIDReportBuffer),
+	},
+};
+
 /** Event handler for the library USB Connection event. */
 void EVENT_USB_Device_Connect(void)
 {
@@ -714,6 +831,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
 #endif /* ENABLE_MOUSE */
 		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Media_HID_Interface);
+		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Power_HID_Interface);
 	}
 	
 	if (ConfigSuccess)
@@ -735,6 +853,7 @@ void EVENT_USB_Device_ControlRequest(void)
 		HID_Device_ProcessControlRequest(&Mouse_HID_Interface);
 #endif /* ENABLE_MOUSE */
 		HID_Device_ProcessControlRequest(&Media_HID_Interface);
+		HID_Device_ProcessControlRequest(&Power_HID_Interface);
 	}
 }
 
@@ -748,6 +867,7 @@ void EVENT_USB_Device_StartOfFrame(void)
 		HID_Device_MillisecondElapsed(&Mouse_HID_Interface);
 #endif /* ENABLE_MOUSE */
 		HID_Device_MillisecondElapsed(&Media_HID_Interface);
+		HID_Device_MillisecondElapsed(&Power_HID_Interface);
 	}
 }
 
@@ -785,14 +905,10 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
-	USB_KeyboardModReport_Data_t* KeyboardReport = (USB_KeyboardModReport_Data_t*)ReportData;
-#ifdef ENABLE_MOUSE
-	USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
-#endif /* ENABLE_MOUSE */
-	USB_MediaReport_Data_t* MediaReport = (USB_MediaReport_Data_t*)ReportData;
-	
 	if (HIDInterfaceInfo == &Keyboard_HID_Interface)
 	{
+		USB_KeyboardModReport_Data_t* const KeyboardReport = (USB_KeyboardModReport_Data_t*)ReportData;
+		
 		g_keyboard_service = 0;
 		if (NKRO_IS_ENABLED && HIDInterfaceInfo->State.UsingReportProtocol)
 		{
@@ -812,6 +928,8 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 #ifdef ENABLE_MOUSE
 	else if (HIDInterfaceInfo == &Mouse_HID_Interface)
 	{
+		USB_MouseReport_Data_t* const MouseReport = (USB_MouseReport_Data_t*)ReportData;
+		
 		g_mouse_service = 0;
 		MouseReport->Button = g_mousebutton_state;
 		MouseReport->X = g_mouse_report_X;
@@ -821,10 +939,19 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 			return true;
 	}
 #endif /* ENABLE_MOUSE */
-	else
+	else if (HIDInterfaceInfo == &Media_HID_Interface)
 	{
+		USB_MediaReport_Data_t* const MediaReport = (USB_MediaReport_Data_t*)ReportData;
+		
 		MediaReport->Button = g_media_key;
 		*ReportSize = sizeof(USB_MediaReport_Data_t);
+	}
+	else
+	{
+		USB_PowerReport_Data_t* const PowerReport = (USB_PowerReport_Data_t*)ReportData;
+		
+		PowerReport->Button = g_powermgmt_key;
+		*ReportSize = sizeof(USB_PowerReport_Data_t);
 	}
 	
 	return false;
@@ -961,6 +1088,7 @@ void USB_cycle(void)
 		HID_Device_USBTask(&Mouse_HID_Interface);
 #endif /* ENABLE_MOUSE */
 		HID_Device_USBTask(&Media_HID_Interface);
+		HID_Device_USBTask(&Power_HID_Interface);
 	}
 	USB_USBTask();
 	

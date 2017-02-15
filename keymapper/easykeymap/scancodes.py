@@ -296,6 +296,9 @@ scancodes = {
     "SCANCODE_KEYLOCK": ("KB\nLock", 0xA8, "KbLk"),
     "SCANCODE_WINLOCK": ("Win\nLock", 0xA9, "WnLk"),
     "SCANCODE_ESCGRAVE": ("~\nEsc", 0xAA, "~Esc"),
+    "SCANCODE_POWER": ("Power\n(Win)", 0xAB, "Pwr"),
+    "SCANCODE_SLEEP": ("Sleep\n(Win)", 0xAC, "Slp"),
+    "SCANCODE_WAKE": ("Wake\n(Win)", 0xAD, "Wake"),
     "SCANCODE_BOOT": ("Boot\nMode", 0xAE, "BOOT"),
     "SCANCODE_CONFIG": ("Config\nConsole", 0xAF, "Conf")
 }

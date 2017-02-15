@@ -108,6 +108,7 @@ uint8_t g_mousebutton_state;
 int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
+uint8_t g_powermgmt_key;
 uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
@@ -456,7 +457,7 @@ void fn_down(const uint8_t code, const uint8_t action)
 	enqueue_fn(code);
 	if (g_layer_select != g_default_layer)
 		led_host_off((g_layer_select + (LED_FN_ACTIVE-1)));
-	g_layer_select = (code - SCANCODE_FN_BARRIER);
+	g_layer_select = (code - SCANCODE_FN_ORIGIN);
 	led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
 	led_host_on(LED_ANY_ACTIVE);
 	if ((action & ACTION_TOGGLE) && (g_locked_layer != g_layer_select))
@@ -473,7 +474,7 @@ void fn_down(const uint8_t code, const uint8_t action)
 void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
 {
 	delete_fn(code);
-	if (tap && (g_layer_select == (code - SCANCODE_FN_BARRIER)))
+	if (tap && (g_layer_select == (code - SCANCODE_FN_ORIGIN)))
 	{
 		if ((g_double_tap_repeat) && (action & ACTION_LOCKABLE))
 		{
@@ -491,7 +492,7 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 	}
 	else
 	{
-		g_layer_select = (g_fn_buffer[g_fn_buffer_length-1] - SCANCODE_FN_BARRIER);
+		g_layer_select = (g_fn_buffer[g_fn_buffer_length-1] - SCANCODE_FN_ORIGIN);
 	}
 	if (g_layer_select != g_default_layer)
 		led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
@@ -757,6 +758,15 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		break;
 	case SCANCODE_ESCGRAVE:
 		break;
+	case SCANCODE_POWER:
+		g_powermgmt_key = SC_WIN_GDP_POWER;
+		break;
+	case SCANCODE_SLEEP:
+		g_powermgmt_key = SC_WIN_GDP_SLEEP;
+		break;
+	case SCANCODE_WAKE:
+		g_powermgmt_key = SC_WIN_GDP_WAKE;
+		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
 		break;
@@ -1011,6 +1021,11 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_KEYLOCK:
 	case SCANCODE_WINLOCK:
 	case SCANCODE_ESCGRAVE:
+		break;
+	case SCANCODE_POWER:
+	case SCANCODE_SLEEP:
+	case SCANCODE_WAKE:
+		g_powermgmt_key = 0;
 		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:

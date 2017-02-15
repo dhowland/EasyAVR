@@ -35,6 +35,7 @@
 
 /* Media codes in the consumer page, not defined by LUFA */
 /* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/translate.pdf */
+/* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/scancode.doc */
 /* http://download.microsoft.com/download/E/3/A/E3AEC7D7-245D-491F-BB8A-E1E05A03677A/keyboard-support-windows-8.docx */
 #define SC_MAC_CP_PLAY 0xB0			/* Play */
 #define SC_MAC_CP_PAUSE 0xB1		/* Pause */
@@ -74,8 +75,7 @@
 #define SC_WIN_GDP_SLEEP 0x82		/* System Sleep */
 #define SC_WIN_GDP_WAKE 0x83		/* System Wake Up */
 
-/* Must be smaller than the Media range */
-#define SCANCODE_SPECIAL_BARRIER 0xA0
+/* TODO: Description of "special" scancodes */
 #define SCANCODE_BL_DIMMER 0xA1
 #define SCANCODE_BL_MODE 0xA2
 #define SCANCODE_BL_ENABLE 0xA3
@@ -86,10 +86,14 @@
 #define SCANCODE_KEYLOCK 0xA8
 #define SCANCODE_WINLOCK 0xA9
 #define SCANCODE_ESCGRAVE 0xAA
+
+#define SCANCODE_POWER 0xAB
+#define SCANCODE_SLEEP 0xAC
+#define SCANCODE_WAKE 0xAD
+
 #define SCANCODE_BOOT 0xAE
 #define SCANCODE_CONFIG 0xAF
 
-/* Must be smaller than the Mouse range */
 #define SCANCODE_MUTE 0xB0
 #define SCANCODE_VOL_INC 0xB1
 #define SCANCODE_VOL_DEC 0xB2
@@ -109,9 +113,7 @@
 
 #define NUMBER_OF_MEDIA_KEYS (16)
 
-/* Must be smaller than the Macro range */
 /* buttons must be sequential and below XY*/
-#define SCANCODE_MOUSE_BARRIER 0xC0
 #define SCANCODE_MOUSE1 0xC1
 #define SCANCODE_MOUSE2 0xC2
 #define SCANCODE_MOUSE3 0xC3
@@ -124,7 +126,6 @@
 
 #define NUMBER_OF_MOUSE_BUTTONS (5)
 
-/* Must be smaller than the 0xE0 range */
 #define SCANCODE_M1 0xD0
 #define SCANCODE_M2 0xD1
 #define SCANCODE_M3 0xD2
@@ -143,7 +144,7 @@
 #define SCANCODE_MRAM_PLAY 0xDF
 
 /* Must be larger than the 0xE0 range */
-#define SCANCODE_FN_BARRIER 0xF0
+#define SCANCODE_FN_ORIGIN 0xF0
 #define SCANCODE_FN 0xF1
 #define SCANCODE_FN2 0xF2
 #define SCANCODE_FN3 0xF3
