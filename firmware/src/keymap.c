@@ -762,7 +762,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_SLEEP:
 	case SCANCODE_WAKE:
 		/* Assume power keys never coincide */
-		g_powermgmt_field = (1 << (code - SC_WIN_GDP_POWER));
+		g_powermgmt_field = (1 << (code - SCANCODE_POWER));
 		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
