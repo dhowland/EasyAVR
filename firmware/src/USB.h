@@ -139,7 +139,7 @@ typedef struct
 
 typedef struct
 {
-	uint8_t  Button;
+	uint8_t  Field;
 } ATTR_PACKED USB_PowerReport_Data_t;
 
 uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,

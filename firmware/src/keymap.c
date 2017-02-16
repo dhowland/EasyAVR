@@ -108,7 +108,7 @@ uint8_t g_mousebutton_state;
 int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
-uint8_t g_powermgmt_key;
+uint8_t g_powermgmt_field;
 uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
@@ -759,13 +759,10 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_ESCGRAVE:
 		break;
 	case SCANCODE_POWER:
-		g_powermgmt_key = SC_WIN_GDP_POWER;
-		break;
 	case SCANCODE_SLEEP:
-		g_powermgmt_key = SC_WIN_GDP_SLEEP;
-		break;
 	case SCANCODE_WAKE:
-		g_powermgmt_key = SC_WIN_GDP_WAKE;
+		/* Assume power keys never coincide */
+		g_powermgmt_field = (1 << (code - SC_WIN_GDP_POWER));
 		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
@@ -1025,7 +1022,8 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_POWER:
 	case SCANCODE_SLEEP:
 	case SCANCODE_WAKE:
-		g_powermgmt_key = 0;
+		/* Assume power keys never coincide */
+		g_powermgmt_field = 0;
 		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:

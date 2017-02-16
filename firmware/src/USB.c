@@ -109,7 +109,7 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM MouseReport[] =
 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM MediaReport[] =
 {
-	/* http://msdn.microsoft.com/en-us/library/windows/hardware/gg463446.aspx */
+	/* https://web.archive.org/web/20100302061644/http://www.microsoft.com/whdc/archive/w2kbd.mspx */
 	HID_RI_USAGE_PAGE(8, 0x0C),				// Consumer
 	HID_RI_USAGE(8, 0x01),					// Consumer Control
 	HID_RI_COLLECTION(8, 0x01),				// Application
@@ -126,18 +126,21 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM MediaReport[] =
 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM PowerReport[] =
 {
-	/* http://msdn.microsoft.com/en-us/library/windows/hardware/gg463446.aspx */
+	/* http://download.microsoft.com/download/E/3/A/E3AEC7D7-245D-491F-BB8A-E1E05A03677A/keyboard-support-windows-8.docx */
 	HID_RI_USAGE_PAGE(8, 0x01),				// Generic
 	HID_RI_USAGE(8, 0x80),					// System Control
-	HID_RI_COLLECTION(8, 0x01),				// Application
-		HID_RI_USAGE_PAGE(8, 0x01),			// Generic
-		HID_RI_LOGICAL_MINIMUM(16, 0x81),	// System Power
-		HID_RI_LOGICAL_MAXIMUM(16, 0x83),	// System Wake
+	HID_RI_COLLECTION(8, 0x01),
+		HID_RI_USAGE_PAGE(8, 0x01),
+		HID_RI_LOGICAL_MINIMUM(8, 0x00),
+		HID_RI_LOGICAL_MAXIMUM(8, 0x01),
 		HID_RI_USAGE_MINIMUM(8, 0x81),		// System Power
 		HID_RI_USAGE_MAXIMUM(8, 0x83),		// System Wake
-		HID_RI_REPORT_SIZE(8, 0x08),		// 8 bits
-		HID_RI_REPORT_COUNT(8, 0x01),		// one report
-		HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_ARRAY | HID_IOF_ABSOLUTE),
+		HID_RI_REPORT_SIZE(8, 0x01),
+		HID_RI_REPORT_COUNT(8, 0x03),
+		HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_RELATIVE | HID_IOF_PREFERRED_STATE),
+		HID_RI_REPORT_COUNT(8, 0x01),
+		HID_RI_REPORT_SIZE(8, 0x05),
+		HID_RI_INPUT(8, HID_IOF_CONSTANT),
 	HID_RI_END_COLLECTION(0)
 };
 
@@ -950,7 +953,7 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 	{
 		USB_PowerReport_Data_t* const PowerReport = (USB_PowerReport_Data_t*)ReportData;
 		
-		PowerReport->Button = g_powermgmt_key;
+		PowerReport->Field = g_powermgmt_field;
 		*ReportSize = sizeof(USB_PowerReport_Data_t);
 	}
 	

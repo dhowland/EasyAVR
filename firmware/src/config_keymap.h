@@ -37,39 +37,31 @@
 /* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/translate.pdf */
 /* http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/scancode.doc */
 /* http://download.microsoft.com/download/E/3/A/E3AEC7D7-245D-491F-BB8A-E1E05A03677A/keyboard-support-windows-8.docx */
-#define SC_MAC_CP_PLAY 0xB0			/* Play */
-#define SC_MAC_CP_PAUSE 0xB1		/* Pause */
-#define SC_MAC_CP_RECORD 0xB2		/* Record */
-#define SC_MAC_CP_FFW 0xB3			/* Fast Forward */
-#define SC_MAC_CP_REW 0xB4			/* Rewind */
-#define SC_WIN_CP_NEXT_TRACK 0xB5	/* Scan Next Track One Shot Control (OSC) */
-#define SC_WIN_CP_PREV_TRACK 0xB6	/* Scan Previous Track One Shot Control (OSC) */
-#define SC_WIN_CP_STOP 0xB7			/* Stop One Shot Control (OSC) */
-#define SC_MAC_CP_EJECT 0xB8		/* Eject */
-#define SC_MAC_CP_REPEAT 0xBC		/* Repeat */
-#define SC_WIN_CP_PLAY_PAUSE 0xCD	/* Play/Pause One Shot Control (OSC) */
-#define SC_WIN_CP_BRIGHT_INC 0x6F	/* Brightness Increment Re-trigger Control (RTC) */
-#define SC_WIN_CP_BRIGHT_DEC 0x70	/* Brightness Decrement Re-trigger Control (RTC) */
-#define SC_WIN_CP_MUTE 0xE2			/* Mute On/Off Control (OOC) */
-#define SC_WIN_CP_BASS_BOOST 0xE5	/* Bass Boost On/Off Control (OOC) */
-#define SC_WIN_CP_LOUDNESS 0xE7		/* Loudness */
-#define SC_WIN_CP_VOL_INC 0xE9		/* Volume Increment Re-trigger Control (RTC) */
-#define SC_WIN_CP_VOL_DEC 0xEA		/* Volume Decrement Re-trigger Control (RTC) */
-#define SC_WIN_CP_BASS_INC 0x0152	/* Bass Increment Re-trigger Control (RTC) */
-#define SC_WIN_CP_BASS_DEC 0x0153	/* Bass Decrement Re-trigger Control (RTC) */
-#define SC_WIN_CP_TREB_INC 0x0154	/* Treble Increment Re-trigger Control (RTC) */
-#define SC_WIN_CP_TREB_DEC 0x0155	/* Treble Decrement Re-trigger Control (RTC) */
-#define SC_WIN_CP_MEDIA 0x0183		/* AL Consumer Control Configuration Selector (Sel) */
-#define SC_WIN_CP_MAIL 0x018A		/* AL Email Reader Selector (Sel) */
-#define SC_WIN_CP_CALC 0x0192		/* AL Calculator Selector (Sel) */
-#define SC_WIN_CP_MY_COMP 0x0194	/* AL Local Browser Selector (Sel) */
-#define SC_WIN_CP_SEARCH 0x0221		/* AC Search Selector (Sel) */
-#define SC_WIN_CP_HOME 0x0223		/* AC Home Selector (Sel) */
-#define SC_WIN_CP_BACK 0x0224		/* AC Back Selector (Sel) */
-#define SC_WIN_CP_FORWARD 0x0225	/* AC Forward Selector (Sel) */
-#define SC_WIN_CP_WWWSTOP 0x0226	/* AC Stop Selector (Sel) */
-#define SC_WIN_CP_REFRESH 0x0227	/* AC Refresh Selector (Sel) */
-#define SC_WIN_CP_FAVES 0x022A		/* AC Bookmarks Selector (Sel) */
+#define SC_WIN_CP_NEXT_TRACK 0xB5	/* Scan Next Track (OSC) */
+#define SC_WIN_CP_PREV_TRACK 0xB6	/* Scan Previous Track (OSC) */
+#define SC_WIN_CP_STOP 0xB7			/* Stop (OSC) */
+#define SC_WIN_CP_PLAY_PAUSE 0xCD	/* Play/Pause (OSC) */
+#define SC_WIN_CP_BRIGHT_INC 0x6F	/* Brightness Increment (RTC) */
+#define SC_WIN_CP_BRIGHT_DEC 0x70	/* Brightness Decrement (RTC) */
+#define SC_WIN_CP_MUTE 0xE2			/* Mute (OOC) */
+#define SC_WIN_CP_BASS_BOOST 0xE5	/* Bass Boost (OOC) */
+#define SC_WIN_CP_VOL_INC 0xE9		/* Volume Increment (RTC) */
+#define SC_WIN_CP_VOL_DEC 0xEA		/* Volume Decrement (RTC) */
+#define SC_WIN_CP_BASS_INC 0x0152	/* Bass Increment (RTC) */
+#define SC_WIN_CP_BASS_DEC 0x0153	/* Bass Decrement (RTC) */
+#define SC_WIN_CP_TREB_INC 0x0154	/* Treble Increment (RTC) */
+#define SC_WIN_CP_TREB_DEC 0x0155	/* Treble Decrement (RTC) */
+#define SC_WIN_CP_MEDIA 0x0183		/* AL Consumer Control Configuration (Sel) */
+#define SC_WIN_CP_MAIL 0x018A		/* AL Email Reader (Sel) */
+#define SC_WIN_CP_CALC 0x0192		/* AL Calculator (Sel) */
+#define SC_WIN_CP_MY_COMP 0x0194	/* AL Local Browser (Sel) */
+#define SC_WIN_CP_SEARCH 0x0221		/* AC Search (Sel) */
+#define SC_WIN_CP_HOME 0x0223		/* AC Home (Sel) */
+#define SC_WIN_CP_BACK 0x0224		/* AC Back (Sel) */
+#define SC_WIN_CP_FORWARD 0x0225	/* AC Forward (Sel) */
+#define SC_WIN_CP_WWWSTOP 0x0226	/* AC Stop (Sel) */
+#define SC_WIN_CP_REFRESH 0x0227	/* AC Refresh (Sel) */
+#define SC_WIN_CP_FAVES 0x022A		/* AC Bookmarks (Sel) */
 /* Power controls */
 #define SC_WIN_GDP_POWER 0x81		/* System Power Down */
 #define SC_WIN_GDP_SLEEP 0x82		/* System Sleep */
