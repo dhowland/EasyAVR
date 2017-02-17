@@ -26,6 +26,7 @@
 #include <avr/power.h>
 #include <avr/pgmspace.h>
 
+#include "debug.h"
 #include "lowlevel.h"
 
 

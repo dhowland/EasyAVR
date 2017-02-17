@@ -35,8 +35,10 @@ templates_dir = "keymapper\\easykeymap\\templates"
 output_dir = os.path.join(proj_dir, "Release")
 hex_file_name = "autobuild.hex"
 map_file_name = "autobuild.map"
+lss_file_name = "autobuild.lss"
 hex_path = os.path.join(output_dir, hex_file_name)
 map_path = os.path.join(output_dir, map_file_name)
+lss_path = os.path.join(output_dir, lss_file_name)
 in_proj_path = os.path.join(proj_dir, "firmware.cproj")
 out_proj_path = os.path.join(proj_dir, "autobuild.cproj")
 log_path = os.path.join(proj_dir, "log.txt")
@@ -63,6 +65,15 @@ translation_table = [
     r"BOARD_SIZE_[A-Z]+",
 ]
 
+RAM_table = {
+    "ATmega32U4": 2560,
+    "ATmega32U2": 1024,
+    "ATmega16U2": 512,
+    "AT90USB1286": 8192,
+}
+
+MIN_RAM_FOR_STACK = 128
+
 def write_symbol(outfile, symtable, symbol):
     try:
         outfile.write(symtable[symbol])
@@ -73,7 +84,7 @@ for hw in hardware_table:
 
     hardware_specs = (hw[0], hw[1].replace('000000UL','') + 'MHz', hw[2].replace('BOARD_SIZE_',''))
     hardware_name = "%s_%s_%s.hex" % hardware_specs
-    print(hardware_name)
+    print('\n'+hardware_name)
 
     with open(out_proj_path, 'w') as outfile:
         with open(in_proj_path, 'r') as infile:
@@ -92,20 +103,36 @@ for hw in hardware_table:
         print("Failed.")
         sys.exit(1)
 
-    print("Copying in HEX file")
+    print("Copying HEX file")
     target_path = os.path.join(hex_dir, hardware_name)
     if os.path.exists(target_path):
         os.remove(target_path)
     shutil.copy2(hex_path, target_path)
 
     print("Parsing MAP file")
-    regex = re.compile(r"^\s+(0x[0-9a-f]{8})\s+(\w+)$")
+    regex_sym = re.compile(r"^\s+(0x[0-9a-f]{8})\s+(\w+)$")
+    regex_sec = re.compile(r"^(\.[a-z0-9]+)\s+(0x[0-9a-f]{8})\s+(0x[0-9a-f]+)")
     symbols = {}
+    sections = {}
     with open(map_path, 'r') as infile:
         for line in infile:
-            match = regex.match(line)
+            match = regex_sym.match(line)
             if match:
                 symbols[match.group(2)] = match.group(1)
+                continue
+            match = regex_sec.match(line)
+            if match:
+                sections[match.group(1)] = int(match.group(3), 16)
+
+    print("Checking RAM usage")
+    used = sections['.data']+sections['.bss']+sections['.noinit']
+    total = RAM_table[hw[0]]
+    unused = total - used
+    pct_full = (used/total) * 100
+    print("Used %d bytes of %d (%0.1f %% full)" % (used, total, pct_full))
+    if unused < MIN_RAM_FOR_STACK:
+        print("WARNING: Insufficient space for the stack! (bytes free: %d, required: %d)" % (unused,MIN_RAM_FOR_STACK))
+        sys.exit(1)
 
     print("Updating config source")
     template_name = "%s_%s_%s.py" % hardware_specs
