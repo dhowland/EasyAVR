@@ -908,11 +908,11 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
-	if (HIDInterfaceInfo == &Keyboard_HID_Interface)
+	switch(HIDInterfaceInfo->Config.InterfaceNumber)
 	{
-		USB_KeyboardModReport_Data_t* const KeyboardReport = (USB_KeyboardModReport_Data_t*)ReportData;
-		
+	case KEYBOARD_INTERFACE:
 		g_keyboard_service = 0;
+		USB_KeyboardModReport_Data_t* const KeyboardReport = (USB_KeyboardModReport_Data_t*)ReportData;
 		if (NKRO_IS_ENABLED && HIDInterfaceInfo->State.UsingReportProtocol)
 		{
 			get_nkro_report(KeyboardReport->KeyCode);
@@ -927,34 +927,27 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 			*ReportSize = sizeof(USB_KeyboardReport_Data_t);
 		else
 			*ReportSize = sizeof(USB_KeyboardModReport_Data_t);
-	}
+		break;
 #ifdef ENABLE_MOUSE
-	else if (HIDInterfaceInfo == &Mouse_HID_Interface)
-	{
-		USB_MouseReport_Data_t* const MouseReport = (USB_MouseReport_Data_t*)ReportData;
-		
+	case MOUSE_INTERFACE:
 		g_mouse_service = 0;
+		USB_MouseReport_Data_t* const MouseReport = (USB_MouseReport_Data_t*)ReportData;
 		MouseReport->Button = g_mousebutton_state;
 		MouseReport->X = g_mouse_report_X;
 		MouseReport->Y = g_mouse_report_Y;
 		*ReportSize = sizeof(USB_MouseReport_Data_t);
 		if (g_mouse_active)
 			return true;
-	}
+		break;
 #endif /* ENABLE_MOUSE */
-	else if (HIDInterfaceInfo == &Media_HID_Interface)
-	{
-		USB_MediaReport_Data_t* const MediaReport = (USB_MediaReport_Data_t*)ReportData;
-		
-		MediaReport->Button = g_media_key;
+	case MEDIA_INTERFACE:
+		((USB_MediaReport_Data_t*)ReportData)->Button = g_media_key;
 		*ReportSize = sizeof(USB_MediaReport_Data_t);
-	}
-	else
-	{
-		USB_PowerReport_Data_t* const PowerReport = (USB_PowerReport_Data_t*)ReportData;
-		
-		PowerReport->Field = g_powermgmt_field;
+		break;
+	case POWER_INTERFACE:
+		((USB_PowerReport_Data_t*)ReportData)->Field = g_powermgmt_field;
 		*ReportSize = sizeof(USB_PowerReport_Data_t);
+		break;
 	}
 	
 	return false;
