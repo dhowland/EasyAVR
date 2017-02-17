@@ -367,7 +367,7 @@ class Picker(object):
                          width=(int(22.5*4)*UNIT),
                          height=(4*UNIT))
         rowframe.pack(side=TOP)
-        Selector(rowframe, self.main, 4, "SCANCODE_MEDIA")
+        Selector(rowframe, self.main, 4, "SCANCODE_MEDIA_SEL")
         Selector(rowframe, self.main, 4, "SCANCODE_MAIL")
         Selector(rowframe, self.main, 4, "SCANCODE_CALC")
         Selector(rowframe, self.main, 4, "SCANCODE_MYCOMP")
