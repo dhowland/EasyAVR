@@ -38,15 +38,17 @@
 #define USB_KEYBOARD_UPDATE_RATE_MS (1)
 #define USB_MOUSE_UPDATE_RATE_MS (5)
 #define USB_MEDIA_UPDATE_RATE_MS (8)
+#define USB_POWER_UPDATE_RATE_MS (8)
 
 /** Endpoint address of the Keyboard HID reporting IN endpoint. */
 #define KEYBOARD_INTERFACE (0x00)
 #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 1)
 #define HID_EPSIZE_KEYBOARD (KEYBOARD_ARRAY_LENGTH + 2)
+#define HID_EPSIZE_BOOT_KEYBOARD (0x08)
 
 #ifdef ENABLE_MOUSE
 
-#define TOTAL_INTERFACES (0x03)
+#define TOTAL_INTERFACES (0x04)
 
 /** Endpoint address of the Mouse HID reporting IN endpoint. */
 #define MOUSE_INTERFACE (0x01)
@@ -58,14 +60,24 @@
 #define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
 #define HID_EPSIZE_MEDIA (2)
 
+/* Power keys */
+#define POWER_INTERFACE (0x03)
+#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
+#define HID_EPSIZE_POWER (1)
+
 #else
 
-#define TOTAL_INTERFACES (0x02)
+#define TOTAL_INTERFACES (0x03)
 
 /* Media keys */
 #define MEDIA_INTERFACE (0x01)
 #define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
 #define HID_EPSIZE_MEDIA (2)
+
+/* Power keys */
+#define POWER_INTERFACE (0x02)
+#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
+#define HID_EPSIZE_POWER (1)
 
 #endif /* ENABLE_MOUSE */
 
@@ -94,6 +106,11 @@ typedef struct
 	USB_Descriptor_Interface_t            HID3_MediaInterface;
 	USB_HID_Descriptor_HID_t              HID3_MediaHID;
 	USB_Descriptor_Endpoint_t             HID3_ReportINEndpoint;
+
+	// Power HID Interface
+	USB_Descriptor_Interface_t            HID4_PowerInterface;
+	USB_HID_Descriptor_HID_t              HID4_PowerHID;
+	USB_Descriptor_Endpoint_t             HID4_ReportINEndpoint;
 } USB_Descriptor_Configuration_t;
 
 #ifndef SIMPLE_DEVICE
@@ -119,6 +136,11 @@ typedef struct
 {
 	uint16_t  Button;
 } ATTR_PACKED USB_MediaReport_Data_t;
+
+typedef struct
+{
+	uint8_t  Field;
+} ATTR_PACKED USB_PowerReport_Data_t;
 
 uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 									const uint8_t wIndex,

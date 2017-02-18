@@ -53,22 +53,31 @@ const mod_map_t PROGMEM MOUSEBUTTON_MAP[NUMBER_OF_MOUSE_BUTTONS] = {
 #endif /* ENABLE_MOUSE */
 
 const uint16_t PROGMEM MEDIA_MAP[NUMBER_OF_MEDIA_KEYS] = {
-	/* SCANCODE_MUTE       */	SC_WIN_CP_MUTE,
-	/* SCANCODE_VOL_INC    */	SC_WIN_CP_VOL_INC,
-	/* SCANCODE_VOL_DEC    */	SC_WIN_CP_VOL_DEC,
-	/* SCANCODE_BASS_BOOST */	SC_WIN_CP_BASS_BOOST,
-	/* SCANCODE_NEXT_TRACK */	SC_WIN_CP_NEXT_TRACK,
-	/* SCANCODE_PREV_TRACK */	SC_WIN_CP_PREV_TRACK,
-	/* SCANCODE_STOP       */	SC_WIN_CP_STOP,
-	/* SCANCODE_PLAY_PAUSE */	SC_WIN_CP_PLAY_PAUSE,
-	/* SCANCODE_BACK       */	SC_WIN_CP_BACK,
-	/* SCANCODE_FORWARD    */	SC_WIN_CP_FORWARD,
-	/* SCANCODE_MEDIA      */	SC_WIN_CP_MEDIA,
-	/* SCANCODE_MAIL       */	SC_WIN_CP_MAIL,
-	/* SCANCODE_CALC       */	SC_WIN_CP_CALC,
-	/* SCANCODE_MYCOMP     */	SC_WIN_CP_MY_COMP,
-	/* SCANCODE_SEARCH     */	SC_WIN_CP_SEARCH,
-	/* SCANCODE_BROWSER    */	SC_WIN_CP_HOME
+	/* SCANCODE_NEXT_TRACK	*/	SC_WIN_CP_NEXT_TRACK,
+	/* SCANCODE_PREV_TRACK	*/	SC_WIN_CP_PREV_TRACK,
+	/* SCANCODE_STOP		*/	SC_WIN_CP_STOP,
+	/* SCANCODE_PLAY_PAUSE	*/	SC_WIN_CP_PLAY_PAUSE,
+	/* SCANCODE_BRIGHT_INC	*/	SC_WIN_CP_BRIGHT_INC,
+	/* SCANCODE_BRIGHT_DEC	*/	SC_WIN_CP_BRIGHT_DEC,
+	/* SCANCODE_MUTE		*/	SC_WIN_CP_MUTE,
+	/* SCANCODE_BASS_BOOST	*/	SC_WIN_CP_BASS_BOOST,
+	/* SCANCODE_VOL_INC		*/	SC_WIN_CP_VOL_INC,
+	/* SCANCODE_VOL_DEC		*/	SC_WIN_CP_VOL_DEC,
+	/* SCANCODE_BASS_INC	*/	SC_WIN_CP_BASS_INC,
+	/* SCANCODE_BASS_DEC	*/	SC_WIN_CP_BASS_DEC,
+	/* SCANCODE_TREB_INC	*/	SC_WIN_CP_TREB_INC,
+	/* SCANCODE_TREB_DEC	*/	SC_WIN_CP_TREB_DEC,
+	/* SCANCODE_MEDIA_SEL	*/	SC_WIN_CP_MEDIA_SEL,
+	/* SCANCODE_MAIL		*/	SC_WIN_CP_MAIL,
+	/* SCANCODE_CALC		*/	SC_WIN_CP_CALC,
+	/* SCANCODE_MYCOMP		*/	SC_WIN_CP_MY_COMP,
+	/* SCANCODE_SEARCH		*/	SC_WIN_CP_SEARCH,
+	/* SCANCODE_BROWSER		*/	SC_WIN_CP_HOME,
+	/* SCANCODE_BACK		*/	SC_WIN_CP_BACK,
+	/* SCANCODE_FORWARD		*/	SC_WIN_CP_FORWARD,
+	/* SCANCODE_WWWSTOP		*/	SC_WIN_CP_WWWSTOP,
+	/* SCANCODE_REFRESH		*/	SC_WIN_CP_REFRESH,
+	/* SCANCODE_FAVES		*/	SC_WIN_CP_FAVES
 };
 
 #ifndef SIMPLE_DEVICE
@@ -108,6 +117,7 @@ uint8_t g_mousebutton_state;
 int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
+uint8_t g_powermgmt_field;
 uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
@@ -293,14 +303,14 @@ uint8_t inline is_mod_set(const uint8_t code)
 
 void inline set_media(const uint8_t code)
 {
-	const uint8_t i = (code - SCANCODE_MUTE);
+	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (!g_media_key)
 		g_media_key = pgm_read_word(&MEDIA_MAP[i]);
 }
 
 void inline unset_media(const uint8_t code)
 {
-	const uint8_t i = (code - SCANCODE_MUTE);
+	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (g_media_key == pgm_read_word(&MEDIA_MAP[i]))
 		g_media_key = 0;
 }
@@ -456,7 +466,7 @@ void fn_down(const uint8_t code, const uint8_t action)
 	enqueue_fn(code);
 	if (g_layer_select != g_default_layer)
 		led_host_off((g_layer_select + (LED_FN_ACTIVE-1)));
-	g_layer_select = (code - SCANCODE_FN_BARRIER);
+	g_layer_select = (code - SCANCODE_FN_ORIGIN);
 	led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
 	led_host_on(LED_ANY_ACTIVE);
 	if ((action & ACTION_TOGGLE) && (g_locked_layer != g_layer_select))
@@ -473,7 +483,7 @@ void fn_down(const uint8_t code, const uint8_t action)
 void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
 {
 	delete_fn(code);
-	if (tap && (g_layer_select == (code - SCANCODE_FN_BARRIER)))
+	if (tap && (g_layer_select == (code - SCANCODE_FN_ORIGIN)))
 	{
 		if ((g_double_tap_repeat) && (action & ACTION_LOCKABLE))
 		{
@@ -491,7 +501,7 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 	}
 	else
 	{
-		g_layer_select = (g_fn_buffer[g_fn_buffer_length-1] - SCANCODE_FN_BARRIER);
+		g_layer_select = (g_fn_buffer[g_fn_buffer_length-1] - SCANCODE_FN_ORIGIN);
 	}
 	if (g_layer_select != g_default_layer)
 		led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
@@ -757,6 +767,12 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		break;
 	case SCANCODE_ESCGRAVE:
 		break;
+	case SCANCODE_POWER:
+	case SCANCODE_SLEEP:
+	case SCANCODE_WAKE:
+		/* Assume power keys never coincide */
+		g_powermgmt_field = (1 << (code - SCANCODE_POWER));
+		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
 		break;
@@ -764,22 +780,31 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		if (g_console_state == CONSOLE_IDLE)
 			g_console_state = CONSOLE_MENU_MAIN;
 		break;
-	case SCANCODE_MUTE:
-	case SCANCODE_VOL_INC:
-	case SCANCODE_VOL_DEC:
-	case SCANCODE_BASS_BOOST:
 	case SCANCODE_NEXT_TRACK:
 	case SCANCODE_PREV_TRACK:
 	case SCANCODE_STOP:
 	case SCANCODE_PLAY_PAUSE:
-	case SCANCODE_BACK:
-	case SCANCODE_FORWARD:
-	case SCANCODE_MEDIA:
+	case SCANCODE_BRIGHT_INC:
+	case SCANCODE_BRIGHT_DEC:
+	case SCANCODE_MUTE:
+	case SCANCODE_BASS_BOOST:
+	case SCANCODE_VOL_INC:
+	case SCANCODE_VOL_DEC:
+	case SCANCODE_BASS_INC:
+	case SCANCODE_BASS_DEC:
+	case SCANCODE_TREB_INC:
+	case SCANCODE_TREB_DEC:
+	case SCANCODE_MEDIA_SEL:
 	case SCANCODE_MAIL:
 	case SCANCODE_CALC:
 	case SCANCODE_MYCOMP:
 	case SCANCODE_SEARCH:
 	case SCANCODE_BROWSER:
+	case SCANCODE_BACK:
+	case SCANCODE_FORWARD:
+	case SCANCODE_WWWSTOP:
+	case SCANCODE_REFRESH:
+	case SCANCODE_FAVES:
 		set_media(code);
 		break;
 #ifdef ENABLE_MOUSE
@@ -1012,25 +1037,40 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_WINLOCK:
 	case SCANCODE_ESCGRAVE:
 		break;
+	case SCANCODE_POWER:
+	case SCANCODE_SLEEP:
+	case SCANCODE_WAKE:
+		/* Assume power keys never coincide */
+		g_powermgmt_field = 0;
+		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:
 		break;
-	case SCANCODE_MUTE:
-	case SCANCODE_VOL_INC:
-	case SCANCODE_VOL_DEC:
-	case SCANCODE_BASS_BOOST:
 	case SCANCODE_NEXT_TRACK:
 	case SCANCODE_PREV_TRACK:
 	case SCANCODE_STOP:
 	case SCANCODE_PLAY_PAUSE:
-	case SCANCODE_BACK:
-	case SCANCODE_FORWARD:
-	case SCANCODE_MEDIA:
+	case SCANCODE_BRIGHT_INC:
+	case SCANCODE_BRIGHT_DEC:
+	case SCANCODE_MUTE:
+	case SCANCODE_BASS_BOOST:
+	case SCANCODE_VOL_INC:
+	case SCANCODE_VOL_DEC:
+	case SCANCODE_BASS_INC:
+	case SCANCODE_BASS_DEC:
+	case SCANCODE_TREB_INC:
+	case SCANCODE_TREB_DEC:
+	case SCANCODE_MEDIA_SEL:
 	case SCANCODE_MAIL:
 	case SCANCODE_CALC:
 	case SCANCODE_MYCOMP:
 	case SCANCODE_SEARCH:
 	case SCANCODE_BROWSER:
+	case SCANCODE_BACK:
+	case SCANCODE_FORWARD:
+	case SCANCODE_WWWSTOP:
+	case SCANCODE_REFRESH:
+	case SCANCODE_FAVES:
 		unset_media(code);
 		break;
 #ifdef ENABLE_MOUSE
