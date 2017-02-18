@@ -56,22 +56,35 @@ SCANCODE_MOUSEYU           Move mouse pointer up
                            (Double-tap the mouse keys to move the cursor faster.
                            Triple-tap for even more speed, and so on.)
 
+SCANCODE_POWER             Power down the system
+SCANCODE_SLEEP             Put the system to sleep
+SCANCODE_WAKE              Wake the system from sleep state
+
+SCANCODE_NEXT_TRACK        Skip to next track in Windows
+SCANCODE_PREV_TRACK        Skip to last track in Windows
+SCANCODE_STOP              Stop playback in Windows
+SCANCODE_PLAY_PAUSE        Play or Pause playback in Windows
+SCANCODE_BRIGHT_INC        Increase screen brightness in Windows
+SCANCODE_BRIGHT_DEC        Decrease screen brightness in Windows
+SCANCODE_MUTE              Mute main volume in Windows
 SCANCODE_BASS_BOOST        Toggle bass boost in Windows
 SCANCODE_VOL_INC           Increase main volume in Windows
 SCANCODE_VOL_DEC           Decrease main volume in Windows
-SCANCODE_MUTE              Mute main volume in Windows
-SCANCODE_STOP              Stop playback in Windows
-SCANCODE_PLAY_PAUSE        Play or Pause playback in Windows
-SCANCODE_PREV_TRACK        Skip to last track in Windows
-SCANCODE_NEXT_TRACK        Skip to next track in Windows
-SCANCODE_FORWARD           Navigate forward in Windows
-SCANCODE_BACK              Navigate backward in Windows
-SCANCODE_MEDIA             Open system media player in Windows
+SCANCODE_BASS_INC          Increase bass equalizer in Windows
+SCANCODE_BASS_DEC          Decrease bass equalizer in Windows
+SCANCODE_TREB_INC          Increase treble equalizer in Windows
+SCANCODE_TREB_DEC          Decrease treble equalizer in Windows
+SCANCODE_MEDIA_SEL         Media select control in Windows
 SCANCODE_MAIL              Open system mail reader in Windows
 SCANCODE_CALC              Open calculator in Windows
 SCANCODE_MYCOMP            Open My Computer in Windows
-SCANCODE_SEARCH            Open system search in Windows
-SCANCODE_BROWSER           Open system web browser in Windows
+SCANCODE_SEARCH            Open search dialog in Windows
+SCANCODE_BROWSER           Open web browser to homepage in Windows
+SCANCODE_BACK              Navigate backward in Windows
+SCANCODE_FORWARD           Navigate forward in Windows
+SCANCODE_WWWSTOP           Stop navigation in Windows
+SCANCODE_REFRESH           Refresh navigation in Windows
+SCANCODE_FAVES             Open favorites dialog in Windows
 
 ========
 Layers
