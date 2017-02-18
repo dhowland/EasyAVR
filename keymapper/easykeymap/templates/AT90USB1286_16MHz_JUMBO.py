@@ -26,5 +26,5 @@ matrix_strobe_map = 0x00003732
 matrix_sense_map = 0x00003702
 kmac_key_map = None
 pw_defs_map = 0x000037d2
-boot_ptr_map = 0x00004049
-prod_str_map = 0x000041ce
+boot_ptr_map = 0x00004055
+prod_str_map = 0x000041da
