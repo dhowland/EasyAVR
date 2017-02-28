@@ -291,7 +291,7 @@ void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uin
 }
 
 /*
-	EasyAVR's original timer-based debounce algorithm was a large departure from a typical
+	EasyAVR's original lockout-based debounce algorithm was a large departure from a typical
 	debounce algorithm.  It exploited a knowledge of how keyboard switches are used in order
 	to increase the responsiveness of key actuation.  In addition, it allowed key presses to
 	be timed in order to support held keys and tap keys.  However, for fast typing on marginal
@@ -305,7 +305,7 @@ void debounce_logic_fast(const uint8_t read_status, const uint8_t row, const uin
 	
 	packed layout: lbbb bbhh hhhh hhhh
 	
-	The 10 bits for the hold counter are required to be able to time out 1 second.
+	The 10 bits for the hold counter are required to be able to measure up to 1 second.
 	The 5 bits left over for the debounce counter restrict the debounce time to 31ms.
 	
 	Honestly, I consider it better to increase the debounce time on the fast algorithm
@@ -323,9 +323,10 @@ void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uin
 		{
 			hold_count += MATRIX_REPEAT_MS;
 		}
+		/* Update the hold count and also clear the debounce count */
 		matrixptr->state_word = hold_count;
 	}
-	else if ((read_status == 1) && (matrixptr->packed_state.latched_status != 0))
+	else if ((read_status != 0) && (matrixptr->packed_state.latched_status != 0))
 	/* Switch is holding steady closed */
 	{
 		uint16_t hold_count = matrixptr->packed_state.hold_count;
@@ -338,8 +339,9 @@ void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uin
 		{
 			hold_count += MATRIX_REPEAT_MS;
 		}
+		/* Update the hold count and also clear the debounce count, then restore latched status */
 		matrixptr->state_word = hold_count;
-		matrixptr->packed_state.latched_status = read_status;
+		matrixptr->packed_state.latched_status = 1;
 	}
 	else
 	/* Switch is transitioning */
@@ -355,6 +357,7 @@ void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uin
 			{
 				keymap_deactuate(row,col,matrixptr->packed_state.hold_count);
 			}
+			/* bootstrap the hold count with the time we spent confirming the actuation */
 			matrixptr->state_word = bounce_count;
 			matrixptr->packed_state.latched_status = read_status;
 		}
