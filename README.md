@@ -1,7 +1,7 @@
 # EasyAVR
 Easy AVR USB Keyboard Firmware and Keymapper
 
-Find info and downloads at the DT Wiki:
+Find info and FAQ at the DT Wiki:
 https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware
 
 Ask questions in the GH thread:
@@ -9,6 +9,9 @@ https://geekhack.org/index.php?topic=51252
 
 View the source code on Github:
 https://github.com/dhowland/EasyAVR
+
+Download releases from Github:
+https://github.com/dhowland/EasyAVR/releases
 
 #### Table of Contents
 
