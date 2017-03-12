@@ -50,8 +50,6 @@
 #define HID_EPSIZE_KEYBOARD (KEYBOARD_ARRAY_LENGTH + 2)
 #define HID_EPSIZE_BOOT_KEYBOARD (0x08)
 
-#ifdef ENABLE_MOUSE
-
 #define TOTAL_INTERFACES (0x04)
 
 /** Endpoint address of the Mouse HID reporting IN endpoint. */
@@ -69,22 +67,6 @@
 #define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
 #define HID_EPSIZE_POWER (1)
 
-#else
-
-#define TOTAL_INTERFACES (0x03)
-
-/* Media keys */
-#define MEDIA_INTERFACE (0x01)
-#define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
-#define HID_EPSIZE_MEDIA (2)
-
-/* Power keys */
-#define POWER_INTERFACE (0x02)
-#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
-#define HID_EPSIZE_POWER (1)
-
-#endif /* ENABLE_MOUSE */
-
 
 /** Type define for the device configuration descriptor structure. This must be defined in the
 	*  application code, as the configuration descriptor contains several sub-descriptors which
@@ -99,12 +81,10 @@ typedef struct
 	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
 	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
 
-#ifdef ENABLE_MOUSE
 	// Mouse HID Interface
 	USB_Descriptor_Interface_t            HID2_MouseInterface;
 	USB_HID_Descriptor_HID_t              HID2_MouseHID;
 	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
-#endif /* ENABLE_MOUSE */
 
 	// Media HID Interface
 	USB_Descriptor_Interface_t            HID3_MediaInterface;

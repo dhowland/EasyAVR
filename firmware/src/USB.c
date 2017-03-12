@@ -92,7 +92,6 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM KeyboardReport[] =
  *
  *  This descriptor describes the mouse HID interface's report structure.
  */
-#ifdef ENABLE_MOUSE
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM MouseReport[] =
 {
 	/* Use the HID class driver's standard Mouse report.
@@ -105,7 +104,6 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM MouseReport[] =
 	 */
 	HID_DESCRIPTOR_MOUSE(-127, 127, 0, 0, 3, false)
 };
-#endif /* ENABLE_MOUSE */
 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM MediaReport[] =
 {
@@ -230,7 +228,6 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 		.PollingIntervalMS      = USB_KEYBOARD_UPDATE_RATE_MS
 	},
 
-#ifdef ENABLE_MOUSE
 	.HID2_MouseInterface =
 	{
 		.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
@@ -267,7 +264,6 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 		.EndpointSize           = HID_EPSIZE_MOUSE,
 		.PollingIntervalMS      = USB_MOUSE_UPDATE_RATE_MS
 	},
-#endif /* ENABLE_MOUSE */
 
 	.HID3_MediaInterface =
 	{
@@ -399,7 +395,6 @@ const USB_Descriptor_Configuration_t PROGMEM SemiConfigurationDescriptor =
 		.PollingIntervalMS      = USB_KEYBOARD_UPDATE_RATE_MS
 	},
 
-#ifdef ENABLE_MOUSE
 	.HID2_MouseInterface =
 	{
 		.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
@@ -436,7 +431,6 @@ const USB_Descriptor_Configuration_t PROGMEM SemiConfigurationDescriptor =
 		.EndpointSize           = HID_EPSIZE_MOUSE,
 		.PollingIntervalMS      = USB_MOUSE_UPDATE_RATE_MS
 	},
-	#endif /* ENABLE_MOUSE */
 
 	.HID3_MediaInterface =
 	{
@@ -665,12 +659,10 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 					}
 					Size    = sizeof(USB_HID_Descriptor_HID_t);
 					break;
-#ifdef ENABLE_MOUSE
 				case MOUSE_INTERFACE:
 					Address = &ConfigurationDescriptor.HID2_MouseHID;
 					Size    = sizeof(USB_HID_Descriptor_HID_t);
 					break;
-#endif /* ENABLE_MOUSE */
 				case MEDIA_INTERFACE:
 					Address = &ConfigurationDescriptor.HID3_MediaHID;
 					Size    = sizeof(USB_HID_Descriptor_HID_t);
@@ -698,12 +690,10 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 						Size    = sizeof(KeyboardReport);
 					}
 					break;
-#ifdef ENABLE_MOUSE
 				case MOUSE_INTERFACE:
 					Address = &MouseReport;
 					Size    = sizeof(MouseReport);
 					break;
-#endif /* ENABLE_MOUSE */
 				case MEDIA_INTERFACE:
 					Address = &MediaReport;
 					Size    = sizeof(MediaReport);
@@ -725,9 +715,7 @@ static uint8_t PrevKeyboardHIDReportBuffer[sizeof(USB_KeyboardModReport_Data_t)]
 // The above only works because USB_KeyboardModReport_Data_t is assumed to be bigger than USB_KeyboardReport_Data_t
 
 /** Buffer to hold the previously generated Mouse HID report, for comparison purposes inside the HID class driver. */
-#ifdef ENABLE_MOUSE
 static uint8_t PrevMouseHIDReportBuffer[sizeof(USB_MouseReport_Data_t)];
-#endif /* ENABLE_MOUSE */
 
 static uint8_t PrevMediaHIDReportBuffer[sizeof(USB_MediaReport_Data_t)];
 
@@ -758,7 +746,6 @@ USB_ClassInfo_HID_Device_t Keyboard_HID_Interface =
  *  within a device can be differentiated from one another. This is for the mouse HID
  *  interface within the device.
  */
-#ifdef ENABLE_MOUSE
 USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 	{
 		.Config =
@@ -774,7 +761,6 @@ USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 				.PrevReportINBufferSize       = sizeof(PrevMouseHIDReportBuffer),
 			},
 	};
-#endif /* ENABLE_MOUSE */
 
 USB_ClassInfo_HID_Device_t Media_HID_Interface =
 {
@@ -830,9 +816,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 	ConfigSuccess &= HID_Device_ConfigureEndpoints(&Keyboard_HID_Interface);
 	if (MEDIA_IS_ENABLED)
 	{
-#ifdef ENABLE_MOUSE
 		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
-#endif /* ENABLE_MOUSE */
 		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Media_HID_Interface);
 		ConfigSuccess &= HID_Device_ConfigureEndpoints(&Power_HID_Interface);
 	}
@@ -852,9 +836,7 @@ void EVENT_USB_Device_ControlRequest(void)
 	HID_Device_ProcessControlRequest(&Keyboard_HID_Interface);
 	if (MEDIA_IS_ENABLED)
 	{
-#ifdef ENABLE_MOUSE
 		HID_Device_ProcessControlRequest(&Mouse_HID_Interface);
-#endif /* ENABLE_MOUSE */
 		HID_Device_ProcessControlRequest(&Media_HID_Interface);
 		HID_Device_ProcessControlRequest(&Power_HID_Interface);
 	}
@@ -866,9 +848,7 @@ void EVENT_USB_Device_StartOfFrame(void)
 	HID_Device_MillisecondElapsed(&Keyboard_HID_Interface);
 	if (MEDIA_IS_ENABLED)
 	{
-#ifdef ENABLE_MOUSE
 		HID_Device_MillisecondElapsed(&Mouse_HID_Interface);
-#endif /* ENABLE_MOUSE */
 		HID_Device_MillisecondElapsed(&Media_HID_Interface);
 		HID_Device_MillisecondElapsed(&Power_HID_Interface);
 	}
@@ -928,7 +908,6 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 		else
 			*ReportSize = sizeof(USB_KeyboardModReport_Data_t);
 		break;
-#ifdef ENABLE_MOUSE
 	case MOUSE_INTERFACE:
 		g_mouse_service = 0;
 		USB_MouseReport_Data_t* const MouseReport = (USB_MouseReport_Data_t*)ReportData;
@@ -939,7 +918,6 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 		if (g_mouse_active)
 			return true;
 		break;
-#endif /* ENABLE_MOUSE */
 	case MEDIA_INTERFACE:
 		((USB_MediaReport_Data_t*)ReportData)->Button = g_media_key;
 		*ReportSize = sizeof(USB_MediaReport_Data_t);
@@ -1080,9 +1058,7 @@ void USB_cycle(void)
 	HID_Device_USBTask(&Keyboard_HID_Interface);
 	if (MEDIA_IS_ENABLED)
 	{
-#ifdef ENABLE_MOUSE
 		HID_Device_USBTask(&Mouse_HID_Interface);
-#endif /* ENABLE_MOUSE */
 		HID_Device_USBTask(&Media_HID_Interface);
 		HID_Device_USBTask(&Power_HID_Interface);
 	}

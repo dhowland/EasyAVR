@@ -42,7 +42,6 @@ const mod_map_t PROGMEM MODIFIER_MAP[8] = {
 	{ HID_KEYBOARD_SC_RIGHT_GUI,     HID_KEYBOARD_MODIFIER_RIGHTGUI   }
 };
 
-#ifdef ENABLE_MOUSE
 const mod_map_t PROGMEM MOUSEBUTTON_MAP[NUMBER_OF_MOUSE_BUTTONS] = {
 	{ SCANCODE_MOUSE1, 0x01 },
 	{ SCANCODE_MOUSE2, 0x02 },
@@ -50,7 +49,6 @@ const mod_map_t PROGMEM MOUSEBUTTON_MAP[NUMBER_OF_MOUSE_BUTTONS] = {
 	{ SCANCODE_MOUSE4, 0x08 },
 	{ SCANCODE_MOUSE5, 0x10 }
 };
-#endif /* ENABLE_MOUSE */
 
 const uint16_t PROGMEM MEDIA_MAP[NUMBER_OF_MEDIA_KEYS] = {
 	/* SCANCODE_NEXT_TRACK	*/	SC_WIN_CP_NEXT_TRACK,
@@ -315,7 +313,6 @@ void inline unset_media(const uint8_t code)
 		g_media_key = 0;
 }
 
-#ifdef ENABLE_MOUSE
 void inline set_mousebutton(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_MOUSE1);
@@ -327,7 +324,6 @@ void inline unset_mousebutton(const uint8_t code)
 	const uint8_t i = (code - SCANCODE_MOUSE1);
 	g_mousebutton_state &= ~(pgm_read_byte(&MOUSEBUTTON_MAP[i].mask));
 }
-#endif /* ENABLE_MOUSE */
 
 void init_keymap(void)
 {
@@ -807,7 +803,6 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_FAVES:
 		set_media(code);
 		break;
-#ifdef ENABLE_MOUSE
 	case SCANCODE_MOUSE1:
 	case SCANCODE_MOUSE2:
 	case SCANCODE_MOUSE3:
@@ -830,7 +825,6 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		if ((g_mouse_active == 0) || (g_mouse_multiply < g_double_tap_repeat))
 			g_mouse_multiply = g_double_tap_repeat;
 		break;
-#endif /* ENABLE_MOUSE */
 	case SCANCODE_M1:
 	case SCANCODE_M2:
 	case SCANCODE_M3:
@@ -1073,7 +1067,6 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_FAVES:
 		unset_media(code);
 		break;
-#ifdef ENABLE_MOUSE
 	case SCANCODE_MOUSE1:
 	case SCANCODE_MOUSE2:
 	case SCANCODE_MOUSE3:
@@ -1093,7 +1086,6 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_MOUSEYD:
 		g_mouse_req_Y--;
 		break;
-#endif /* ENABLE_MOUSE */
 	case SCANCODE_M1:
 	case SCANCODE_M2:
 	case SCANCODE_M3:
