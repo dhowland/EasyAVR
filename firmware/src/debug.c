@@ -56,6 +56,7 @@ const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll 
 const char PROGMEM g_vwinlock_no[] = "Scroll lock will not affect win lock.\n";
 const char PROGMEM g_bootkeyboard_full[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard.\n";
 const char PROGMEM g_bootkeyboard_half[] = "Keyboard acts as 6KRO keyboard plus mouse and media keys.\n";
+const char PROGMEM g_bootkeyboard_nomouse[] = "Keyboard acts as extended NKRO keyboard with media keys but no mouse.\n";
 const char PROGMEM g_bootkeyboard_none[] = "Keyboard acts as extended NKRO keyboard with mouse and media keys.\n";
 const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
 const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
@@ -190,6 +191,12 @@ void console_main(void)
 					queue_autotext(g_bootkeyboard_half);
 				}
 				else if (g_boot_keyboard_only == KB_TYPE_6KRO_PLUS)
+				{
+					g_boot_keyboard_only = KB_TYPE_NKRO_NOMOUSE;
+					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+					queue_autotext(g_bootkeyboard_nomouse);
+				}
+				else if (g_boot_keyboard_only == KB_TYPE_NKRO_NOMOUSE)
 				{
 					g_boot_keyboard_only = KB_TYPE_6KRO_ONLY;
 					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);

@@ -50,23 +50,24 @@
 #define HID_EPSIZE_KEYBOARD (KEYBOARD_ARRAY_LENGTH + 2)
 #define HID_EPSIZE_BOOT_KEYBOARD (0x08)
 
-#define TOTAL_INTERFACES (0x04)
-
-/** Endpoint address of the Mouse HID reporting IN endpoint. */
-#define MOUSE_INTERFACE (0x01)
-#define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
-#define HID_EPSIZE_MOUSE (3)
-
 /* Media keys */
-#define MEDIA_INTERFACE (0x02)
-#define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
-#define HID_EPSIZE_MEDIA (2)
+#define MEDIA_INTERFACE (0x01)
+#define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
+#define HID_EPSIZE_MEDIA (0x02)
 
 /* Power keys */
-#define POWER_INTERFACE (0x03)
-#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
-#define HID_EPSIZE_POWER (1)
+#define POWER_INTERFACE (0x02)
+#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
+#define HID_EPSIZE_POWER (0x01)
 
+/** Endpoint address of the Mouse HID reporting IN endpoint. */
+#define MOUSE_INTERFACE (0x03)
+#define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
+#define HID_EPSIZE_MOUSE (0x03)
+
+#define TOTAL_INTERFACES_ALL (0x04)
+#define TOTAL_INTERFACES_BOOT (0x01)
+#define TOTAL_INTERFACES_NOMOUSE (0x03)
 
 /** Type define for the device configuration descriptor structure. This must be defined in the
 	*  application code, as the configuration descriptor contains several sub-descriptors which
@@ -81,19 +82,19 @@ typedef struct
 	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
 	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
 
-	// Mouse HID Interface
-	USB_Descriptor_Interface_t            HID2_MouseInterface;
-	USB_HID_Descriptor_HID_t              HID2_MouseHID;
+	// Media HID Interface
+	USB_Descriptor_Interface_t            HID2_MediaInterface;
+	USB_HID_Descriptor_HID_t              HID2_MediaHID;
 	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
 
-	// Media HID Interface
-	USB_Descriptor_Interface_t            HID3_MediaInterface;
-	USB_HID_Descriptor_HID_t              HID3_MediaHID;
+	// Power HID Interface
+	USB_Descriptor_Interface_t            HID3_PowerInterface;
+	USB_HID_Descriptor_HID_t              HID3_PowerHID;
 	USB_Descriptor_Endpoint_t             HID3_ReportINEndpoint;
 
-	// Power HID Interface
-	USB_Descriptor_Interface_t            HID4_PowerInterface;
-	USB_HID_Descriptor_HID_t              HID4_PowerHID;
+	// Mouse HID Interface
+	USB_Descriptor_Interface_t            HID4_MouseInterface;
+	USB_HID_Descriptor_HID_t              HID4_MouseHID;
 	USB_Descriptor_Endpoint_t             HID4_ReportINEndpoint;
 } USB_Descriptor_Configuration_t;
 
@@ -107,6 +108,26 @@ typedef struct
 	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
 	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
 } USB_Descriptor_Configuration_boot_t;
+
+typedef struct
+{
+	USB_Descriptor_Configuration_Header_t Config;
+
+	// Keyboard HID Interface
+	USB_Descriptor_Interface_t            HID1_KeyboardInterface;
+	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
+	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
+
+	// Media HID Interface
+	USB_Descriptor_Interface_t            HID2_MediaInterface;
+	USB_HID_Descriptor_HID_t              HID2_MediaHID;
+	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
+
+	// Power HID Interface
+	USB_Descriptor_Interface_t            HID3_PowerInterface;
+	USB_HID_Descriptor_HID_t              HID3_PowerHID;
+	USB_Descriptor_Endpoint_t             HID3_ReportINEndpoint;
+} USB_Descriptor_Configuration_nomouse_t;
 #endif /* SIMPLE_DEVICE */
 
 typedef struct
