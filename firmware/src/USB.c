@@ -513,8 +513,8 @@ const USB_Descriptor_Configuration_nomouse_t PROGMEM NomouseConfigurationDescrip
 	{
 		.Header                 = {.Size = sizeof(USB_Descriptor_Configuration_Header_t), .Type = DTYPE_Configuration},
 
-		.TotalConfigurationSize = sizeof(USB_Descriptor_Configuration_t),
-		.TotalInterfaces        = TOTAL_INTERFACES_ALL,
+		.TotalConfigurationSize = sizeof(USB_Descriptor_Configuration_nomouse_t),
+		.TotalInterfaces        = TOTAL_INTERFACES_NOMOUSE,
 
 		.ConfigurationNumber    = 1,
 		.ConfigurationStrIndex  = NO_DESCRIPTOR,
@@ -548,7 +548,7 @@ const USB_Descriptor_Configuration_nomouse_t PROGMEM NomouseConfigurationDescrip
 		.CountryCode            = 0x00,
 		.TotalReportDescriptors = 1,
 		.HIDReportType          = HID_DTYPE_Report,
-		.HIDReportLength        = sizeof(BootKeyboardReport)
+		.HIDReportLength        = sizeof(KeyboardReport)
 	},
 
 	.HID1_ReportINEndpoint =
@@ -557,30 +557,30 @@ const USB_Descriptor_Configuration_nomouse_t PROGMEM NomouseConfigurationDescrip
 
 		.EndpointAddress        = KEYBOARD_IN_EPADDR,
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
-		.EndpointSize           = HID_EPSIZE_BOOT_KEYBOARD,
+		.EndpointSize           = HID_EPSIZE_KEYBOARD,
 		.PollingIntervalMS      = USB_KEYBOARD_UPDATE_RATE_MS
 	},
 
 	.HID2_MediaInterface =
 	{
 		.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), .Type = DTYPE_Interface},
-		
+
 		.InterfaceNumber        = MEDIA_INTERFACE,
 		.AlternateSetting       = 0x00,
-		
+
 		.TotalEndpoints         = 1,
-		
+
 		.Class                  = HID_CSCP_HIDClass,
 		.SubClass               = HID_CSCP_NonBootSubclass,
 		.Protocol               = HID_CSCP_NonBootProtocol,
-		
+
 		.InterfaceStrIndex      = NO_DESCRIPTOR
 	},
 
 	.HID2_MediaHID =
 	{
 		.Header                 = {.Size = sizeof(USB_HID_Descriptor_HID_t), .Type = HID_DTYPE_HID},
-		
+
 		.HIDSpec                = VERSION_BCD(1,11,0),
 		.CountryCode            = 0x00,
 		.TotalReportDescriptors = 1,
@@ -591,7 +591,7 @@ const USB_Descriptor_Configuration_nomouse_t PROGMEM NomouseConfigurationDescrip
 	.HID2_ReportINEndpoint =
 	{
 		.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), .Type = DTYPE_Endpoint},
-		
+
 		.EndpointAddress        = MEDIA_IN_EPADDR,
 		.Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 		.EndpointSize           = HID_EPSIZE_MEDIA,
