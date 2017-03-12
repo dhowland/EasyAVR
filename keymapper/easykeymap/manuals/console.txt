@@ -18,7 +18,7 @@ Default Layer
     The layer to use at startup and when no Fn keys are active.  Usually this
     would be set to 0.
 
-Basic Keyboard
+Keyboard Features
     This setting allows you to progressively disable features of the keyboard
     until is works exactly as a HID-compliant boot-compatible USB keyboard.
     You can optionally disable the NKRO interface (6KRO), the mouse interface,
