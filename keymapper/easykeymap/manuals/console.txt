@@ -19,11 +19,10 @@ Default Layer
     would be set to 0.
 
 Basic Keyboard
-    This is a 3-way toggle.  When enabled, this setting will force the keyboard
-    to present itself as a normal, boot-compatible USB keyboard with 6KRO (NKRO
-    disabled).  To be even more standards-compliant it can be bumped to also
-    disable the mouse keys and media keys.  This setting will not take effect
-    until the keyboard is unplugged.
+    This setting allows you to progressively disable features of the keyboard
+    until is works exactly as a HID-compliant boot-compatible USB keyboard.
+    You can optionally disable the NKRO interface (6KRO), the mouse interface,
+    and the media/power keys interface.  This may help work around problems
 
 Unlink Num Lock
     Activating this setting will cause the keyboard or numpad to ignore the
