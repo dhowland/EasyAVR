@@ -42,7 +42,7 @@ const char PROGMEM g_debug_menu[] = "\nDebug Menu:\n1) Print events\n2) Clear ev
 const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n4) Reset\n9) Quit\n> ";
 #endif /* ENABLE_DEBUG_CONSOLE */
 const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\n2) Toggle win lock on scroll lock\n"
-									 "3) Set default layer\n4) Toggle basic keyboard\n"
+									 "3) Set default layer\n4) Toggle keyboard features\n"
 									 "5) Toggle unlink num lock\n6) Set default dimmer level\n"
 									 "7) Set default backlight enable\n8) Toggle debounce style\n9) Back\n> ";
 const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
@@ -54,9 +54,10 @@ const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys
 const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
 const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll lock is enabled.\n";
 const char PROGMEM g_vwinlock_no[] = "Scroll lock will not affect win lock.\n";
-const char PROGMEM g_bootkeyboard_full[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard.\n";
-const char PROGMEM g_bootkeyboard_half[] = "Keyboard acts as 6KRO keyboard plus mouse and media keys.\n";
-const char PROGMEM g_bootkeyboard_none[] = "Keyboard acts as extended NKRO keyboard with mouse and media keys.\n";
+const char PROGMEM g_bootkeyboard_full[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard only.\n";
+const char PROGMEM g_bootkeyboard_half[] = "Keyboard: 6KRO, media/power keys: YES, mouse: YES.\n";
+const char PROGMEM g_bootkeyboard_nomouse[] = "Keyboard: NKRO, media/power keys: YES, mouse: NO.\n";
+const char PROGMEM g_bootkeyboard_none[] = "Keyboard: NKRO, media/power keys: YES, mouse: YES.\n";
 const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
 const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
 const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm and resetting debounce time.\n";
@@ -190,6 +191,12 @@ void console_main(void)
 					queue_autotext(g_bootkeyboard_half);
 				}
 				else if (g_boot_keyboard_only == KB_TYPE_6KRO_PLUS)
+				{
+					g_boot_keyboard_only = KB_TYPE_NKRO_NOMOUSE;
+					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+					queue_autotext(g_bootkeyboard_nomouse);
+				}
+				else if (g_boot_keyboard_only == KB_TYPE_NKRO_NOMOUSE)
 				{
 					g_boot_keyboard_only = KB_TYPE_6KRO_ONLY;
 					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);

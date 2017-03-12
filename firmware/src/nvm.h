@@ -52,13 +52,15 @@
 #define NVM_ID_DEBOUNCE_STYLE (16)
 
 #define KB_TYPE_6KRO_ONLY  (0b11)
-#define KB_TYPE_NKRO_ONLY  (0b10)  // not used
+#define KB_TYPE_NKRO_NOMOUSE  (0b10)
 #define KB_TYPE_6KRO_PLUS  (0b01)
 #define KB_TYPE_NKRO_PLUS  (0b00)
 #define NKRO_IS_ENABLED   (!(g_boot_keyboard_only_latched & 0b01))
 #define NKRO_IS_DISABLED    (g_boot_keyboard_only_latched & 0b01)
-#define MEDIA_IS_ENABLED  (!(g_boot_keyboard_only_latched & 0b10))
-#define MEDIA_IS_DISABLED   (g_boot_keyboard_only_latched & 0b10)
+#define MEDIA_IS_ENABLED    (g_boot_keyboard_only_latched != 0b11)
+#define MEDIA_IS_DISABLED   (g_boot_keyboard_only_latched == 0b11)
+#define MOUSE_IS_ENABLED  (!(g_boot_keyboard_only_latched & 0b10))
+#define MOUSE_IS_DISABLED   (g_boot_keyboard_only_latched & 0b10)
 
 typedef struct {
 	const void * var;
