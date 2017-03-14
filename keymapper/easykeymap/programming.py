@@ -101,6 +101,12 @@ class ProgrammingTask(object):
         th.join()
         return p.wait()
 
+    def protectpath(self, path):
+        if self.info.windows:
+            return ('"%s"' % (path,))
+        else:
+            return path
+
     def findpath(self, name):
         # check for absolute path
         path = os.path.expandvars(os.path.expanduser(name))
@@ -127,7 +133,7 @@ class ProgrammingTask(object):
         for name in names:
             path = self.findpath(name)
             if path is not None:
-                return path
+                return self.protectpath(path)
         return None
 
     def bootmsg(self, logger):
@@ -184,7 +190,7 @@ class FlipWindows(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
         self.bootmsg(self.logger)
-        cmd = ('"%s" -device %s -hardware USB -operation '
+        cmd = ('%s -device %s -hardware USB -operation '
                'onfail abort loadbuffer "%s" memory FLASH erase F '
                'blankcheck program verify start reset 0') % (
             self.tool_path, self.info.device.lower(), self.info.filename)
@@ -223,13 +229,13 @@ class DfuProgrammer(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find dfu-programmer executable.")
         self.bootmsg(self.logger)
-        cmd = ('"%s" %s erase') % (self.tool_path, self.info.device.lower())
+        cmd = ('%s %s erase') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
         self.execute(cmd)
-        cmd = ('"%s" %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
+        cmd = ('%s %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
         self.logger(cmd)
         self.execute(cmd)
-        cmd = ('"%s" %s launch') % (self.tool_path, self.info.device.lower())
+        cmd = ('%s %s launch') % (self.tool_path, self.info.device.lower())
         self.logger(cmd)
         self.execute(cmd)
 
