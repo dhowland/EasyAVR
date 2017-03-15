@@ -187,6 +187,7 @@ class FlipWindows(ProgrammingTask):
         args = [self.tool_path, '-device', self.info.device.lower(), '-hardware', 'USB',
                 '-operation', 'onfail', 'abort', 'loadbuffer', self.info.filename, 'memory',
                 'FLASH', 'erase', 'F', 'blankcheck', 'program', 'verify', 'start', 'reset', '0']
+        self.logger(' '.join(args))
         self.execute(args)
 
 
@@ -228,7 +229,7 @@ class DfuProgrammer(ProgrammingTask):
         args = [self.tool_path, self.info.device.lower(), 'flash', self.info.filename]
         self.logger(' '.join(args))
         self.execute(args)
-        args = [self.tool_path, self.info.device.lower(), 'launch']
+        args = [self.tool_path, self.info.device.lower(), 'reset']
         self.logger(' '.join(args))
         self.execute(args)
 
