@@ -161,7 +161,8 @@ class TeensyLoader(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
         self.bootmsg(self.logger)
-        args = [self.tool_path, ('-mmcu=%s' % (self.info.device.lower(),)), '-w', '-v', self.info.filename]
+        mmcu = '-mmcu=%s' % (self.info.device.lower(),)
+        args = [self.tool_path, mmcu, '-w', '-v', self.info.filename]
         self.logger(' '.join(args))
         self.execute(args)
 
@@ -183,8 +184,9 @@ class FlipWindows(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
         self.bootmsg(self.logger)
-        op = 'onfail abort loadbuffer "%s" memory FLASH erase F blankcheck program verify start reset 0' % (self.info.filename,)
-        args = [self.tool_path, '-device', self.info.device.lower(), '-hardware', 'USB', '-operation', op]
+        args = [self.tool_path, '-device', self.info.device.lower(), '-hardware', 'USB',
+                '-operation', 'onfail', 'abort', 'loadbuffer', self.info.filename, 'memory',
+                'FLASH', 'erase', 'F', 'blankcheck', 'program', 'verify', 'start', 'reset', '0']
         self.execute(args)
 
 
@@ -223,7 +225,7 @@ class DfuProgrammer(ProgrammingTask):
         args = [self.tool_path, self.info.device.lower(), 'erase']
         self.logger(' '.join(args))
         self.execute(args)
-        args = [self.tool_path, self.info.device.lower(), 'flash', ('"%s"' % (self.info.filename,))]
+        args = [self.tool_path, self.info.device.lower(), 'flash', self.info.filename]
         self.logger(' '.join(args))
         self.execute(args)
         args = [self.tool_path, self.info.device.lower(), 'launch']
