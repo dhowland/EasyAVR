@@ -223,6 +223,7 @@ class DfuProgrammer(ProgrammingTask):
         args = [self.tool_path, self.info.device.lower(), 'erase']
         self.logger(' '.join(args))
         self.execute(args)
+        args = [self.tool_path, self.info.device.lower(), 'flash', ('"%s"' % (self.info.filename,))]
         self.logger(' '.join(args))
         self.execute(args)
         args = [self.tool_path, self.info.device.lower(), 'launch']
