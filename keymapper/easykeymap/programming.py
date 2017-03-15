@@ -101,12 +101,6 @@ class ProgrammingTask(object):
         th.join()
         return p.wait()
 
-    def protectpath(self, path):
-        if self.info.windows:
-            return ('"%s"' % (path,))
-        else:
-            return path
-
     def findpath(self, name):
         # check for absolute path
         path = os.path.expandvars(os.path.expanduser(name))
@@ -133,7 +127,7 @@ class ProgrammingTask(object):
         for name in names:
             path = self.findpath(name)
             if path is not None:
-                return self.protectpath(path)
+                return path
         return None
 
     def bootmsg(self, logger):
@@ -167,10 +161,9 @@ class TeensyLoader(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
         self.bootmsg(self.logger)
-        cmd = "%s -mmcu=%s -w -v %s" % (
-                self.tool_path, self.info.device.lower(), self.info.filename)
-        self.logger(cmd)
-        self.execute(cmd)
+        args = [self.tool_path, ('-mmcu=%s' % (self.info.device.lower(),)), '-w', '-v', self.info.filename]
+        self.logger(' '.join(args))
+        self.execute(args)
 
 
 class FlipWindows(ProgrammingTask):
@@ -190,11 +183,9 @@ class FlipWindows(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
         self.bootmsg(self.logger)
-        cmd = ('%s -device %s -hardware USB -operation '
-               'onfail abort loadbuffer "%s" memory FLASH erase F '
-               'blankcheck program verify start reset 0') % (
-            self.tool_path, self.info.device.lower(), self.info.filename)
-        self.execute(cmd)
+        op = 'onfail abort loadbuffer "%s" memory FLASH erase F blankcheck program verify start reset 0' % (self.info.filename,)
+        args = [self.tool_path, '-device', self.info.device.lower(), '-hardware', 'USB', '-operation', op]
+        self.execute(args)
 
 
 class AvrdudePosix(ProgrammingTask):
@@ -229,15 +220,14 @@ class DfuProgrammer(ProgrammingTask):
         if self.tool_path is None:
             raise ProgrammingException("Can't find dfu-programmer executable.")
         self.bootmsg(self.logger)
-        cmd = ('%s %s erase') % (self.tool_path, self.info.device.lower())
-        self.logger(cmd)
-        self.execute(cmd)
-        cmd = ('%s %s flash "%s"') % (self.tool_path, self.info.device.lower(), self.info.filename)
-        self.logger(cmd)
-        self.execute(cmd)
-        cmd = ('%s %s launch') % (self.tool_path, self.info.device.lower())
-        self.logger(cmd)
-        self.execute(cmd)
+        args = [self.tool_path, self.info.device.lower(), 'erase']
+        self.logger(' '.join(args))
+        self.execute(args)
+        self.logger(' '.join(args))
+        self.execute(args)
+        args = [self.tool_path, self.info.device.lower(), 'launch']
+        self.logger(' '.join(args))
+        self.execute(args)
 
 
 class ProgrammingException(Exception):
