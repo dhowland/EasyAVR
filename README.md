@@ -89,6 +89,12 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 #### Installation
 
+*Python*
+
+A complete Python install is required, plus the setuptools package.  For example, this command will get you going:
+
+`sudo apt-get install python python-tk python-setuptools`
+
 *dfu-programmer*
 
 dfu-programmer can be installed on Linux using your chosen package manager.  Typically, it will look something like this:
