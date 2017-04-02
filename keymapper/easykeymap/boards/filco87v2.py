@@ -137,7 +137,8 @@ keyboard_definition = [
      ((4, 4), (7, 17), 'HID_KEYBOARD_SC_0_AND_CLOSING_PARENTHESIS'),
      ((4, 4), (4, 17), 'HID_KEYBOARD_SC_MINUS_AND_UNDERSCORE'),
      ((4, 4), (4, 4), 'HID_KEYBOARD_SC_EQUAL_AND_PLUS'),
-     ((8, 4), (2, 1), 'HID_KEYBOARD_SC_BACKSPACE'),
+     ((4, 4), (5, 1), 'HID_KEYBOARD_SC_INTERNATIONAL3'), # JIS yen
+     ((4, 4), (2, 1), 'HID_KEYBOARD_SC_BACKSPACE'),
      (1, None, '0'),
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_INSERT'),
      ((4, 4), (4, 14), 'HID_KEYBOARD_SC_HOME'),
@@ -190,18 +191,22 @@ keyboard_definition = [
      ((4, 4), (1, 4), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((4, 4), (1, 3), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((4, 4), (0, 17), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
-     ((11, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
+     ((4, 4), (0, 4), 'HID_KEYBOARD_SC_INTERNATIONAL1'), # JIS blacklash underscore
+     ((7, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
      (5, None, '0'),
      ((4, 4), (6, 14), 'HID_KEYBOARD_SC_UP_ARROW'),
      (4, None, '0')],
 
     [((5, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
-     ((5, 4), (2, 15), 'HID_KEYBOARD_SC_LEFT_GUI'),
+     ((4, 4), (2, 15), 'HID_KEYBOARD_SC_LEFT_GUI'),
      ((5, 4), (6, 2), 'HID_KEYBOARD_SC_LEFT_ALT'),
-     ((25, 4), (6, 10), 'HID_KEYBOARD_SC_SPACE'),
+     ((4, 4), (0, 9), 'HID_KEYBOARD_SC_INTERNATIONAL5'), # JIS muhen
+     ((13, 4), (6, 10), 'HID_KEYBOARD_SC_SPACE'),
+     ((5, 4), (0, 8), 'HID_KEYBOARD_SC_INTERNATIONAL4'), # JIS henkan
+     ((5, 4), (0, 7), 'HID_KEYBOARD_SC_INTERNATIONAL2'), # JIS kana
      ((5, 4), (0, 2), 'HID_KEYBOARD_SC_RIGHT_ALT'),
      ((5, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_GUI'),
-     ((5, 4), (0, 3), 'HID_KEYBOARD_SC_APPLICATION'),
+     ((4, 4), (0, 3), 'HID_KEYBOARD_SC_APPLICATION'),
      ((5, 4), (1, 0), 'HID_KEYBOARD_SC_RIGHT_CONTROL'),
      (1, None, '0'),
      ((4, 4), (0, 14), 'HID_KEYBOARD_SC_LEFT_ARROW'),
