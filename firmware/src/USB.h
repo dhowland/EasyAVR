@@ -32,7 +32,7 @@
 
 /* Must be 6 for boot-compliant keyboard,
    Must be 16 for NKRO */
-#define KEYBOARD_ARRAY_LENGTH (16)
+#define KEYBOARD_ARRAY_LENGTH (18)
 #define MAX_NKRO_CODE (0x7F)
 
 #define USB_KEYBOARD_UPDATE_RATE_MS (1)

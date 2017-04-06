@@ -99,7 +99,7 @@ uint8_t g_locked_layer;
 uint8_t g_layer_select;
 uint8_t g_modifier_state;
 uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
-uint8_t g_nkro_field[REAL_NKRO_SIZE];
+uint8_t g_nkro_field[KEYBOARD_ARRAY_LENGTH];
 #ifdef KEYMAP_MEMORY_SAVE
 uint8_t g_matrixlayer[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #else
@@ -709,6 +709,11 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case HID_KEYBOARD_SC_F22:
 	case HID_KEYBOARD_SC_F23:
 	case HID_KEYBOARD_SC_F24:
+	case HID_KEYBOARD_SC_INTERNATIONAL1:
+	case HID_KEYBOARD_SC_INTERNATIONAL2:
+	case HID_KEYBOARD_SC_INTERNATIONAL3:
+	case HID_KEYBOARD_SC_INTERNATIONAL4:
+	case HID_KEYBOARD_SC_INTERNATIONAL5:
 #ifdef MACRO_RAM_SIZE
 		if (g_recording_macro)
 			record_stroke(code);
@@ -1002,6 +1007,11 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case HID_KEYBOARD_SC_F22:
 	case HID_KEYBOARD_SC_F23:
 	case HID_KEYBOARD_SC_F24:
+	case HID_KEYBOARD_SC_INTERNATIONAL1:
+	case HID_KEYBOARD_SC_INTERNATIONAL2:
+	case HID_KEYBOARD_SC_INTERNATIONAL3:
+	case HID_KEYBOARD_SC_INTERNATIONAL4:
+	case HID_KEYBOARD_SC_INTERNATIONAL5:
 #ifdef MACRO_RAM_SIZE
 		if (g_recording_macro && g_keylock_flag)
 			check_finish_password_record(code);
@@ -1278,7 +1288,7 @@ void get_nkro_report(uint8_t * const buffer)
 	if (g_keylock_flag)
 		return;
 	
-	for (i=0; i<REAL_NKRO_SIZE; i++)
+	for (i=0; i<KEYBOARD_ARRAY_LENGTH; i++)
 	{
 		buffer[i] = g_nkro_field[i];
 	}

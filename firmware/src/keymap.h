@@ -26,7 +26,6 @@
 #include "config_keymap.h"
 
 #define HID_ROLLOVER_SIZE (6)
-#define REAL_NKRO_SIZE (13)
 
 #if defined (BOARD_SIZE_COSTAR) && defined (__AVR_ATmega32U2__)
 #define KEYMAP_MEMORY_SAVE
