@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
 #
@@ -29,12 +33,16 @@ try:
     import tkFileDialog as filedialog
     import tkSimpleDialog as simpledialog
     import tkMessageBox as messagebox
+    import Tkinter as tk
+
 except ImportError:
     from tkinter import *
     from tkinter.ttk import *
     from tkinter import filedialog
     from tkinter import simpledialog
     from tkinter import messagebox
+    import tkinter as tk
+    import tkinter.ttk as ttk
 
 import pickle
 import copy
@@ -44,6 +52,7 @@ import os.path
 import importlib
 from glob import glob
 import traceback
+from PIL import Image, ImageTk
 
 if not hasattr(sys, 'frozen'):
     import pkg_resources
@@ -284,6 +293,48 @@ class GUI(object):
                               command=self.about)
         menubar.add_cascade(menu=menu_help, label='Help')
         self.root['menu'] = menubar
+		
+# toolbar
+        toolbar = Frame(self.root, borderwidth="1", relief=GROOVE)
+		
+        eimgnew = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/document-new.png')))
+        newButton = tk.Button(toolbar, image=eimgnew, relief=FLAT, command=self.newfile)
+        newButton.image = eimgnew
+        newButton.pack(side=LEFT, padx=2, pady=2)
+		
+        eimgopen = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/document-open.png')))
+        openButton = tk.Button(toolbar, image=eimgopen, relief=FLAT, command=self.openfile)
+        openButton.image = eimgopen
+        openButton.pack(side=LEFT, padx=2, pady=2)
+
+        eimgsave = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/document-save.png')))
+        saveButton = tk.Button(toolbar, image=eimgsave, relief=FLAT, command=self.savefile)
+        saveButton.image = eimgsave
+        saveButton.pack(side=LEFT, padx=2, pady=2)
+		
+        eimgbuild = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/run-build.png')))
+        buildButton = tk.Button(toolbar, image=eimgbuild, relief=FLAT, command=self.build)
+        buildButton.image = eimgbuild
+        buildButton.pack(side=LEFT, padx=2, pady=2)
+		
+        Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
+		
+        eimgpicker = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/input-keyboard16.png')))
+        pickerButton = tk.Button(toolbar, image=eimgpicker, relief=FLAT, command=self.showpicker)		
+        pickerButton.image = eimgpicker
+        pickerButton.pack(side=LEFT, padx=2, pady=2)
+		
+        Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
+
+        eimgbuildandupload = ImageTk.PhotoImage(Image.open(self.get_pkg_path('icons/toolbar/media-flash.png')))
+        buildanduploadButton = tk.Button(toolbar, image=eimgbuildandupload, relief=FLAT, command=self.buildandupload)
+        buildanduploadButton.image = eimgbuildandupload
+        buildanduploadButton.pack(side=LEFT, padx=2, pady=2)
+		
+        Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
+		
+        toolbar.pack(side=TOP, fill=X)
+
         # frame to hold info labels
         infoframe = Frame(self.root)
         Label(infoframe, text="Hardware: ").pack(side=LEFT)
