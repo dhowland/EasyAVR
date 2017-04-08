@@ -29,12 +29,14 @@ try:
     import tkFileDialog as filedialog
     import tkSimpleDialog as simpledialog
     import tkMessageBox as messagebox
+    from idlelib.ToolTip import ToolTip
 except ImportError:
     from tkinter import *
     from tkinter.ttk import *
     from tkinter import filedialog
     from tkinter import simpledialog
     from tkinter import messagebox
+    from idlelib.ToolTip import ToolTip
 
 import pickle
 import copy
@@ -292,21 +294,25 @@ class GUI(object):
         newButton = Button(toolbar, image=eimgnew, command=self.newfile)
         newButton.image = eimgnew
         newButton.pack(side=LEFT, padx=2, pady=2)
+        newTip = ToolTip(newButton, "New Layout")
         
         eimgopen = PhotoImage(file=self.get_pkg_path('icons/toolbar/document-open.png'))
         openButton = Button(toolbar, image=eimgopen, command=self.openfile)
         openButton.image = eimgopen
         openButton.pack(side=LEFT, padx=2, pady=2)
+        openTip = ToolTip(openButton, "Open Layout")
         
         eimgsave = PhotoImage(file=self.get_pkg_path('icons/toolbar/document-save.png'))
         saveButton = Button(toolbar, image=eimgsave, command=self.savefile)
         saveButton.image = eimgsave
         saveButton.pack(side=LEFT, padx=2, pady=2)
+        saveTip = ToolTip(saveButton, "Save Layout")
         
         eimgbuild = PhotoImage(file=self.get_pkg_path('icons/toolbar/run-build.png'))
         buildButton = Button(toolbar, image=eimgbuild, command=self.build)
         buildButton.image = eimgbuild
         buildButton.pack(side=LEFT, padx=2, pady=2)
+        buildTip = ToolTip(buildButton, "Build Firmware")
         
         Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
         
@@ -314,6 +320,7 @@ class GUI(object):
         pickerButton = Button(toolbar, image=eimgpicker, command=self.showpicker)
         pickerButton.image = eimgpicker
         pickerButton.pack(side=LEFT, padx=2, pady=2)
+        pickerTip = ToolTip(pickerButton, "Scancode Picker")
         
         Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
         
@@ -321,6 +328,7 @@ class GUI(object):
         buildanduploadButton = Button(toolbar, image=eimgbuildandupload, command=self.buildandupload)
         buildanduploadButton.image = eimgbuildandupload
         buildanduploadButton.pack(side=LEFT, padx=2, pady=2)
+        buildanduploadTip = ToolTip(buildanduploadButton, "Build and Reprogram")
         
         Separator(toolbar, orient=VERTICAL).pack(side=LEFT, fill=Y)
         
