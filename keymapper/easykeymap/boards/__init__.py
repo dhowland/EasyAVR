@@ -49,6 +49,7 @@ __all__ = [
 'sixkeyboard',
 'sixshooter',
 'smallfry',
+'tada68',
 'tau',
 'techcard',
 'threekey',
