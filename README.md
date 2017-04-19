@@ -1,6 +1,10 @@
 # EasyAVR
 Easy AVR USB Keyboard Firmware and Keymapper
 
+> **Notice: in 2017 EasyAVR will be moving to Python 3.6 and support for Python 2.7 will be deprecated.
+> This effort might lead to a new savefile format.
+> It is a good idea to transition to Python 3.x now so in order to ease the transition.**
+
 Find info and FAQ at the DT Wiki:
 https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware
 
