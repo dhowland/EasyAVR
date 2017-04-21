@@ -85,7 +85,7 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
 # The total number of LED outputs (indicators + backlights)
 num_leds = 2
 # The number of LED indicators (for example, caps lock)
-num_ind = 2
+num_ind = 1
 # The number of backlight enable modes.  This counts the number of
 # options available for the BL_ENABLE key.  Boards without backlights
 # should use the minimum value of 2.
@@ -100,7 +100,6 @@ num_bl_enab = 2
 # 'Recording', 'Backlight', and 'Unassigned'.
 led_definition = [
     ('Caps Key', 'Caps Lock'),
-    ('Backlight Key', 'Backlight')
 ]
 
 # Definition of LED pins.  (indicators and backlights)  Indicators
@@ -111,7 +110,7 @@ led_definition = [
 # of the LED and the anode is connected to the power supply.
 led_hardware = [
 #       Port    Pin    Direction
-    ( REF_PORTB, 2, LED_DRIVER_PULLUP ),
+    ( REF_PORTB, 2, LED_DRIVER_PULLDOWN ),
     ( REF_PORTB, 6, LED_DRIVER_PULLUP )
 ]
 
@@ -185,12 +184,12 @@ keyboard_definition = [
      ((4, 4), (2, 9), 'HID_KEYBOARD_SC_L'),
      ((4, 4), (2, 10), 'HID_KEYBOARD_SC_SEMICOLON_AND_COLON'),
      ((4, 4), (2, 11), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
-	 ((4, 4), (2, 12), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
-	 ((5, 4), (2, 13), 'HID_KEYBOARD_SC_ENTER'),
+     ((4, 4), (2, 12), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
+     ((5, 4), (2, 13), 'HID_KEYBOARD_SC_ENTER'),
      ((4, 4), (2, 14), 'HID_KEYBOARD_SC_PAGE_UP')],
 
     [((5, 4), (3, 0), 'HID_KEYBOARD_SC_LEFT_SHIFT'),
-	 ((4, 4), (3, 1), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
+     ((4, 4), (3, 1), 'HID_KEYBOARD_SC_BACKSLASH_AND_PIPE'),
      ((4, 4), (3, 2), 'HID_KEYBOARD_SC_Z'),
      ((4, 4), (3, 3), 'HID_KEYBOARD_SC_X'),
      ((4, 4), (3, 4), 'HID_KEYBOARD_SC_C'),
