@@ -101,8 +101,8 @@ key_mode_map = {'Normal': 0x00, 'Toggle': 0x01, 'Tap Key': 0x04,
                 'Lockable': 0x02, 'Rapid Fire': 0x08}
 default_mode = 'Normal'
 
-with_mods = ['Shift', 'Ctrl', 'Alt', 'Win']
-with_mods_map = {'Shift': 0x20, 'Ctrl': 0x10, 'Alt': 0x40, 'Win': 0x80}
+with_mods = ['Shift', 'Ctrl', 'R_Alt', 'Win']
+with_mods_map = {'Shift': 0x20, 'Ctrl': 0x10, 'R_Alt': 0x40, 'Win': 0x80}
 
 led_assignments = {'Num Lock': 0, 'Caps Lock': 1, 'Scroll Lock': 2,
                    'Compose': 3, 'Kana': 4, 'Win Lock': 5, 'Fn Active': 6,
