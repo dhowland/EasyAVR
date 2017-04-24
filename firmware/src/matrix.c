@@ -78,6 +78,7 @@ void init_matrix(void)
 	pin_set(REF_PORTE, 2);
 #endif /* KMAC_ALIKE */
 	/* Select the debounce logic */
+#ifndef SIMPLE_DEVICE
 	if (g_debounce_style)
 	{
 		debounce_logic = &debounce_logic_slow;
@@ -85,6 +86,7 @@ void init_matrix(void)
 			g_debounce_ms = 32;
 	}
 	else
+#endif /* SIMPLE_DEVICE */
 	{
 		debounce_logic = &debounce_logic_fast;
 	}
