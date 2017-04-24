@@ -72,6 +72,13 @@ RAM_table = {
     "AT90USB1286": 8192,
 }
 
+BOOT_table = {
+    "ATmega32U4": 0x7000,
+    "ATmega32U2": 0x7000,
+    "ATmega16U2": 0x3000,
+    "AT90USB1286": 0x1E000,
+}
+
 MIN_RAM_FOR_STACK = 128
 
 def write_symbol(outfile, symtable, symbol):
@@ -132,6 +139,15 @@ for hw in hardware_table:
     print("Used %d bytes of %d (%0.1f %% full)" % (used, total, pct_full))
     if unused < MIN_RAM_FOR_STACK:
         print("WARNING: Insufficient space for the stack! (bytes free: %d, required: %d)" % (unused,MIN_RAM_FOR_STACK))
+        sys.exit(1)
+
+    print("Checking Flash usage")
+    used = sections['.text']+sections['.data']
+    boot = BOOT_table[hw[0]]
+    pct_full = (used/boot) * 100
+    print("Used %d bytes of %d (%0.1f %% full)" % (used, boot, pct_full))
+    if used >= boot:
+        print("WARNING: Insufficient space for the bootloader! (bytes over: %d)" % (used-boot))
         sys.exit(1)
 
     print("Updating config source")
