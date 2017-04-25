@@ -94,7 +94,6 @@ void autokey_send(void)
 		/* Wait for the final keystroke to get sent */
 		if (!g_keyboard_service)
 		{
-			g_autokey_modifier = 0;
 			g_autokey_status = AUTOKEY_ENDSEND;
 		}
 	}
@@ -138,26 +137,35 @@ void autokey_read(void)
 
 void autokey_setidle(void)
 {
+	g_autokey_modifier = 0;
 	if (g_report_buffer[0] == 0)
 		g_autokey_status = AUTOKEY_IDLE;
 }
 
 void autokey_cycle(void)
 {
-	if (g_autokey_status & AUTOKEY_SENDING)
+	if (g_autokey_status == AUTOKEY_IDLE)
+		return;
+
+	else if (g_autokey_status & AUTOKEY_SENDING)
 		autokey_send();
+
 	else if (g_macro_waiting != (uint16_t*)0)
 		queue_macro(g_macro_waiting);
+
 #ifdef MACRO_RAM_SIZE
 	else if (g_ram_macro_waiting != (uint16_t*)0)
 		queue_ram_macro(g_ram_macro_waiting, g_ram_macro_ptr);
 #endif /* MACRO_RAM_SIZE */
+
 #ifndef SIMPLE_DEVICE
 	else if (g_autotext_waiting != (char*)0)
 		queue_autotext(g_autotext_waiting);
 #endif /* SIMPLE_DEVICE */
+
 	else if (g_autokey_status & AUTOKEY_READING)
 		autokey_read();
+
 	else
 		autokey_setidle();
 }
