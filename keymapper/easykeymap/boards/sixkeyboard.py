@@ -34,7 +34,7 @@ display_width = int(3*4)
 num_rows = 1
 num_cols = 6
 
-strobe_cols = True
+strobe_cols = False
 strobe_low = True
 
 matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
