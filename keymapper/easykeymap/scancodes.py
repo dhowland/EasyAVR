@@ -484,7 +484,8 @@ char_map = {
     "RIGHT": ("HID_KEYBOARD_SC_RIGHT_ARROW", False),
     "SPACE": ("HID_KEYBOARD_SC_SPACE", False),
     " ": ("HID_KEYBOARD_SC_SPACE", False),
-    "APP": ("HID_KEYBOARD_SC_APPLICATION", False)
+    "APP": ("HID_KEYBOARD_SC_APPLICATION", False),
+    "NON_US_BACKSLASH": ("HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE", False)
 }
 
 keysyms = {
