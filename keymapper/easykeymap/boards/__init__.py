@@ -40,6 +40,7 @@ __all__ = [
 'orion',
 'phantom',
 'planck',
+'preonic',
 'qfr',
 'qfrv2',
 'qfxt',
