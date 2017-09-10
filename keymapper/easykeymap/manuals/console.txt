@@ -1,6 +1,10 @@
 HOWTO: Easy AVR USB Keyboard Firmware - Config console and special features
 metalliqaz@geekhack
 
+The config console enables the setting of various configuration options from the
+keyboard itself and is accessed using a key mapped to SCANCODE_CONFIG (see
+"Using Configuration Options" below for more details).
+
 =======================
 Configuration Options
 =====================
