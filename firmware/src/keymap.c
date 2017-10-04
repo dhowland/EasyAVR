@@ -1029,7 +1029,13 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_PASSWORD4:
 	case SCANCODE_KEYLOCK:
 	case SCANCODE_WINLOCK:
+		break;
 	case SCANCODE_ESCGRAVE:
+#ifdef KEYMAP_MEMORY_SAVE
+		/* If using keymap memory save, we don't know which was pressed. Just pull 'em both. */
+		alpha_up(HID_KEYBOARD_SC_ESCAPE, action, tapkey, tap);
+		alpha_up(HID_KEYBOARD_SC_GRAVE_ACCENT_AND_TILDE, action, tapkey, tap);
+#endif /* KEYMAP_MEMORY_SAVE */
 		break;
 	case SCANCODE_POWER:
 	case SCANCODE_SLEEP:
