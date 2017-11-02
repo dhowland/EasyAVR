@@ -232,7 +232,7 @@ class GUI(object):
 
     def creategui(self):
         # top level window
-        self.root.title("Easy AVR USB Keyboard Firmware Keymapper")
+        self.settitle()
         self.root.option_add('*tearOff', FALSE)
         self.root.resizable(0, 0)
         iconpath = self.get_pkg_path('icons/keyboard.ico')
@@ -380,6 +380,17 @@ class GUI(object):
         style = Style()
         style.configure("Gold.TButton", background="Gold")
 
+    def settitle(self):
+        title = "Easy AVR USB Keyboard Firmware Keymapper"
+        if self.layoutfilename:
+            title = title + ' - ' + self.layoutfilename
+            if self.unsaved_changes:
+                title = title + '*'
+        else:
+            if self.unsaved_changes:
+                title = title + ' - <Unsaved layout>'
+        self.root.title(title)
+
     def showpicker(self):
         self.pickerwindow.show()
 
@@ -418,6 +429,14 @@ class GUI(object):
                 parent=self.root)
         return True
 
+    def setchanges(self, unsaved):
+        self.unsaved_changes = unsaved
+        self.settitle()
+
+    def setfilename(self, filename):
+        self.layoutfilename = filename
+        self.settitle()
+
     def resetmacros(self):
         self.macrotext.delete('1.0', 'end')
         self.macrovar.set('0')
@@ -426,7 +445,7 @@ class GUI(object):
 
     def macrochange(self, event):
         if self.selectedconfig:
-            self.unsaved_changes = True
+            self.setchanges(True)
 
     def selectmacro(self, withsave=True):
         if withsave:
@@ -457,14 +476,14 @@ class GUI(object):
                 self.bindvar.get())
             self.activekey.set(self.bindvar.get())
             self.managefnchange(self.activekey)
-            self.unsaved_changes = True
+            self.setchanges(True)
 
     def updateaction(self, event):
         if self.actions and self.activekey:
             selectedactions = self.actions[self.layervar.get()]
             selectedactions[self.activekey.row][self.activekey.col] = (
                 self.actionvar.get())
-            self.unsaved_changes = True
+            self.setchanges(True)
 
     def updatelockmode(self, event):
         if self.modes and self.activekey:
@@ -479,7 +498,7 @@ class GUI(object):
             else:
                 self.actionvar.set('')
                 self.actionwidget.state(['readonly', 'disabled'])
-            self.unsaved_changes = True
+            self.setchanges(True)
 
     def updatewmods(self):
         if self.wmods and self.activekey:
@@ -489,7 +508,7 @@ class GUI(object):
                 if wmodvar.get() == 'True':
                     wmodval |= with_mods_map[modifier]
             selectedwmods[self.activekey.row][self.activekey.col] = wmodval
-            self.unsaved_changes = True
+            self.setchanges(True)
 
     def managefnchange(self, kb):
         kbwmod = self.wmods[self.layervar.get()][kb.row][kb.col]
@@ -674,7 +693,7 @@ class GUI(object):
                 self.modes[layer] = copy.deepcopy(self.clipboard[1])
                 self.actions[layer] = copy.deepcopy(self.clipboard[2])
                 self.wmods[layer] = copy.deepcopy(self.clipboard[3])
-                self.unsaved_changes = True
+                self.setchanges(True)
                 self.selectlayer()
 
     def getkeymap(self, keyboard_definition):
@@ -741,8 +760,8 @@ class GUI(object):
                 self.password = Password()
                 self.selectlayer()
                 self.resetmacros()
-                self.unsaved_changes = False
-                self.layoutfilename = None
+                self.setchanges(False)
+                self.setfilename(None)
 
     def openfile(self):
         if self.askchanges():
@@ -850,8 +869,8 @@ class GUI(object):
                     if version <= 13:
                         self.adapt_v13()
                     self.scrub_scancodes()
-                self.unsaved_changes = False
-                self.layoutfilename = filename
+                self.setchanges(False)
+                self.setfilename(filename)
             except Exception as err:
                 msg = traceback.format_exc()
                 messagebox.showerror(title="Can't open layout",
@@ -948,8 +967,8 @@ class GUI(object):
         try:
             with open(filename, 'wb') as fdout:
                 pickle.dump(package, fdout, protocol=2)
-            self.unsaved_changes = False
-            self.layoutfilename = filename
+            self.setchanges(False)
+            self.setfilename(filename)
         except Exception as err:
             msg = traceback.format_exc()
             messagebox.showerror(title="Can't save layout",
@@ -1594,10 +1613,10 @@ class LEDWindow(simpledialog.Dialog):
             for var in self.basicvars:
                 if (var._name != name) and (var.get() == setting):
                     var.set(unassigned_string)
-        self.gui.unsaved_changes = True
+        self.gui.setchanges(True)
 
     def updateadvanced(self, name, index, mode):
-        self.gui.unsaved_changes = True
+        self.gui.setchanges(True)
 
     def apply(self):
         self.gui.advancedleds = [(255, 0)] * num_led_assignments
