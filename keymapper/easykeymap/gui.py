@@ -383,7 +383,7 @@ class GUI(object):
     def settitle(self):
         title = "Easy AVR USB Keyboard Firmware Keymapper"
         if self.layoutfilename:
-            title = title + ' - ' + self.layoutfilename
+            title = title + ' - ' + os.path.basename(self.layoutfilename)
             if self.unsaved_changes:
                 title = title + '*'
         else:
