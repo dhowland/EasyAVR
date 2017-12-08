@@ -34,6 +34,7 @@ __all__ = [
 'jd45v2',
 'kc60',
 'kmac',
+'masterkeyss',
 'minorca',
 'monarch',
 'octagon',
@@ -54,5 +55,6 @@ __all__ = [
 'tau',
 'techcard',
 'threekey',
+'xd60',
 'zeta'
 ]
