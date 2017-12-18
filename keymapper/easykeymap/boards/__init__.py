@@ -1,5 +1,5 @@
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2013-2016 David Howland
+# Copyright (C) 2013-2017 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ __all__ = [
 'jd40v2',
 'jd45',
 'jd45v2',
+'kbd75',
 'kc60',
 'kmac',
 'masterkeyss',
