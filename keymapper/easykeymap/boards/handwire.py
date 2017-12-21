@@ -24,7 +24,7 @@
 # Leave the rest of the imports like they are here.
 import easykeymap.templates.ATmega32U4_16MHz_TKL as firmware
 from easykeymap.ioports import *
-from easykeymap.helper import make_matrix_config
+from easykeymap.helper import make_matrix_config, make_led_config
 
 # The name of the board in the "New" dialog
 description = "Hand-wire"
@@ -82,51 +82,35 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     device=firmware.device
 )
 
-# The total number of LED outputs (indicators + backlights)
-num_leds = 2
-# The number of LED indicators (for example, caps lock)
-num_ind = 2
-# The number of backlight enable modes.  This counts the number of
-# options available for the BL_ENABLE key.  Boards without backlights
-# should use the minimum value of 2.
-num_bl_enab = 2
-
-# Define the default assignments of the indicator LEDs.  The length
-# of this list must equal num_ind.  For each LED, the first string
-# is the description of the key shown in the GUI.  The second string
-# is the default function assigned to that LED.  LED functions must
-# be strings as defined in led_assignments of gui.py.  Common choices
-# are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Win Lock', 'Fn Active',
-# 'Recording', 'Backlight', and 'Unassigned'.
-led_definition = [
-    ('Caps Key', 'Caps Lock'),
-    ('Scroll Key', 'Scroll Lock')
-]
-
-# Definition of LED pins.  (indicators and backlights)  Indicators
-# must come first and be in the same order as defined in led_definition.
+# The num_leds, num_ind, led_hardware, backlighting, num_bl_enab,
+# and bl_modes parameters tell the firmware how to operate the LEDs
+# for indicators (for example, Caps Lock) and for backlighting.  In
+# order to fine-tune the configs, these may have to be defined manually
+# but it is easist to use make_led_config.
 # LED_DRIVER_PULLUP is used when the pin is connected to the anode of
 # the LED and the cathode is connected to ground.
 # LED_DRIVER_PULLDOWN is used when the pin is connected to the cathode
 # of the LED and the anode is connected to the power supply.
-led_hardware = [
-#       Port    Pin    Direction
-    ( REF_PORTB, 6, LED_DRIVER_PULLUP ),
-    ( REF_PORTB, 7, LED_DRIVER_PULLUP )
-]
+# Hand-wired boards will usually want to use LED_DRIVER_PULLDOWN.
+# In this example there are no backlights, so the list is left empty.
 
-# True if the board supports backlight, otherwise False
-backlighting = False
+num_leds, num_ind, led_hardware, backlighting, num_bl_enab, bl_modes = make_led_config(
+    led_pins = [B6, B7],
+    led_dir=LED_DRIVER_PULLUP,
+    backlight_pins = [],
+    backlight_dir=LED_DRIVER_PULLDOWN
+)
 
-# This can be used to configure different backlighting zones.  Explained
-# in more detail elsewhere.  Length of list must equal num_bl_enab.
-# Length of each tuple must equal num_leds.  Tuples use the same ordering
-# as led_hardware.  Almost everyone should just use an all-on/all-off
-# configuration.  That's a list of two tuples, one with all 1s for each
-# LED, the other with all 0s for each LED.
-bl_modes = [
-    ( 0, 0 ),
-    ( 1, 1 )
+# Define the default assignments of the indicator LEDs.  The length
+# of this list must equal the length of led_pins.  For each LED, the
+# first string is the description of the key shown in the GUI.  The
+# second string is the default function assigned to that LED.  LED
+# functions must be strings as defined in led_assignments of gui.py.
+# Common choices are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Win Lock',
+# 'Fn Active', 'Recording', 'Backlight', and 'Unassigned'.
+led_definition = [
+    ('Caps Key', 'Caps Lock'),
+    ('Scroll Key', 'Scroll Lock')
 ]
 
 # Just leave this here as-is.

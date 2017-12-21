@@ -17,6 +17,7 @@
 import copy
 
 from easykeymap.templates import num_ports
+from easykeymap.ioports import LED_DRIVER_PULLDOWN, LED_DRIVER_PULLUP
 
 def make_matrix_config(strobe_cols, strobe_low, rows, cols, device):
     ports = num_ports[device]
@@ -55,3 +56,23 @@ def make_matrix_config(strobe_cols, strobe_low, rows, cols, device):
         matrix_sense.append((pin[0], (1 << pin[1])))
     
     return (matrix_hardware, matrix_strobe, matrix_sense)
+
+def make_led_config(led_pins=[],       led_dir=LED_DRIVER_PULLDOWN,
+                    backlight_pins=[], backlight_dir=LED_DRIVER_PULLDOWN):
+    num_ind = len(led_pins)
+    num_leds = num_ind + len(backlight_pins)
+    
+    led_hardware = []
+    for port,pin in led_pins:
+        led_hardware.append((port, pin, led_dir))
+    for port,pin in backlight_pins:
+        led_hardware.append((port, pin, backlight_dir))
+    
+    backlighting = (len(backlight_pins) > 0)
+    num_bl_enab = 2
+    bl_modes = [
+        ((1,) * num_leds),
+        ((0,) * num_leds)
+    ]
+    
+    return (num_leds, num_ind, led_hardware, backlighting, num_bl_enab, bl_modes)
