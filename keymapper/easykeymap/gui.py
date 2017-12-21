@@ -58,6 +58,7 @@ import easykeymap.cfgparse as cfgparse
 import easykeymap.templates as templates
 import easykeymap.boards as boards
 import easykeymap.programming as programming
+import easykeymap.newboard as newboard
 
 ABOUT = """Easy AVR USB Keyboard Firmware Keymapper  (Version %s)
 
@@ -255,6 +256,8 @@ class GUI(object):
         menu_file.add_command(label='Build Firmware As...', command=self.buildAs)
         menu_file.add_command(label='Build and Reprogram...', command=self.buildandupload)
         menu_file.add_separator()
+        menu_file.add_command(label='Define New Keyboard...', command=self.defnewboard)
+        menu_file.add_separator()
         menu_file.add_command(label='Exit', command=self.checksave)
         menubar.add_cascade(menu=menu_file, label='File')
         menu_edit = Menu(menubar)
@@ -390,6 +393,9 @@ class GUI(object):
             if self.unsaved_changes:
                 title = title + ' - <Unsaved layout>'
         self.root.title(title)
+
+    def defnewboard(self):
+        newboard.popup(self.root, self.userboards)
 
     def showpicker(self):
         self.pickerwindow.show()
