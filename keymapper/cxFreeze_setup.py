@@ -39,7 +39,8 @@ data_files = [
     "easykeymap\\configs",
     "easykeymap\\exttools",
     "easykeymap\\icons",
-    "easykeymap\\manuals"
+    "easykeymap\\manuals",
+    "easykeymap\\newboard_template.txt"
 ]
 
 setup(
