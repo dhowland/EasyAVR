@@ -395,7 +395,8 @@ class GUI(object):
         self.root.title(title)
 
     def defnewboard(self):
-        newboard.popup(self.root, self.userboards)
+        newboard.popup(self.root, self.userboards,
+                       self.get_pkg_path('newboard_template.txt'))
 
     def showpicker(self):
         self.pickerwindow.show()

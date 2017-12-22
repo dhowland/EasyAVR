@@ -15,7 +15,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """This file defines a window that generates a new keyboard definition using
-data from http://www.keyboard-layout-editor.com and addtitional user input.
+data from http://www.keyboard-layout-editor.com and additional user input.
 """
 
 from __future__ import print_function
@@ -43,64 +43,7 @@ except ImportError:
 import easykeymap.kleparse as kleparse
 
 
-config_template = '''
-"""
-Keyboard definition for the ${description} custom keyboard.
-Auto-generated from ${path}
-"""
-
-# Look at handwire.py in the EasyAVR source code for definitions of these
-# configuration options.  Make sure to fix the matix rows/columns in
-# keyboard_definition, which are not known by the program that created
-# this file.
-
-import easykeymap.templates.ATmega32U4_16MHz_${matrix} as firmware
-from easykeymap.ioports import *
-from easykeymap.helper import make_matrix_config, make_led_config
-
-description = "${description}"
-unique_id = "${unique}"
-cfg_name = "${cfg}"
-
-teensy = ${teensy}
-hw_boot_key = ${teensy}
-
-display_height = ${display_height}
-display_width = ${display_width}
-
-num_rows = ${num_rows}
-num_cols = ${num_cols}
-
-strobe_cols = False
-strobe_low = True
-
-matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
-    strobe_cols=strobe_cols,
-    strobe_low=strobe_low,
-    rows=[${row_pins}],
-    cols=[${col_pins}],
-    device=firmware.device
-)
-
-num_leds, num_ind, led_hardware, backlighting, num_bl_enab, bl_modes = make_led_config(
-    led_pins = [${led_pins}],
-    led_dir=LED_DRIVER_PULLDOWN,
-    backlight_pins = [${backlight_pins}],
-    backlight_dir=LED_DRIVER_PULLDOWN
-)
-
-led_definition = ${led_definition}
-
-KMAC_key = None
-
-# ((key width, key height), (matrix row, matrix column), 'default mapping')
-keyboard_definition = ${keyboard_definition}
-
-alt_layouts = {}
-
-'''
-
-def popup(root, userpath):
+def popup(root, userpath, templatepath):
     new_win = NewBoardWindow(root, "New Keyboard Wizard")
     inputs = new_win.result
     while inputs is not None:
@@ -134,6 +77,8 @@ def popup(root, userpath):
                 'led_definition': pformat(tuple( (('led%d' % i, 'Unassigned') for i in range(len(inputs['led_list']))) )),
                 'keyboard_definition': pformat(parsed['layout']),
             }
+            with open(templatepath, encoding="utf8") as fp:
+                config_template = fp.read()
             filename = inputs['id'].lower() + '.py'
             fullpath = os.path.join(userpath, filename)
             with open(fullpath, 'w') as fp:

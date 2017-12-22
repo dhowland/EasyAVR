@@ -146,24 +146,24 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 #### Setup
 
-1. Download the source code from [Github](https://github.com/dhowland/EasyAVR) and extract
-2. Run the keymapper at least once (see above)
+1. Download the source code from [Github](https://github.com/dhowland/EasyAVR) and extract.  This will be helpful to look at some of the keymapper source code later.
+2. Run the keymapper (see above)
 3. The tool automatically creates `~/.EasyAVR/` (probably `/home/username/.EasyAVR` on Linux and `c:\users\username\.EasyAVR` on Windows)
-4. In the source code, find `keymapper/easykeymap/boards/handwire.py` and copy it to `~/.EasyAVR/boards/`
-5. Rename your copy of `handwire.py` to anything you like, for example `my_first_board.py`
-6. This can be done for any number of custom boards
 
 #### Configuring A Custom Layout
 
-1. Open `my_first_board.py` in a text editor
-2. This file is a pure Python script that describes the keyboard hardware -- you must use correct [Python syntax](https://docs.python.org/3/)!
-3. Read ALL comments in the file and follow those directions
-4. In particular, make sure to give your board a unique `unique_id`
-5. The example file describes the Phantom, use this as a template to configure your own board
-6. Make sure to consider and update every setting in the file
-7. Save your file, then restart the Easy AVR keymapper app
-8. Create a new layout, select the board you configured, and test it
-9. Remember that if you change the hardware description in the config file, you MUST NOT load saved keymaps created with the old config file
+1. Create your layout at www.keyboard-layout-editor.com
+2. Download the definition.  Don't copy/paste from Raw Data, it isn't valid JSON
+3. In the keymapper, choose "Define New Keyboard..." (File menu)
+4. Fill out the required information.  Select the recently saved JSON file
+5. Click OK.  The generated config will be in `~/.EasyAVR/boards/`
+6. Open the file in a text editor.
+7. This file is a pure Python script that describes the keyboard hardware -- you must use correct [Python syntax](https://docs.python.org/3/)!
+8. Read ALL comments in the file and follow those directions
+9. In particular, make sure to fix the row/column matrix for each key in keyboard_definition, because the tool was not given that information and had to guess.
+10. Save your edits, then restart the Easy AVR keymapper app
+11. Create a new layout, select the board you configured, and test it
+12. Remember that if you change the hardware description in the config file, you MUST NOT load saved keymaps created with the old config file because it could lead to corrupted builds
 
 ## Developer Notes
 
