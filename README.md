@@ -152,7 +152,7 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 #### Configuring A Custom Layout
 
-1. Create your layout at www.keyboard-layout-editor.com
+1. Create your layout at www.keyboard-layout-editor.com (start with the ANSI 104 or ISO 105 presets, because those legends will be recognized and translated)
 2. Download the definition.  Don't copy/paste from Raw Data, it isn't valid JSON
 3. In the keymapper, choose "Define New Keyboard..." (File menu)
 4. Fill out the required information.  Select the recently saved JSON file
