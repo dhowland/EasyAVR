@@ -68,21 +68,29 @@ void autokey_send(void)
 						g_send_buffer_pos = g_send_buffer_length = 0;
 					} else {
 						/* The modifiers are kept in the upper byte */
-						code.word = g_send_buffer[g_send_buffer_pos++];
+						code.word = g_send_buffer[g_send_buffer_pos];
 						if (code.bytes.lsb == 1)
 						{
 							/* This is a wait, and the mod is a delay count */
 							g_send_wait = code.bytes.msb;
+							g_send_buffer_pos++;
 						} else {
-							g_autokey_modifier = code.bytes.msb;
-							g_autokey_buffer = code.bytes.lsb;
-							if (g_autokey_buffer)
-								enqueue_key(g_autokey_buffer);
+							/* Make sure modifier changes precede alphanumerics */
+							if (g_autokey_modifier != code.bytes.msb)
+							{
+								g_autokey_modifier = code.bytes.msb;
+							}
+							else
+							{
+								g_autokey_buffer = code.bytes.lsb;
+								if (g_autokey_buffer)
+									enqueue_key(g_autokey_buffer);
+								g_send_buffer_pos++;
+							}
 						}
 					}
 				} else {
-					if (g_autokey_buffer)
-						delete_key(g_autokey_buffer);
+					delete_key(g_autokey_buffer);
 					g_autokey_buffer = 0;
 				}
 			} else {

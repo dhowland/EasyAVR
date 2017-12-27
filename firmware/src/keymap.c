@@ -592,6 +592,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	
 	if (modaction)
 	{
+		// Autokey macros are assumed to be mutually exclusive with keypresses
 		g_autokey_modifier = modaction;
 	}
 	
