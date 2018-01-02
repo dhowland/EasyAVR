@@ -22,7 +22,7 @@ from easykeymap.helper import make_matrix_config
 
 description = "JD40 MkII (Carpe Keyboards)"
 unique_id = "JD40_002"
-cfg_name = "jd40"
+cfg_name = "jd40v2"
 
 teensy = False
 hw_boot_key = True
