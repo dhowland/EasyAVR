@@ -320,3 +320,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# Notepad++ IDE stuff
+GTAGS
+GRTAGS
+GPATH
