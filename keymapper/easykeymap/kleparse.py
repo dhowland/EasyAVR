@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2017 David Howland
 #
