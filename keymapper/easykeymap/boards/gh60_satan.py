@@ -21,8 +21,8 @@ from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config
 
 description = "GH60 (Satan)"
-unique_id = "GH60SATAN_002"
-cfg_name = "gh60revb"
+unique_id = "GH60SATAN_003"
+cfg_name = "gh60satan"
 
 teensy = False
 hw_boot_key = False
@@ -126,8 +126,8 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((4, 4), (3, 11), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK'),
-     ((7, 4), (3, 12), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
-     ((4, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT')],
+     ((7, 4), (3, 13), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
+     ((4, 4), (3, 12), '0')],
 
     [((5, 4), (4, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((5, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_GUI'),
