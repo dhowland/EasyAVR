@@ -40,7 +40,7 @@ Windows users have two options for using the Easy AVR keymapper.  The easiest op
 
 *Compiled executables*
 
-1. Download the executables from [the wiki page](https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware#Downloads)
+1. Download the executables from [the releases page](https://github.com/dhowland/EasyAVR/releases)
 2. Extract the zip to the chosen installation location
 3. Start the tool by running easykeymap.exe
 
