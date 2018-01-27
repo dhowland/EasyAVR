@@ -1,10 +1,6 @@
 # EasyAVR
 Easy AVR USB Keyboard Firmware and Keymapper
 
-> **Notice: in 2017 EasyAVR will be moving to Python 3.6 and support for Python 2.7 will be deprecated.
-> This effort might lead to a new savefile format.
-> It is a good idea to transition to Python 3.x now so in order to ease the transition.**
-
 Find info and FAQ at the DT Wiki:
 https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware
 
@@ -32,7 +28,7 @@ https://github.com/dhowland/EasyAVR/releases
 
 * [Atmel Flip](http://www.atmel.com/tools/FLIP.aspx)
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
-* Optional: [Python](https://www.python.org/) 2.7 or 3.3+
+* Optional: [Python](https://www.python.org/) 3.6+
 
 #### Installation
 
@@ -89,7 +85,7 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 * [dfu-programmer](https://github.com/dfu-programmer/dfu-programmer)
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
-* [Python](https://www.python.org/) 2.7 or 3.3+
+* [Python](https://www.python.org/) 3.6+
 
 #### Installation
 
@@ -97,7 +93,7 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 A complete Python install is required, plus the setuptools package.  For example, this command will get you going:
 
-`sudo apt-get install python python-tk python-setuptools`
+`sudo apt-get install python3 python3-tk python3-setuptools`
 
 *dfu-programmer*
 
@@ -115,8 +111,8 @@ dfu-programmer can be installed on OSX by following [these directions](http://ww
 2. Start the tool with the easykeymap.sh
 3. Optionally, the easykeymap package can be installed with setuptools
 
-		sudo python setup.py install
-		python -m easykeymap.gui
+		sudo python3 setup.py install
+		python3 -m easykeymap.gui
 
 #### Programming The Firmware
 
@@ -169,7 +165,7 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 #### Requirements
 
-* [Python](https://www.python.org/) 2.7 and 3.3+ (both would be needed for complete testing)
+* [Python](https://www.python.org/) 3.6+ (both would be needed for complete testing)
 * [Atmel Studio 7](http://www.atmel.com/tools/atmelstudio.aspx)
 
 Abandon all hope, ye who enter here.

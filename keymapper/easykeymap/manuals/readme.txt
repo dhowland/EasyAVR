@@ -24,7 +24,7 @@ Creating A Keymap
 =================
 
 If you're reading this, you already managed to download and install the package.
-Run it with python 3.3 or greater.  'python -m easykeymap.gui' should work.
+Run it with python 3.6 or greater.  'python -m easykeymap.gui' should work.
 
 Select "File->New Default Layout...".  In the popup window, select your keyboard
 and then select your layout at the bottom.  Not all keyboards have multiple

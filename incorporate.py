@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Easy AVR USB Keyboard Firmware
 # Copyright (C) 2013-2016 David Howland
