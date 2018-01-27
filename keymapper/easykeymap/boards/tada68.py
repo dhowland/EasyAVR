@@ -209,7 +209,7 @@ keyboard_definition = [
      ((5, 4), (4, 2), 'HID_KEYBOARD_SC_LEFT_ALT'),
      ((25, 4), (4, 5), 'HID_KEYBOARD_SC_SPACE'),
      ((4, 4), (4, 9), 'HID_KEYBOARD_SC_RIGHT_ALT'),
-     ((4, 4), (4, 10), 'SCANCODE_FN'),
+     ((4, 4), (4, 10), 'SCANCODE_FN1'),
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_RIGHT_CONTROL'),
      ((4, 4), (4, 12), 'HID_KEYBOARD_SC_LEFT_ARROW'),
      ((4, 4), (4, 13), 'HID_KEYBOARD_SC_DOWN_ARROW'),

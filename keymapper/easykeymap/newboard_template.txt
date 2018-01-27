@@ -137,7 +137,7 @@ num_leds, num_ind, led_hardware, backlighting, num_bl_enab, bl_modes = make_led_
 # second string is the default function assigned to that LED.  LED
 # functions must be strings as defined in led_assignments of gui.py.
 # Common choices are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Win Lock',
-# 'Fn Active', 'Recording', 'Backlight', and 'Unassigned'.
+# 'Fn1 Active', 'Recording', 'Backlight', and 'Unassigned'.
 
 led_definition = ${led_definition}
 

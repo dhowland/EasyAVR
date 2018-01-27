@@ -151,8 +151,8 @@
 #define SCANCODE_MRAM_PLAY 0xDF
 
 /* Must be larger than the 0xE0 range */
-#define SCANCODE_FN_ORIGIN 0xF0
-#define SCANCODE_FN 0xF1
+#define SCANCODE_FN0 0xF0
+#define SCANCODE_FN1 0xF1
 #define SCANCODE_FN2 0xF2
 #define SCANCODE_FN3 0xF3
 #define SCANCODE_FN4 0xF4

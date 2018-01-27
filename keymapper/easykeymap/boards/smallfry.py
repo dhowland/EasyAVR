@@ -102,7 +102,7 @@ keyboard_definition = [
      ((4, 4), (2, 7), 'HID_KEYBOARD_SC_M'),
      ((4, 4), (2, 8), 'HID_KEYBOARD_SC_COMMA_AND_LESS_THAN_SIGN'),
      ((5, 4), (2, 9), 'HID_KEYBOARD_SC_RIGHT_SHIFT'),
-     ((4, 4), (2, 10), 'SCANCODE_FN')],
+     ((4, 4), (2, 10), 'SCANCODE_FN1')],
 
     [((5, 4), (3, 0), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((4, 4), (3, 1), 'HID_KEYBOARD_SC_DELETE'),

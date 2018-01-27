@@ -95,7 +95,7 @@ KMAC_key = None
 
 keyboard_definition = [
     [((4, 4), (0, 0), 'HID_KEYBOARD_SC_ESCAPE'),
-     ((4, 4), (0, 1), 'SCANCODE_FN'),
+     ((4, 4), (0, 1), 'SCANCODE_FN1'),
      (1, None, '0'),
      ((4, 4), (0, 2), 'HID_KEYBOARD_SC_HOME'),
      ((4, 4), (0, 3), 'HID_KEYBOARD_SC_END'),

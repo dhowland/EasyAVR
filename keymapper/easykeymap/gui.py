@@ -77,7 +77,7 @@ for board in boards.__all__:
     configurations[mod.unique_id] = mod
 
 # save file layout revision
-SAVE_VERSION = 14
+SAVE_VERSION = 15
 
 #pixels for 1/4x key size
 UNIT = 12
@@ -93,7 +93,7 @@ TEENSY2PP_BOOT_PTR_HIGH_BYTE = 0xFE
 
 FIRST_FN_CODE = 0xF0
 
-master_layers = ["Default", "Fn", "Layer 2", "Layer 3", "Layer 4",
+master_layers = ["Default", "Layer 1", "Layer 2", "Layer 3", "Layer 4",
                  "Layer 5", "Layer 6", "Layer 7", "Layer 8", "Layer 9"]
 default_layer = "Default"
 
@@ -106,7 +106,7 @@ with_mods = ['Shift', 'Ctrl', 'R_Alt', 'Win']
 with_mods_map = {'Shift': 0x20, 'Ctrl': 0x10, 'R_Alt': 0x40, 'Win': 0x80}
 
 led_assignments = {'Num Lock': 0, 'Caps Lock': 1, 'Scroll Lock': 2,
-                   'Compose': 3, 'Kana': 4, 'Win Lock': 5, 'Fn Active': 6,
+                   'Compose': 3, 'Kana': 4, 'Win Lock': 5, 'Fn1 Active': 6,
                    'Fn2 Active': 7, 'Fn3 Active': 8, 'Fn4 Active': 9,
                    'Fn5 Active': 10, 'Fn6 Active': 11, 'Fn7 Active': 12,
                    'Fn8 Active': 13, 'Fn9 Active': 14, 'Any Fn Active':15,
@@ -835,8 +835,6 @@ class GUI(object):
                             self.modes[layer] = copy.deepcopy(init_modes)
                             self.actions[layer] = copy.deepcopy(empty_keymap)
                             self.wmods[layer] = copy.deepcopy(init_wmods)
-                    self.layervar.set(default_layer)
-                    self.selectlayer()
                     if len(data) > 9:
                         self.leds = data[9]
                     else:
@@ -875,7 +873,11 @@ class GUI(object):
                         self.adapt_v12()
                     if version <= 13:
                         self.adapt_v13()
+                    if version <= 14:
+                        self.adapt_v14()
                     self.scrub_scancodes()
+                    self.layervar.set(default_layer)
+                    self.selectlayer()
                 self.setchanges(False)
                 self.setfilename(filename)
             except Exception as err:
@@ -951,6 +953,13 @@ class GUI(object):
     def adapt_v13(self):
         print("Adapting save file v13->v14")
 
+    def adapt_v14(self):
+        print("Adapting save file v13->v15")
+        for map in (self.maps, self.actions, self.modes, self.wmods):
+            map['Layer 1'] = map['Fn']
+            del map['Fn']
+        self.leds = ['Fn1 Active' if x == 'Fn Active' else x for x in self.leds]
+
     def scrub_scancodes(self):
         for layer in self.maps:
             for row in self.maps[layer]:
@@ -959,6 +968,8 @@ class GUI(object):
                         row[i] = "SCANCODE_CONFIG"
                     elif k == "SCANCODE_LOCKINGCAPS":
                         row[i] = "HID_KEYBOARD_SC_LOCKING_CAPS_LOCK"
+                    elif k == "SCANCODE_FN":
+                        row[i] = "SCANCODE_FN1"
                     elif k not in scancodes:
                         row[i] = '0'
 

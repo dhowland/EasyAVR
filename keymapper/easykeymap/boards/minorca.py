@@ -106,7 +106,7 @@ keyboard_definition = [
      ((9, 4), (3, 7), ['HID_KEYBOARD_SC_SPACE', 'HID_KEYBOARD_SC_SPACE', 'HID_KEYBOARD_SC_SPACE']),
      ((5, 4), (3, 9), ['SCANCODE_FN2', 'SCANCODE_FN2', 'SCANCODE_FN2']),
      ((5, 4), (3, 10), ['HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE', 'HID_KEYBOARD_SC_END', 'HID_KEYBOARD_SC_DOWN_ARROW']),
-     ((5, 4), (3, 11), ['SCANCODE_FN', 'SCANCODE_FN', 'SCANCODE_FN'])]
+     ((5, 4), (3, 11), ['SCANCODE_FN1', 'SCANCODE_FN1', 'SCANCODE_FN1'])]
 ]
 
 alt_layouts = {}

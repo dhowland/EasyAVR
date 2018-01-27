@@ -459,12 +459,20 @@ void led_fn_deactivate(const uint8_t bit)
 
 void fn_down(const uint8_t code, const uint8_t action)
 {
-	enqueue_fn(code);
+	if (g_layer_select != 0)
+	{
+		led_host_off((g_layer_select + (LED_FN1_ACTIVE-1)));
+	}
+	g_layer_select = (code - SCANCODE_FN0);
+	enqueue_fn(g_layer_select);
+	if (g_layer_select != 0)
+	{
+		led_host_on((g_layer_select + (LED_FN1_ACTIVE-1)));
+	}
 	if (g_layer_select != g_default_layer)
-		led_host_off((g_layer_select + (LED_FN_ACTIVE-1)));
-	g_layer_select = (code - SCANCODE_FN_ORIGIN);
-	led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
-	led_host_on(LED_ANY_ACTIVE);
+	{
+		led_host_on(LED_ANY_ACTIVE);
+	}
 	if ((action & ACTION_TOGGLE) && (g_locked_layer != g_layer_select))
 	{
 		g_locked_layer = g_layer_select;
@@ -478,8 +486,13 @@ void fn_down(const uint8_t code, const uint8_t action)
 
 void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
 {
-	delete_fn(code);
-	if (tap && (g_layer_select == (code - SCANCODE_FN_ORIGIN)))
+	const uint8_t layerid = (code - SCANCODE_FN0);
+	
+	if (g_layer_select != 0)
+	{
+		led_host_off((g_layer_select + (LED_FN1_ACTIVE-1)));
+	}
+	if (tap && (g_layer_select == layerid))
 	{
 		if ((g_double_tap_repeat) && (action & ACTION_LOCKABLE))
 		{
@@ -490,19 +503,23 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 			send_tapkey(tapkey);
 		}
 	}
-	led_host_off((g_layer_select + (LED_FN_ACTIVE-1)));
+	delete_fn(layerid);
 	if (g_fn_buffer_length == 0)
 	{
 		g_layer_select = g_locked_layer;
 	}
 	else
 	{
-		g_layer_select = (g_fn_buffer[g_fn_buffer_length-1] - SCANCODE_FN_ORIGIN);
+		g_layer_select = g_fn_buffer[g_fn_buffer_length-1];
 	}
-	if (g_layer_select != g_default_layer)
-		led_host_on((g_layer_select + (LED_FN_ACTIVE-1)));
-	else
+	if (g_layer_select != 0)
+	{
+		led_host_on((g_layer_select + (LED_FN1_ACTIVE-1)));
+	}
+	if (g_layer_select == g_default_layer)
+	{
 		led_host_off(LED_ANY_ACTIVE);
+	}
 }
 
 void mod_down(const uint8_t code, const uint8_t action)
@@ -861,7 +878,8 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case HID_KEYBOARD_SC_RIGHT_GUI:
 		mod_down(code, action);
 		break;
-	case SCANCODE_FN:
+	case SCANCODE_FN0:
+	case SCANCODE_FN1:
 	case SCANCODE_FN2:
 	case SCANCODE_FN3:
 	case SCANCODE_FN4:
@@ -1124,7 +1142,8 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 #endif /* MACRO_RAM_SIZE */
 		mod_up(code, action, tapkey, tap);
 		break;
-	case SCANCODE_FN:
+	case SCANCODE_FN0:
+	case SCANCODE_FN1:
 	case SCANCODE_FN2:
 	case SCANCODE_FN3:
 	case SCANCODE_FN4:

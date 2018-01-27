@@ -270,7 +270,8 @@ class Picker(object):
                          width=(int(22.5*4)*UNIT),
                          height=(4*UNIT))
         rowframe.pack(side=TOP)
-        Selector(rowframe, self.main, 4, "SCANCODE_FN")
+        Selector(rowframe, self.main, 4, "SCANCODE_FN0")
+        Selector(rowframe, self.main, 4, "SCANCODE_FN1")
         Selector(rowframe, self.main, 4, "SCANCODE_FN2")
         Selector(rowframe, self.main, 4, "SCANCODE_FN3")
         Selector(rowframe, self.main, 4, "SCANCODE_FN4")
@@ -290,7 +291,7 @@ class Picker(object):
         Selector(rowframe, self.main, 4, "SCANCODE_MOUSEYD")
         Selector(rowframe, self.main, 4, "SCANCODE_MOUSEYU")
         Selector(rowframe, self.main, 4, "SCANCODE_MOUSEXR")
-        Spacer(rowframe, 12, 4)
+        Spacer(rowframe, 8, 4)
 
         rowframe = Frame(self.toplevel,
                          width=(int(22.5*4)*UNIT),

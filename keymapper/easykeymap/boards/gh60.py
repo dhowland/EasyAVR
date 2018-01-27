@@ -52,7 +52,7 @@ num_bl_enab = 4
 led_definition = [
     ('Caps Key', 'Caps Lock'),
     ('Esc Key', 'Num Lock'),
-    ('WASD', 'Fn Active'),
+    ('WASD', 'Fn1 Active'),
     ('Poker Arrows', 'Fn2 Active'),
     ('Fn Key', 'Fn3 Active')
 ]

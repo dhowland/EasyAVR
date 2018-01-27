@@ -5,15 +5,16 @@ metalliqaz@geekhack
 Special functions
 =================
 
-SCANCODE_FN                Activate the "Fn" layer depending on mode
-SCANCODE_FN2               Activate the 2nd function layer
-SCANCODE_FN3               Activate the 3rd function layer
-SCANCODE_FN4               Activate the 4th function layer
-SCANCODE_FN5               Activate the 5th function layer
-SCANCODE_FN6               Activate the 6th function layer
-SCANCODE_FN7               Activate the 7th function layer
-SCANCODE_FN8               Activate the 8th function layer
-SCANCODE_FN9               Activate the 9th function layer
+SCANCODE_FN0               Activate the "Default" layer
+SCANCODE_FN1               Activate the 1st function layer (or deactivate, depending on mode)
+SCANCODE_FN2               Activate the 2nd function layer (or deactivate, depending on mode)
+SCANCODE_FN3               Activate the 3rd function layer (or deactivate, depending on mode)
+SCANCODE_FN4               Activate the 4th function layer (or deactivate, depending on mode)
+SCANCODE_FN5               Activate the 5th function layer (or deactivate, depending on mode)
+SCANCODE_FN6               Activate the 6th function layer (or deactivate, depending on mode)
+SCANCODE_FN7               Activate the 7th function layer (or deactivate, depending on mode)
+SCANCODE_FN8               Activate the 8th function layer (or deactivate, depending on mode)
+SCANCODE_FN9               Activate the 9th function layer (or deactivate, depending on mode)
 
 SCANCODE_BL_DIMMER         Cycle through backlight brightness levels, also
                            controls indicator LED brightness
@@ -91,17 +92,19 @@ Layers
 ======
 
 The system contains ten keymap layers that may be configured by the user.
-There is a default layer which is used when no Fn keys are active.  This should
-be the most used configuration.  There is a function layer that is accessed by
-using the 'Fn' special modifier key.  Most configurations can fit into the first
-two named layers.  There are also eight further function layers.  'Layer 2'
-corresponds to the 'Fn 2' special modifier key, 'Layer 3' to 'Fn 3' and so on.
-Holding a Fn key accesses the associated layer, and using one of the lock modes
-on that Fn key can keep the associated layer active.
+There is a default layer which is used when no Fn keys are active.  This is
+layer 0 by default but that can be changed in the config console.  The most used
+mapping layer should be default.  There are also nine further function layers.
+'Layer 1' is accessed using the 'Fn 1' special modifier key, 'Layer 2' by 'Fn 2',
+and so on.
 
-A Fn key may be accessed from within another Fn layer.  If a layer is locked
-while another layer is already locked, then the most recent lock takes
-precedence.
+Holding a Fn key in normal mode accesses the associated layer, and using one of
+the lock modes on that Fn key keeps the associated layer active permanently. If
+a layer is locked while another layer is already locked, then the most recent
+lock takes precedence (only one layer can ever be locked at a time).
+
+A Fn key may be accessed from within another Fn layer (chaining).  The firmware
+keeps track of which Fn keys are active and the order they were activated.
 
 ===========
 Key Modes
@@ -190,7 +193,7 @@ overloading an LED should only be done with mutually exclusive functions.
 'Win Lock'
     Lights up when the Windows Key is disabled.
 
-'Fn Active', 'Fn2 Active', 'Fn3 Active',
+'Fn1 Active', 'Fn2 Active', 'Fn3 Active',
 'Fn4 Active', 'Fn5 Active', 'Fn6 Active',
 'Fn7 Active', 'Fn8 Active', 'Fn9 Active'
     Lights up when the corresponding layer is selected.  Locked layers will

@@ -119,7 +119,7 @@ keyboard_definition = [
     [((4, 4), (5, 0), 'HID_KEYBOARD_SC_LEFT_ARROW'),
      ((4, 4), (5, 1), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (5, 2), 'HID_KEYBOARD_SC_RIGHT_ARROW'),
-     ((4, 4), (5, 3), 'SCANCODE_FN')]
+     ((4, 4), (5, 3), 'SCANCODE_FN1')]
 ]
 
 alt_layouts = {}

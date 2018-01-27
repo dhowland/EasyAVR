@@ -137,7 +137,7 @@ keyboard_definition = [
      ((4, 4), (4, 1), 'HID_KEYBOARD_SC_LEFT_CONTROL'),
      ((4, 4), (4, 2), 'HID_KEYBOARD_SC_LEFT_GUI'),
      ((4, 4), (4, 3), 'HID_KEYBOARD_SC_LEFT_ALT'),
-     ((4, 4), (4, 4), 'SCANCODE_FN'),
+     ((4, 4), (4, 4), 'SCANCODE_FN1'),
      ((4, 4), (4, 5), 'HID_KEYBOARD_SC_SPACE'),
      ((4, 4), (4, 6), 'HID_KEYBOARD_SC_SPACE'),
      ((4, 4), (4, 7), 'SCANCODE_FN2'),
