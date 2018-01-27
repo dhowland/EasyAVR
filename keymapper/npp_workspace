@@ -2,6 +2,8 @@
     <Project name="keymapper">
         <Folder name="easykeymap">
             <Folder name="boards">
+                <File name="easykeymap\boards\__init__.py" />
+                <File name="easykeymap\boards\2key.py" />
                 <File name="easykeymap\boards\atomic.py" />
                 <File name="easykeymap\boards\atreus.py" />
                 <File name="easykeymap\boards\atreus62.py" />
@@ -45,7 +47,6 @@
                 <File name="easykeymap\boards\threekey.py" />
                 <File name="easykeymap\boards\xd60.py" />
                 <File name="easykeymap\boards\zeta.py" />
-                <File name="easykeymap\boards\__init__.py" />
             </Folder>
             <Folder name="configs">
                 <File name="easykeymap\configs\cfg_file_help.txt" />
