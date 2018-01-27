@@ -166,7 +166,7 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 #### Requirements
 
 * [Python](https://www.python.org/) 3.6+ (both would be needed for complete testing)
-* [Atmel Studio 7](http://www.atmel.com/tools/atmelstudio.aspx)
+* [Atmel Studio 7](https://www.microchip.com/avr-support/atmel-studio-7)
 
 Abandon all hope, ye who enter here.
 
