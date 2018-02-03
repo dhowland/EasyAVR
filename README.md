@@ -165,9 +165,16 @@ Follow the instructions at the [Teensy website](http://www.pjrc.com/teensy/loade
 
 #### Requirements
 
-* [Python](https://www.python.org/) 3.6+ (both would be needed for complete testing)
+* [Python](https://www.python.org/) 3.6+
+* [cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/) 5.1+
 * [Atmel Studio 7](https://www.microchip.com/avr-support/atmel-studio-7)
 
-Abandon all hope, ye who enter here.
+#### Building The Firmware
 
-TODO: write developer notes
+A project workspace is included for Atmel Studio 7.  This is the primary development environment.  After making changes and confirming that the new code compiles, the firmware must be rebuilt for all supported hardware configurations.  A python script for doing so is included in the root directory of the source.  The relevant files are ``incorporate.py``, ``incorporate.bat``, and ``compile.bat``.  Check the .bat files to ensure that the paths used match your development environment, then run ``incorporate.bat`` from the root directory of the source.  It will compile all hardware configs, check that they fit into memory, and generate the build files directly into the python source tree (``./keymapper/easykeymap/``).
+
+#### Building The Keymapper
+
+The keymapper can be run from source, but for releases it is usually built into a Windows executable.  After making changes and incorporating any new firmware, run ``cxFreeze.bat``.  After it does its thing, the build will be placed the ``./keymapper/build/exe.win32-3.6/`` directory.  Zip it up and move it somewhere else.
+
+The EasyAVR keymapper build will include anything that you place into the ``./keymapper/easykeymap/exttools`` directory.  This location is meant to include useful executables for programming boards.  Official EasyAVR releases currently include ``dfu-programmer.exe`` and ``teensy_loader_cli.exe`` in the build, however these files are not stored in the git repository.  They must be downloaded by the developer.
