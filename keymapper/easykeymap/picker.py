@@ -316,15 +316,15 @@ class Picker(object):
         Selector(rowframe, self.main, 4, "SCANCODE_M12")
         Selector(rowframe, self.main, 4, "SCANCODE_M13")
         Selector(rowframe, self.main, 4, "SCANCODE_M14")
-        Spacer(rowframe, 2, 4)
+        Selector(rowframe, self.main, 4, "SCANCODE_M15")
+        Selector(rowframe, self.main, 4, "SCANCODE_M16")
         Selector(rowframe, self.main, 4, "SCANCODE_MRAM_RECORD")
         Selector(rowframe, self.main, 4, "SCANCODE_MRAM_PLAY")
-        Spacer(rowframe, 4, 4)
+        Spacer(rowframe, 2, 4)
         Selector(rowframe, self.main, 4, "SCANCODE_PASSWORD1")
         Selector(rowframe, self.main, 4, "SCANCODE_PASSWORD2")
         Selector(rowframe, self.main, 4, "SCANCODE_PASSWORD3")
         Selector(rowframe, self.main, 4, "SCANCODE_PASSWORD4")
-        Spacer(rowframe, 4, 4)
 
         rowframe = Frame(self.toplevel,
                          width=(int(22.5*4)*UNIT),

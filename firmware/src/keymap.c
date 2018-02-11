@@ -857,6 +857,8 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_M12:
 	case SCANCODE_M13:
 	case SCANCODE_M14:
+	case SCANCODE_M15:
+	case SCANCODE_M16:
 		play_macro(code);
 		break;
 #ifdef MACRO_RAM_SIZE
@@ -1125,6 +1127,8 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_M12:
 	case SCANCODE_M13:
 	case SCANCODE_M14:
+	case SCANCODE_M15:
+	case SCANCODE_M16:
 	case SCANCODE_MRAM_RECORD:
 	case SCANCODE_MRAM_PLAY:
 		break;

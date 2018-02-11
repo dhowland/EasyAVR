@@ -77,12 +77,12 @@ for board in boards.__all__:
     configurations[mod.unique_id] = mod
 
 # save file layout revision
-SAVE_VERSION = 15
+SAVE_VERSION = 16
 
 #pixels for 1/4x key size
 UNIT = 12
 
-MACRO_NUM = 14
+MACRO_NUM = 16
 
 NULL_SYMBOL = '0'
 # DEBUG_NULL_SYMBOL = 'HID_KEYBOARD_SC_KEYPAD_ASTERISK'
@@ -875,6 +875,8 @@ class GUI(object):
                         self.adapt_v13()
                     if version <= 14:
                         self.adapt_v14()
+                    if version <= 15:
+                        self.adapt_v15()
                     self.scrub_scancodes()
                     self.layervar.set(default_layer)
                     self.selectlayer()
@@ -912,9 +914,7 @@ class GUI(object):
             if layer not in self.maps:
                 self.maps[layer] = \
                     copy.deepcopy(self.maps['Default'])
-        extention = MACRO_NUM - len(self.macros)
-        if extention > 0:
-            self.macros.extend([''] * extention)
+        self.macro_extend()
 
     def adapt_v4(self):
         print("Adapting save file v4->v5")
@@ -935,9 +935,7 @@ class GUI(object):
 
     def adapt_v9(self):
         print("Adapting save file v9->v10")
-        extention = MACRO_NUM - len(self.macros)
-        if extention > 0:
-            self.macros.extend([''] * extention)
+        self.macro_extend()
 
     def adapt_v10(self):
         print("Adapting save file v10->v11")
@@ -954,11 +952,20 @@ class GUI(object):
         print("Adapting save file v13->v14")
 
     def adapt_v14(self):
-        print("Adapting save file v13->v15")
+        print("Adapting save file v14->v15")
         for map in (self.maps, self.actions, self.modes, self.wmods):
             map['Layer 1'] = map['Fn']
             del map['Fn']
         self.leds = ['Fn1 Active' if x == 'Fn Active' else x for x in self.leds]
+
+    def adapt_v15(self):
+        print("Adapting save file v15->v16")
+        self.macro_extend()
+
+    def macro_extend(self):
+        extention = MACRO_NUM - len(self.macros)
+        if extention > 0:
+            self.macros.extend([''] * extention)
 
     def scrub_scancodes(self):
         for layer in self.maps:

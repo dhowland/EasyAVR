@@ -130,6 +130,8 @@
 #define SCANCODE_KEYLOCK 0xC8
 #define SCANCODE_WINLOCK 0xC9
 #define SCANCODE_ESCGRAVE 0xCA
+#define SCANCODE_MRAM_RECORD 0xCC
+#define SCANCODE_MRAM_PLAY 0xCD
 #define SCANCODE_BOOT 0xCE
 #define SCANCODE_CONFIG 0xCF
 
@@ -147,8 +149,8 @@
 #define SCANCODE_M12 0xDB
 #define SCANCODE_M13 0xDC
 #define SCANCODE_M14 0xDD
-#define SCANCODE_MRAM_RECORD 0xDE
-#define SCANCODE_MRAM_PLAY 0xDF
+#define SCANCODE_M15 0xDE
+#define SCANCODE_M16 0xDF
 
 /* Must be larger than the 0xE0 range */
 #define SCANCODE_FN0 0xF0
@@ -180,7 +182,7 @@
 #define MACRO_RAM_SIZE (160)
 #endif /* Larger ATmega Devices */
 
-#define NUMBER_OF_MACROS (14)
+#define NUMBER_OF_MACROS (16)
 
 /* Action word definition
 Gui

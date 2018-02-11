@@ -239,6 +239,7 @@ scancodes = {
     "HID_KEYBOARD_SC_RIGHT_ALT": ("R_Alt", 0xE6, "Alt"),
     "HID_KEYBOARD_SC_RIGHT_GUI": ("R_Win", 0xE7, "GUI"),
 
+    # "Fake" scancodes, never sent over the wire (see config_keymap.h)
     "SCANCODE_NEXT_TRACK": ("Next\nTrack", 0x97, "Next"),
     "SCANCODE_PREV_TRACK": ("Prev\nTrack", 0x98, "Prev"),
     "SCANCODE_STOP": ("Stop", 0x99, "Stop"),
@@ -264,6 +265,7 @@ scancodes = {
     "SCANCODE_WWWSTOP": ("Stop\nNav", 0xAD, "Stop"),
     "SCANCODE_REFRESH": ("Refresh", 0xAE, "Refr"),
     "SCANCODE_FAVES": ("Favorites", 0xAF, "Fav"),
+    #"": ("", 0xB0, ""),
     "SCANCODE_MOUSE1": ("Mouse\nBtn 1", 0xB1, "MB1"),
     "SCANCODE_MOUSE2": ("Mouse\nBtn 2", 0xB2, "MB2"),
     "SCANCODE_MOUSE3": ("Mouse\nBtn 3", 0xB3, "MB3"),
@@ -273,6 +275,9 @@ scancodes = {
     "SCANCODE_MOUSEXL": ("Mouse\nLeft", 0xB7, "Mlf"),
     "SCANCODE_MOUSEYU": ("Mouse\nUp", 0xB8, "Mup"),
     "SCANCODE_MOUSEYD": ("Mouse\nDown", 0xB9, "Mdn"),
+    #"": ("", 0xBA, ""),
+    #"": ("", 0xBB, ""),
+    #"": ("", 0xBC, ""),
     "SCANCODE_POWER": ("Power\n(Win)", 0xBD, "Pwr"),
     "SCANCODE_SLEEP": ("Sleep\n(Win)", 0xBE, "Slp"),
     "SCANCODE_WAKE": ("Wake\n(Win)", 0xBF, "Wake"),
@@ -286,6 +291,9 @@ scancodes = {
     "SCANCODE_KEYLOCK": ("KB\nLock", 0xC8, "KbLk"),
     "SCANCODE_WINLOCK": ("Win\nLock", 0xC9, "WnLk"),
     "SCANCODE_ESCGRAVE": ("~\nEsc", 0xCA, "~Esc"),
+    #"": ("", 0xCB, ""),
+    "SCANCODE_MRAM_RECORD": ("Macro\nRec", 0xCC, "Mrec"),
+    "SCANCODE_MRAM_PLAY": ("Macro\nPlay", 0xCD, "Mply"),
     "SCANCODE_BOOT": ("Boot\nMode", 0xCE, "BOOT"),
     "SCANCODE_CONFIG": ("Config\nConsole", 0xCF, "Conf"),
     "SCANCODE_M1": ("M1", 0xD0, "M1"),
@@ -302,8 +310,10 @@ scancodes = {
     "SCANCODE_M12": ("M12", 0xDB, "M12"),
     "SCANCODE_M13": ("M13", 0xDC, "M13"),
     "SCANCODE_M14": ("M14", 0xDD, "M14"),
-    "SCANCODE_MRAM_RECORD": ("Macro\nRec", 0xDE, "Mrec"),
-    "SCANCODE_MRAM_PLAY": ("Macro\nPlay", 0xDF, "Mply"),
+    "SCANCODE_M15": ("M15", 0xDE, "M15"),
+    "SCANCODE_M16": ("M16", 0xDF, "M16"),
+    # 0xE_ Range is reserved for modifiers
+    # 0xF_ Range is reserved for layer select
     "SCANCODE_FN0": ("Fn 0", 0xF0, "FN0"),
     "SCANCODE_FN1": ("Fn 1", 0xF1, "FN1"),
     "SCANCODE_FN2": ("Fn 2", 0xF2, "FN2"),
