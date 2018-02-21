@@ -26,7 +26,7 @@ https://github.com/dhowland/EasyAVR/releases
 
 #### Requirements
 
-* [Atmel Flip](http://www.atmel.com/tools/FLIP.aspx)
+* [Atmel Flip](http://www.microchip.com/developmenttools/productdetails.aspx?partno=flip)
 * [Teensy Loader](http://www.pjrc.com/teensy/loader.html) (for Teensy-based boards)
 * Optional: [Python](https://www.python.org/) 3.6+
 
