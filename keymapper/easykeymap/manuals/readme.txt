@@ -1,9 +1,8 @@
-README: Easy AVR USB Keyboard Firmware - Beginner's guide
-metalliqaz@geekhack
+README: Beginner's guide
+========================
 
-==============
 Introduction
-============
+------------
 
 This is a keyboard firmware and keymapping GUI for custom keyboards based on
 USB AVRs.  It is powerful but also really easy to use.  It supports a wide
@@ -19,9 +18,8 @@ https://github.com/dhowland/EasyAVR
 If you need help, go to the wiki and read the FAQ.  If you still need help,
 post your question in the Geekhack thread.
 
-===================
 Creating A Keymap
-=================
+-----------------
 
 If you're reading this, you already managed to download and install the package.
 Run it with python 3.6 or greater.  'python -m easykeymap.gui' should work.
@@ -46,9 +44,8 @@ your layers.  I like to use Fn+Esc.  It makes reprogramming easier.
 
 When you're done with your layout, save it with "File->Save Layout As...".
 
-=====================
 Programming A Build
-===================
+-------------------
 
 Build your layout with "File->Build Firmware...".  This will create a .hex file
 that can be loaded onto your custom keyboard.

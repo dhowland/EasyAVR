@@ -1,9 +1,8 @@
-HOWTO: Easy AVR USB Keyboard Firmware - Functions and layer definitions
-metalliqaz@geekhack
+HOWTO: Functions and layer definitions
+======================================
 
-===================
 Special functions
-=================
+-----------------
 
 SCANCODE_FN0               Activate the "Default" layer
 SCANCODE_FN1               Activate the 1st function layer (or deactivate, depending on mode)
@@ -87,9 +86,8 @@ SCANCODE_WWWSTOP           Stop navigation in Windows
 SCANCODE_REFRESH           Refresh navigation in Windows
 SCANCODE_FAVES             Open favorites dialog in Windows
 
-========
 Layers
-======
+------oooooooo
 
 The system contains ten keymap layers that may be configured by the user.
 There is a default layer which is used when no Fn keys are active.  This is
@@ -106,9 +104,8 @@ lock takes precedence (only one layer can ever be locked at a time).
 A Fn key may be accessed from within another Fn layer (chaining).  The firmware
 keeps track of which Fn keys are active and the order they were activated.
 
-===========
 Key Modes
-=========
+---------
 
 Any individual key on any layer may be assigned a special operating mode.  These
 modes change the key press behavior to something different than the normal
@@ -148,9 +145,8 @@ a function key but also retain it's use as a normal key.  In another example,
 the function keys may be used to simulate Matias half-keyboard by making the
 space bar a Fn key with Space as its tap action.
 
-======================
 Associated Modifiers
-====================
+--------------------
 
 Any key may be assigned an additional modifier state of any combination of
 Shift, Ctrl, Alt, and GUI (meta).  As long as the key is pressed, it will
@@ -160,9 +156,8 @@ to Ctrl+3.  This feature only makes sense when the key is in Normal mode.
 Remember that the modifier states can interfere with the actual modifier keys
 if they are held at the same time.
 
-============
 RAM Macros
-==========
+----------
 
 The system supports one RAM-based macro that can be recorded on the fly.  Simply
 press the 'Macro Rec' key, which will set the "Recording" LED Mode to
@@ -171,9 +166,8 @@ then press the 'Macro Rec' key again.  To play it back, press the 'Macro Play'
 key.  The macro will be lost when the keyboard loses power.  Only normal
 scancodes are supported in the RAM macro at this time.
 
-===========
 LED Modes
-=========
+---------
 
 The LED indicators can be remapped to indicate various special states.  Mapping
 to an LED indicator is accomplished using the LED Configuration tool in the

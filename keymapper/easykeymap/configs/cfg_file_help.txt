@@ -1,6 +1,5 @@
-HOWTO: Easy AVR USB Keyboard Firmware - cfg file definitions
-metalliqaz@geekhack
-
+HOWTO: cfg file definitions
+===========================
 
 The cfg files allow the user to modify the layout of the keyboard.  This is
 used for keyboards that allow the builder to configure many different layouts

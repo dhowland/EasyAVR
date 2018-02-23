@@ -1,13 +1,12 @@
-HOWTO: Easy AVR USB Keyboard Firmware - Config console and special features
-metalliqaz@geekhack
+HOWTO: Config console and special features
+==========================================
 
 The config console enables the setting of various configuration options from the
 keyboard itself and is accessed using a key mapped to SCANCODE_CONFIG (see
 "Using Configuration Options" below for more details).
 
-=======================
 Configuration Options
-=====================
+---------------------
 
 Virtual Num Pad
     On tenkeyless boards, the number row will act like the equivalent number
@@ -101,9 +100,8 @@ Matrix Setup Wait
     can clean up unexpected keypress behavior on boards with slower matrix
     circuitry.  Default is 5.
 
-=============================
 Using Configuration Options
-===========================
+---------------------------
 
 The configuration options are stored in non-volatile memory, which means that
 they will be saved even when the keyboard loses power.  In order to change a
@@ -123,9 +121,8 @@ keyboard as input.  It is necessary to type correctly to have your input
 recognized.  The interface usually only needs numbers or ENTER.  Characters
 other than 0-9 are interpreted as 0.
 
-=============================
 Clearing All Saved Settings
-===========================
+---------------------------
 
 If you set a configuration option that renders the keyboard unusable, you can
 clear non-volatile memory by unplugging the keyboard and holding the ENTER key

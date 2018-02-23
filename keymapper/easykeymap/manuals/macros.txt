@@ -1,9 +1,8 @@
-HOWTO: Easy AVR USB Keyboard Firmware - Macro definitions
-metalliqaz@geekhack
+HOWTO: Macro definitions
+========================
 
-==========
 Overview
-========
+--------
 
 Current Macro limits:
     14 firmware macros
@@ -73,9 +72,8 @@ zero (0) meaning the default layer and 1-9 referring to the Fn layers.
 
 \HINT(1)
 
-==========
 Specials
-========
+--------
 
 Mod keys:
 
@@ -134,10 +132,8 @@ PREV
 STOP
 PLAY
 
-
-==========
 Examples
-========
+--------
 
 To get something like this:
 

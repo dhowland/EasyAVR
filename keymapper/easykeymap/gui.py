@@ -60,11 +60,11 @@ import easykeymap.boards as boards
 import easykeymap.programming as programming
 import easykeymap.newboard as newboard
 
-ABOUT = """Easy AVR USB Keyboard Firmware Keymapper  (Version %s)
+ABOUT = """Keymapper for the Easy AVR USB Keyboard Firmware  (Version %s)
 
-To ask questions contact me on geekhack.org, username 'metalliqaz'.
+For help, visit https://github.com/dhowland/EasyAVR
 
-Copyright (C) 2013-2017 David Howland.
+Copyright (C) 2013-2018 David Howland
 
 This program comes with ABSOLUTELY NO WARRANTY.  This is free software,
 and you are welcome to redistribute it under certain conditions.  See
