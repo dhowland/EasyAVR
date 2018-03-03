@@ -113,15 +113,13 @@ inline void schedule_tick(void)
 
 inline void exec_slice(void)
 {
-	int8_t i;
 	void (*slot_ptr)(void);
 	
-	for(i=0; i<NUMBER_OF_ITEMS_PER_SLOT; i++)
+	for(g_next_item=0; g_next_item<NUMBER_OF_ITEMS_PER_SLOT; g_next_item++)
 	{
-		slot_ptr = pgm_read_ptr(&g_sched_list[g_next_slice][i]);
+		slot_ptr = pgm_read_ptr(&g_sched_list[g_next_slice][g_next_item]);
 		if (slot_ptr != NULL)
 		{
-			g_next_item = i;
 			(*slot_ptr)();
 			clock_in();
 		}
