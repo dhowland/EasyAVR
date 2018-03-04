@@ -43,6 +43,8 @@ SCANCODE_M11               Play macro 11
 SCANCODE_M12               Play macro 12
 SCANCODE_M13               Play macro 13
 SCANCODE_M14               Play macro 14
+SCANCODE_M15               Play macro 15
+SCANCODE_M16               Play macro 16
 SCANCODE_MRAM_RECORD       Start/Stop recording the RAM macro
 SCANCODE_MRAM_PLAY         Play the RAM macro
 
@@ -87,7 +89,7 @@ SCANCODE_REFRESH           Refresh navigation in Windows
 SCANCODE_FAVES             Open favorites dialog in Windows
 
 Layers
-------oooooooo
+------
 
 The system contains ten keymap layers that may be configured by the user.
 There is a default layer which is used when no Fn keys are active.  This is

@@ -51,7 +51,6 @@ if not hasattr(sys, 'frozen'):
 from easykeymap import __version__
 from easykeymap.scancodes import scancodes, keysyms
 from easykeymap.picker import Picker
-from easykeymap.password import Password
 import easykeymap.intelhex as intelhex
 import easykeymap.macroparse as macroparse
 import easykeymap.cfgparse as cfgparse
@@ -77,7 +76,7 @@ for board in boards.__all__:
     configurations[mod.unique_id] = mod
 
 # save file layout revision
-SAVE_VERSION = 16
+SAVE_VERSION = 17
 
 #pixels for 1/4x key size
 UNIT = 12
@@ -173,7 +172,6 @@ class GUI(object):
         self.clipboard = None
         self.checkuserdir()
         self.pickerwindow = Picker(self)
-        self.password = Password()
         self.layoutfilename = None
         self.buildfilename = None
         self.creategui()
@@ -266,8 +264,6 @@ class GUI(object):
         menubar.add_cascade(menu=menu_edit, label='Edit')
         menu_view = Menu(menubar)
         menu_view.add_command(label='Scancode Picker', command=self.showpicker)
-        menu_view.add_command(label='Password Generator',
-                              command=self.showpassword)
         menu_view.add_command(label='LED Configuration', command=self.showled)
         menu_view.add_command(label='LED Auto-Fn Configuration', command=self.showledlayers)
         menubar.add_cascade(menu=menu_view, label='View')
@@ -280,8 +276,6 @@ class GUI(object):
                               command=self.helpmacros)
         menu_help.add_command(label='Help on Special Config Settings',
                               command=self.helpconsole)
-        menu_help.add_command(label='Help on the Password Generator',
-                              command=self.helppasswords)
         menu_help.add_separator()
         menu_help.add_command(label='About',
                               command=self.about)
@@ -400,13 +394,6 @@ class GUI(object):
 
     def showpicker(self):
         self.pickerwindow.show()
-
-    def showpassword(self):
-        limit = 0
-        if self.selectedconfig:
-            config = configurations[self.selectedconfig]
-            limit = templates.ram_macro_lengths[config.firmware.device]
-        self.password.popup(self.root, limit)
 
     def showled(self):
         if self.selectedconfig:
@@ -763,8 +750,6 @@ class GUI(object):
                 self.leds = [x[1] for x in config.led_definition]
                 self.initadvancedleds()
                 self.ledlayers = [0, 0, 0, 0, 0]
-                del self.password
-                self.password = Password()
                 self.selectlayer()
                 self.resetmacros()
                 self.setchanges(False)
@@ -840,8 +825,7 @@ class GUI(object):
                     else:
                         self.leds = [x[1] for x in config.led_definition]
                     if len(data) > 10:
-                        del self.password
-                        self.password = Password(data[10])
+                        pass
                     if len(data) > 11:
                         self.advancedleds = data[11]
                         self.useadvancedleds = data[12]
@@ -930,8 +914,6 @@ class GUI(object):
 
     def adapt_v8(self):
         print("Adapting save file v8->v9")
-        del self.password
-        self.password = Password()
 
     def adapt_v9(self):
         print("Adapting save file v9->v10")
@@ -986,7 +968,7 @@ class GUI(object):
                    self.macros, self.actions, self.modes,
                    self.wmods, None,
                    self.selectedlayoutmod, self.leds,
-                   self.password.getstruct(),
+                   None,
                    self.advancedleds, self.useadvancedleds,
                    self.ledlayers)
         try:
@@ -1317,14 +1299,6 @@ class GUI(object):
                     bytes[offset] = led
                     offset += 1
                 offset += led_diff
-        # overwrite data for password generators
-        if config.firmware.pw_defs_map is not None:
-            address = config.firmware.pw_defs_map
-            offset = address - start
-            s = self.password.getstring()
-            if s is not None:
-                end = offset + len(s)
-                bytes[offset:end] = array('B', s)
         # overwrite data for teensy bootloader pointer
         if config.teensy:
             address = config.firmware.boot_ptr_map
@@ -1405,9 +1379,6 @@ class GUI(object):
 
     def helpconsole(self):
         self.showtext('console.txt')
-
-    def helppasswords(self):
-        self.showtext('passwords.txt')
 
     def about(self):
         AboutWindow(self.root, 'About', ABOUT)

@@ -98,7 +98,6 @@
             <File name="easykeymap\macroparse.py" />
             <File name="easykeymap\newboard.py" />
             <File name="easykeymap\newboard_template.txt" />
-            <File name="easykeymap\password.py" />
             <File name="easykeymap\picker.py" />
             <File name="easykeymap\programming.py" />
             <File name="easykeymap\scancodes.py" />

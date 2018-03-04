@@ -202,8 +202,6 @@ for hw in hardware_table:
         write_symbol(outfile, symbols, 'MATRIX_SENSE_LIST')
         outfile.write("\nkmac_key_map = ")
         write_symbol(outfile, symbols, 'KMAC_KEY')
-        outfile.write("\npw_defs_map = ")
-        write_symbol(outfile, symbols, 'PWDEFS')
         outfile.write("\nboot_ptr_map = ")
         write_symbol(outfile, symbols, 'BOOTLOADER')
         outfile.write("\nprod_str_map = ")

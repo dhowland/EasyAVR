@@ -23,7 +23,6 @@
 #include "USB.h"
 #include "matrix.h"
 #include "mouse.h"
-#include "password.h"
 #include "led.h"
 #include "autokey.h"
 #include "scheduler.h"
@@ -58,11 +57,11 @@ void (* const g_sched_list[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT])(
 	+----------------+----------------+----------------+----------------+
 	| USB_cycle_kb   | matrix_scan_2  | USB_cycle_aux  | matrix_scan_4  |
 	+----------------+----------------+----------------+----------------+
-	| matrix_scan_1  | password_cycle | matrix_scan_3  | autokey_cycle  |
+	| matrix_scan_1  | update_mouse   | matrix_scan_3  | autokey_cycle  |
 	+----------------+----------------+----------------+----------------+
-	| led_cycle      | update_mouse   | led_cycle      | console_main   |
+	| led_cycle      | led_cycle      | led_cycle      | console_main   |
 	+----------------+----------------+----------------+----------------+
-	|                | led_cycle      |                | led_cycle      |
+	|                |                |                | led_cycle      |
 	+----------------+----------------+----------------+----------------+ */
 
 void (* const g_sched_list[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT])(void) PROGMEM = {
@@ -74,9 +73,9 @@ void (* const g_sched_list[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT])(
 	},
 	{
 		&matrix_scan_second_quarter,
-		&password_cycle,
 		&update_mouse,
-		&led_cycle
+		&led_cycle,
+		NULL
 	},
 	{
 		&USB_cycle_aux,
@@ -100,20 +99,20 @@ void (* const g_sched_list[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT])(
 	+----------------+----------------+
 	| matrix_scan_1  | matrix_scan_2  |
 	+----------------+----------------+
-	| password_cycle | autokey_cycle  |
+	| update_mouse   | autokey_cycle  |
 	+----------------+----------------+
-	| update_mouse   | console_main   |
+	| led_cycle      | console_main   |
 	+----------------+----------------+
-	| led_cycle      | led_cycle      |
+	|                | led_cycle      |
 	+----------------+----------------+ */
 
 void (* const g_sched_list[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT])(void) PROGMEM = {
 	{
 		&USB_cycle_kb,
 		&matrix_scan_first_half,
-		&password_cycle,
 		&update_mouse,
-		&led_cycle
+		&led_cycle,
+		NULL
 	},
 	{
 		&USB_cycle_aux,
