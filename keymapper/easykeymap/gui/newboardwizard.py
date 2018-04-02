@@ -39,7 +39,7 @@ def nbwizard(parent):
     """
     inputs = {}
 
-    bmp = wx.Bitmap(get_pkg_path("icons/wizard.png"), wx.BITMAP_TYPE_PNG)
+    bmp = wx.Bitmap(get_pkg_path("res/wizard.png"), wx.BITMAP_TYPE_PNG)
     wizard = wxa.Wizard(parent, title="New Keyboard Definition", bitmap=bmp)
 
     page1 = IntroWizardPage(wizard, inputs)
@@ -120,7 +120,7 @@ def create_config(output_path, mapping):
     """Populates the newboard_template with the data from `mapping` and saves
     the result to `output_path`.
     """
-    template_path = get_pkg_path('newboard_template.txt')
+    template_path = get_pkg_path('res/newboard_template.txt')
     with open(template_path, encoding="utf8") as fp:
         config_template = fp.read()
     with open(output_path, 'w') as fp:

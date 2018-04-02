@@ -65,7 +65,7 @@ class MainFrame(wx.Frame):
         self.op_msg = None
 
     def make_gui(self):
-        iconpath = get_pkg_path('icons/keyboard.ico')
+        iconpath = get_pkg_path('res/keyboard.ico')
         self.SetIcon(wx.Icon(iconpath, wx.BITMAP_TYPE_ICO))
         self.make_menubar()
         self.make_statusbar()
@@ -427,7 +427,7 @@ class MainFrame(wx.Frame):
         info.SetDescription("Keymapper for the Easy AVR USB Keyboard Firmware")
         info.SetCopyright("Copyright (C) 2013-2018 David Howland")
         info.SetWebSite("https://github.com/dhowland/EasyAVR")
-        iconpath = get_pkg_path('icons/keycap.ico')
+        iconpath = get_pkg_path('res/keycap.ico')
         info.SetIcon(wx.Icon(iconpath, type=wx.BITMAP_TYPE_ICO))
         info.SetLicence("GPLv2.0\n\n"
                         "This program comes with ABSOLUTELY NO WARRANTY.\n"
