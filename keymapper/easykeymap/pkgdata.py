@@ -29,7 +29,7 @@ import pkgutil
 import sys
 import traceback
 
-from .boards import required_board_attributes
+import easykeymap.boards as boards
 import easykeymap.cfgparse as cfgparse
 
 if not hasattr(sys, 'frozen'):
@@ -71,7 +71,7 @@ def import_pkg_boards():
     """Finds all the keyboard configs in the easykeymap.boards package, imports
     them, and returns a dict mapping unique ID to module references."""
     configurations = {}
-    for _, modpath, _ in pkgutil.iter_modules([get_pkg_path('boards')]):
+    for _, modpath, _ in pkgutil.iter_modules(boards.__path__):
         mod = importlib.import_module('.boards.' + modpath, 'easykeymap')
         configurations[mod.unique_id] = mod
     return configurations
@@ -84,7 +84,7 @@ def import_user_boards():
     for file in glob(os.path.join(userboards, '*.py')):
         board = os.path.splitext(os.path.basename(file))[0]
         mod = importlib.import_module(board)
-        for attr in required_board_attributes:
+        for attr in boards.required_board_attributes:
             if attr not in dir(mod):
                 msg = ("Error loading user board definition '" +
                        board + "'.  It is missing the '" + attr +
