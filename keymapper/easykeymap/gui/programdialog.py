@@ -137,7 +137,6 @@ class ProgramDialog(wx.Dialog):
         self.show_text()
 
     def OnClose(self, event):
-        print("onclose")
         if event.CanVeto():
             if self.runthread and self.runthread.is_alive():
                 self.runningtask.die = True

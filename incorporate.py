@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
 #
 # Easy AVR USB Keyboard Firmware
 # Copyright (C) 2013-2016 David Howland
@@ -19,8 +20,6 @@
 """Compile all hardware configurations and incorporate the binaries into
 the keymapper application.
 """
-
-from __future__ import print_function
 
 import os
 import os.path
