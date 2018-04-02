@@ -66,6 +66,7 @@
             <File name="easykeymap\configs\tada68.cfg" />
         </Folder>
         <Folder name="gui">
+            <File name="easykeymap\gui\easyapp.py" />
             <File name="easykeymap\gui\layoutpanel.py" />
             <File name="easykeymap\gui\ledpanel.py" />
             <File name="easykeymap\gui\macropanel.py" />

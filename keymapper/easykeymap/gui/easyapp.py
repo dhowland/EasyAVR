@@ -17,9 +17,23 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""This is the main entry point for the keymapper application."""
+"""The wx application class for the EasyAVR keymapper."""
 
-from easykeymap.gui.easyapp import EasyApp
+import wx
+
+from .mainframe import MainFrame
 
 
-EasyApp().MainLoop()
+class EasyApp(wx.App):
+    """Launches the application by creating a MainFrame window."""
+
+    def OnInit(self):
+        self.RedirectStdio()
+        self.SetVendorName("dhowland")
+        self.SetAppName("easykeymap")
+        self.SetClassName("easykeymap")
+        main_frame = MainFrame(None)
+        self.SetTopWindow(main_frame)
+        main_frame.Show(True)
+        # self.RedirectStdio()
+        return True
