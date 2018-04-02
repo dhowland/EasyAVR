@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2013-2017 David Howland
+# Copyright (C) 2018 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,12 +17,26 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""The boards package contains the config files for supported keyboards."""
+"""This is the main entry point for the keymapper application."""
 
-required_board_attributes = [
-    'firmware', 'description', 'unique_id', 'cfg_name', 'teensy', 'hw_boot_key',
-    'display_height', 'display_width', 'num_rows', 'num_cols', 'strobe_cols',
-    'strobe_low', 'matrix_hardware', 'matrix_strobe', 'matrix_sense', 'num_leds',
-    'num_ind', 'num_bl_enab', 'led_definition', 'led_hardware', 'backlighting',
-    'bl_modes', 'KMAC_key', 'keyboard_definition', 'alt_layouts'
-]
+import wx
+
+from .gui.mainframe import MainFrame
+
+
+class EasyApp(wx.App):
+    """Launches the EasyAVR keymapper application."""
+
+    def OnInit(self):
+        self.SetVendorName("dhowland")
+        self.SetAppName("easykeymap")
+        self.SetClassName("easykeymap")
+        main_frame = MainFrame(None)
+        self.SetTopWindow(main_frame)
+        main_frame.Show(True)
+        # self.RedirectStdio()
+        return True
+
+
+app = EasyApp()
+app.MainLoop()

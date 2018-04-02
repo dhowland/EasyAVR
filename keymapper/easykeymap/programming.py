@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
 #
@@ -14,61 +17,33 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""A collection of utility functions and a GUI for programming builds to
-various AVRs.
-"""
-
-from __future__ import print_function
+"""A collection of utility functions for programming builds to various AVRs."""
 
 import os
 import os.path
 import subprocess
-import sys
 import threading
 import time
-import traceback
-try:
-    import queue
-except:
-    import Queue as queue
-if not hasattr(sys, 'frozen'):
-    import pkg_resources
 
-try:
-    from Tkinter import *
-    from ttk import *
-    import tkSimpleDialog as simpledialog
-    import tkMessageBox as messagebox
-except ImportError:
-    from tkinter import *
-    from tkinter.ttk import *
-    from tkinter import simpledialog
-    from tkinter import messagebox
+from .pkgdata import get_pkg_path
 
 
-def popup(root, filename, config):
-    info = ProgrammingInfo()
-    info.filename = os.path.normpath(filename)
-    info.binformat = filename.endswith('bin')
-    info.description = config.description
-    info.device = config.firmware.device
-    info.teensy = config.teensy
-    info.windows = sys.platform.startswith('win32')
-    new_win = ProgrammingWindow(root, "AVR Programming", info)
-    return new_win.result
-
-def get_pkg_path(path):
-    if hasattr(sys, 'frozen'):
-        return os.path.join(os.path.dirname(sys.executable), path)
-    else:
-        return pkg_resources.resource_filename(__name__, path)
+class ProgrammingException(Exception):
+    """Raised when an error occurs during an AVR programming task."""
+    pass
 
 
 class ProgrammingTask(object):
+    """This is the base class for all programming tasks.  Derived classes should
+    define `description`, `windows`, `posix`, `teensy`, and `loader_tools`, as
+    well as override the `run()` method.
+    """
 
-    def __init__(self, logger, info):
+    def __init__(self, logger, fwpath, device):
         self.logger = logger
-        self.info = info
+        self.fwpath = fwpath
+        self.binformat = fwpath.endswith('bin')
+        self.device = device.lower()
         self.tool_path = self.findallpaths(self.loader_tools)
         self.die = False
         self.busy = False
@@ -91,8 +66,8 @@ class ProgrammingTask(object):
         if self.die:
             return
         self.busy = True
-        p = subprocess.Popen(args,
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        p = subprocess.Popen(args, stdin=subprocess.PIPE,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         th = threading.Thread(target=self.watchproc, args=(p,))
         th.start()
         for line in iter(p.stdout.readline, b''):
@@ -132,16 +107,17 @@ class ProgrammingTask(object):
 
     def bootmsg(self, logger):
         msg = ("The keyboard should be in bootloader mode prior to programming.\n"
-        "If the bootloader has not been activated then the programmer will\n"
-        "not be able to connect and the process will fail.  Activate the\n"
-        "bootloader by using the BOOT key (if it is programmed) or use the\n"
-        "reset switch on your microcontroller.  If the process fails, make\n"
-        "sure the keyboard is in bootloader mode and then try again.\n")
+               "If the bootloader has not been activated then the programmer will\n"
+               "not be able to connect and the process will fail.  Activate the\n"
+               "bootloader by using the BOOT key (if it is programmed) or use the\n"
+               "reset switch on your microcontroller.  If the process fails, make\n"
+               "sure the keyboard is in bootloader mode and then try again.\n")
         logger(msg)
         time.sleep(1)
 
 
 class TeensyLoader(ProgrammingTask):
+    """Loads to a Teensy controller on Windows or Linux."""
 
     description = "Upload to Teensy with Teensy/HID Loader"
     windows = True
@@ -156,18 +132,19 @@ class TeensyLoader(ProgrammingTask):
     ]
 
     def run(self):
-        if self.info.binformat:
+        if self.binformat:
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find teensy_loader_cli executable.")
         self.bootmsg(self.logger)
-        mmcu = '-mmcu=%s' % (self.info.device.lower(),)
-        args = [self.tool_path, mmcu, '-w', '-v', self.info.filename]
+        mmcu = '-mmcu=%s' % (self.device,)
+        args = [self.tool_path, mmcu, '-w', '-v', self.fwpath]
         self.logger(' '.join(args))
         self.execute(args)
 
 
 class FlipWindows(ProgrammingTask):
+    """Loads to a generic AVR on Windows."""
 
     description = "Upload to USB AVR with Flip"
     windows = True
@@ -179,19 +156,20 @@ class FlipWindows(ProgrammingTask):
     ]
 
     def run(self):
-        if self.info.binformat:
+        if self.binformat:
             raise ProgrammingException("Teensy Loader requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find Atmel Flip executable.")
         self.bootmsg(self.logger)
-        args = [self.tool_path, '-device', self.info.device.lower(), '-hardware', 'USB',
-                '-operation', 'onfail', 'abort', 'loadbuffer', self.info.filename, 'memory',
+        args = [self.tool_path, '-device', self.device, '-hardware', 'USB',
+                '-operation', 'onfail', 'abort', 'loadbuffer', self.fwpath, 'memory',
                 'FLASH', 'erase', 'F', 'blankcheck', 'program', 'verify', 'start', 'reset', '0']
         self.logger(' '.join(args))
         self.execute(args)
 
 
 class AvrdudePosix(ProgrammingTask):
+    """Loads to a generic AVR on Linux."""
 
     description = "Upload to USB AVR with AVRdude"
     windows = False
@@ -206,6 +184,7 @@ class AvrdudePosix(ProgrammingTask):
 
 
 class DfuProgrammer(ProgrammingTask):
+    """Loads to a generic AVR on Linux."""
 
     description = "Upload to USB AVR with dfu-programmer"
     windows = True
@@ -218,152 +197,17 @@ class DfuProgrammer(ProgrammingTask):
     ]
 
     def run(self):
-        if self.info.binformat:
+        if self.binformat:
             raise ProgrammingException("dfu-programmer requires a build in HEX format.")
         if self.tool_path is None:
             raise ProgrammingException("Can't find dfu-programmer executable.")
         self.bootmsg(self.logger)
-        args = [self.tool_path, self.info.device.lower(), 'erase']
+        args = [self.tool_path, self.device, 'erase']
         self.logger(' '.join(args))
         self.execute(args)
-        args = [self.tool_path, self.info.device.lower(), 'flash', self.info.filename]
+        args = [self.tool_path, self.device, 'flash', self.fwpath]
         self.logger(' '.join(args))
         self.execute(args)
-        args = [self.tool_path, self.info.device.lower(), 'reset']
+        args = [self.tool_path, self.device, 'reset']
         self.logger(' '.join(args))
         self.execute(args)
-
-
-class ProgrammingException(Exception):
-    pass
-
-
-class ProgrammingInfo(object):
-    pass
-
-
-class ProgrammingWindow(simpledialog.Dialog):
-
-    def __init__(self, root, title, info):
-        self.info = info
-        self.queue = queue.Queue()
-        self.collecttasks()
-        self.runthread = None
-        simpledialog.Dialog.__init__(self, root, title)
-
-    def collecttasks(self):
-        # in the future this should be automatically scanned from a directory
-        self.tasks = [
-            TeensyLoader,
-            FlipWindows,
-            DfuProgrammer,
-            AvrdudePosix
-        ]
-        # the first matching task will be pre-selected for the user
-        self.besttask = None
-        for t in self.tasks:
-            if (((t.windows and self.info.windows) or
-                 (t.posix and not self.info.windows)) and
-                (t.teensy == self.info.teensy)):
-                self.besttask = t
-                break
-
-    # overrides simpledialog.Dialog.body()
-    def body(self, master):
-        self.resizable(0, 0)
-        self.taskvar = StringVar()
-        Label(master, text="Board:  ").grid(column=0, row=0, sticky=(E))
-        Label(master, text=self.info.description).grid(column=1, row=0, columnspan=3, sticky=(E,W))
-        Label(master, text="File:  ").grid(column=0, row=1, sticky=(E))
-        Label(master, text=self.info.filename).grid(column=1, row=1, columnspan=3, sticky=(E,W))
-        Label(master, text="Task:  ").grid(column=0, row=2, sticky=(E))
-        self.combo = Combobox(master, textvariable=self.taskvar, state='readonly')
-        self.combo['values'] = [t.description for t in self.tasks]
-        self.combo.bind('<<ComboboxSelected>>', self.taskselect)
-        self.combo.grid(column=1, row=2, sticky=(E,W))
-        self.button = Button(master, text="Run", command=self.run)
-        self.button.state(['disabled'])
-        self.button.grid(column=2, row=2, columnspan=2, sticky=(W))
-        master.columnconfigure(1, weight=1)
-        
-        if self.besttask is not None:
-            self.taskvar.set(self.besttask.description)
-            self.taskselect(None)
-        
-        self.text = Text(master, width=90, height=20, wrap=WORD)
-        self.text.grid(column=0, row=3, columnspan=3, sticky=(N, W, E, S))
-        self.scroll = Scrollbar(master, orient=VERTICAL, command=self.text.yview)
-        self.scroll.grid(column=3, row=3, sticky=(N, W, E, S))
-        self.text["yscrollcommand"] = self.scroll.set
-        
-        self.bodyframe = master
-        self.bodyframe.after(250, self.showtext)
-
-    # overrides simpledialog.Dialog.buttonbox()
-    def buttonbox(self):
-        w = Button(self, text="Close", width=10, command=self.ok, default=ACTIVE)
-        w.pack(padx=5, pady=5)
-        self.bind("<Escape>", self.ok)
-
-    # overrides simpledialog.Dialog.apply()
-    def apply(self):
-        if (self.runthread is not None) and (self.runthread.is_alive()):
-            if self.runningtask.busy:
-                self.runningtask.die = True
-                time.sleep(1)
-
-    def taskselect(self, event):
-        taskdesc = self.taskvar.get()
-        for t in self.tasks:
-            if t.description == taskdesc:
-                self.selectedtask = t
-                self.button.state(['!disabled'])
-                break
-
-    def run(self):
-        self.combo.state(['disabled'])
-        self.button.state(['disabled'])
-        msg = 'Running task "%s"\n' % (self.taskvar.get(),)
-        self.logtext(msg)
-        self.runthread = threading.Thread(target=self.process)
-        self.runthread.start()
-        self.bodyframe.after(500, self.waitprocess)
-
-    def process(self):
-        try:
-            self.runningtask = self.selectedtask(self.logtext, self.info)
-            self.runningtask.run()
-        except ProgrammingException as err:
-            msg = str(err)
-            messagebox.showerror(title="Can't complete programming",
-                                 message='Error: ' + msg,
-                                 parent=self.parent)
-        except Exception as err:
-            msg = traceback.format_exc()
-            messagebox.showerror(title="Process Error",
-                                 message='Error: ' + msg,
-                                 parent=self.parent)
-
-    def waitprocess(self):
-        if self.runthread and self.runthread.isAlive():
-            self.bodyframe.after(500,self.waitprocess)
-        else:
-            self.logtext('\n\n')
-            self.combo.state(['!disabled'])
-            self.button.state(['!disabled'])
-
-    def logtext(self, text):
-        self.queue.put(text)
-        self.queue.put('\n')
-
-    def showtext(self):
-        if self.queue.qsize() != 0:
-            try:
-                while True:
-                    line = self.queue.get_nowait()
-                    self.text.insert('end', line)
-            except queue.Empty:
-                pass
-            self.text.see('end')
-            self.text.update_idletasks()
-        self.bodyframe.after(250, self.showtext)

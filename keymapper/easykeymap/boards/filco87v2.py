@@ -210,6 +210,3 @@ keyboard_definition = [
 ]
 
 alt_layouts = {}
-
-if __name__ == '__main__':
-    print("Keyboard definition for Filco 87 keyboard")

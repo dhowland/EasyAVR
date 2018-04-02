@@ -39,7 +39,8 @@ description = "${description}"
 
 # Unique string to identify THIS exact hardware layout.  If you change
 # this file after saving layouts in the GUI, bump the unique_id to
-# prevent corrupted builds.
+# tell the tool that the old save files should not be used.  (prevents
+# corrupted builds)
 
 unique_id = "${unique}"
 
@@ -136,8 +137,11 @@ num_leds, num_ind, led_hardware, backlighting, num_bl_enab, bl_modes = make_led_
 # first string is the description of the key shown in the GUI.  The
 # second string is the default function assigned to that LED.  LED
 # functions must be strings as defined in led_assignments of gui.py.
-# Common choices are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Win Lock',
-# 'Fn1 Active', 'Recording', 'Backlight', and 'Unassigned'.
+# Choices are 'Num Lock', 'Caps Lock', 'Scroll Lock', 'Compose', 'Kana',
+# 'Win Lock', 'Fn1 Active', 'Fn2 Active', 'Fn3 Active', 'Fn4 Active',
+# 'Fn5 Active', 'Fn6 Active', 'Fn7 Active', 'Fn8 Active', 'Fn9 Active',
+# 'Any Fn Active', 'Recording', 'USB Init', 'USB Error', 'USB Suspend',
+# 'USB Normal', 'Backlight', and 'Unassigned'.
 
 led_definition = ${led_definition}
 

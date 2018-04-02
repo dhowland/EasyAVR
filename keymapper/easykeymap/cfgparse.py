@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
 #
@@ -14,16 +17,25 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"""This module contains code to parse EasyAVR layout modification .cfg files.
+The .cfg files are similar to ini files, but contain a very restrictive syntax
+consisting of only headers and three functions.
+"""
+
 import re
+
 
 regex_header = re.compile(r"^\[(.+)\]$")
 regex_command = re.compile(r"^(MAKE_[SPACERKYBLN]+)\(([ ,\d-]+)\)$")
 
 
-def parse(cfg_file):
+def parse(cfg_path):
+    """Parse the file at `cfg_path` as a layout mod .cfg file.  It returns
+    a map of (row, col) coordinates to (width, height) or width attributes.
+    """
     cfg = {}
-    with open(cfg_file, 'r') as infd:
-        mod_list = []
+    with open(cfg_path, 'r') as infd:
+        mod_map = {}
         mod_name = None
         for i, line in enumerate(infd):
             line = line.strip()
@@ -34,9 +46,9 @@ def parse(cfg_file):
             m = regex_header.match(line)
             if m:
                 if mod_name:
-                    cfg[mod_name] = mod_list
+                    cfg[mod_name] = mod_map
                 mod_name = m.group(1)
-                mod_list = []
+                mod_map = {}
                 continue
             m = regex_command.match(line)
             if m:
@@ -47,36 +59,29 @@ def parse(cfg_file):
                         col = int(args[1].strip())
                         width = int(args[2].strip())
                         height = int(args[3].strip())
-                        mod_list.append(((row, col), (width, height)))
+                        mod_map[(row, col)] = (width, height)
                     elif m.group(1) == "MAKE_SPACER":
                         row = int(args[0].strip())
                         col = int(args[1].strip())
                         width = int(args[2].strip())
-                        mod_list.append(((row, col), width))
+                        mod_map[(row, col)] = width
                     elif m.group(1) == "MAKE_BLANK":
                         row = int(args[0].strip())
                         col = int(args[1].strip())
                         width = int(args[2].strip()) * -1
-                        mod_list.append(((row, col), width))
+                        mod_map[(row, col)] = width
                     else:
                         raise Exception("%s:%d: invalid command %s" %
-                                        (cfg_file, i, m.group(1)))
+                                        (cfg_path, i, m.group(1)))
                 except IndexError:
                     raise Exception("%s:%d: Not enough arguments" %
-                                    (cfg_file, i))
+                                    (cfg_path, i))
                 except ValueError:
                     raise Exception("%s:%d: Argument is not integer" %
-                                    (cfg_file, i))
+                                    (cfg_path, i))
                 continue
             raise Exception("%s:%d: Unrecognized: %s" %
-                            (cfg_file, i, line))
+                            (cfg_path, i, line))
         if mod_name:
-            cfg[mod_name] = mod_list
+            cfg[mod_name] = mod_map
     return cfg
-
-if __name__ == '__main__':
-    import sys
-    try:
-        print(parse(sys.argv[1]))
-    except:
-        pass

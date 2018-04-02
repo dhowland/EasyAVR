@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2017 David Howland
 #
@@ -24,7 +26,10 @@ it is only meant to be a quick way to start adding support for a new board.
 
 import json
 
-'''All default legends from the ANSI104 and ISO105 predefined layouts.'''
+from .build import NULL_SYMBOL
+
+
+# All default legends from the ANSI104 and ISO105 predefined layouts.
 conversion_table = {
     "A": "HID_KEYBOARD_SC_A",
     "B": "HID_KEYBOARD_SC_B",
@@ -126,7 +131,7 @@ conversion_table = {
     "9\nPgUp": "HID_KEYBOARD_SC_KEYPAD_9_AND_PAGE_UP",
     "0\nIns": "HID_KEYBOARD_SC_KEYPAD_0_AND_INSERT",
     ".\nDel": "HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE",
-    "|\n\\": "HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE",
+    # "|\n\\": "HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE",
     "Menu": "HID_KEYBOARD_SC_APPLICATION",
     "=": "HID_KEYBOARD_SC_KEYPAD_EQUAL_SIGN",
     "Ctrl": "HID_KEYBOARD_SC_LEFT_CONTROL",
@@ -139,52 +144,52 @@ conversion_table = {
     "rWin": "HID_KEYBOARD_SC_RIGHT_GUI",
 }
 
-ctrl = False
-shift = False
-alt = False
-win = False
 
-def reset():
-    global ctrl, shift, alt, win
-    ctrl = False
-    shift = False
-    alt = False
-    win = False
-
-def convert(legend, width=4, height=4):
-    global ctrl, shift, alt, win
+def convert(s, legend, width=4, height=4):
+    """Utility function to make legends less ambiguous."""
     if legend == 'Enter' and width == 4 and height == 8:
         legend = 'kpEnter'
+    elif legend == '' and width > 8:
+        legend = ' '
     elif legend == 'Ctrl':
-        if ctrl:
+        if s['ctrl']:
             legend = 'rCtrl'
         else:
-            ctrl = True
+            s['ctrl'] = True
     elif legend == 'Shift':
-        if shift:
+        if s['shift']:
             legend = 'rShift'
         else:
-            shift = True
+            s['shift'] = True
     elif legend == 'Alt':
-        if alt:
+        if s['alt']:
             legend = 'AltGr'
         else:
-            alt = True
+            s['alt'] = True
     elif legend == 'Win':
-        if win:
+        if s['win']:
             legend = 'rWin'
         else:
-            win = True
+            s['win'] = True
     try:
         return conversion_table[legend]
-    except:
-        return '0'
+    except KeyError:
+        return NULL_SYMBOL
+
 
 def parse(path):
+    """Open the JSON file at `path` and return a structure of the layout for
+    use in EasyAVR board config files.
+    """
     with open(path, encoding="utf8") as fp:
         jslayout = json.load(fp)
 
-    reset()
+    state = {
+        'ctrl': False,
+        'shift': False,
+        'alt': False,
+        'win': False,
+    }
 
     width = 4
     height = 4
@@ -209,14 +214,14 @@ def parse(path):
         overhang = False
         for item in row:
             if isinstance(item, str):
-                scancode = convert(item, width, height)
-                newrow.append( ((width, height), (rownum, colnum), scancode) )
+                scancode = convert(state, item, width, height)
+                newrow.append(((width, height), (rownum, colnum), scancode))
                 totalwidth += width
                 width = 4
                 height = 4
                 colnum += 1
             elif isinstance(item, dict):
-                for param,val in item.items():
+                for param, val in item.items():
                     if param == 'w':
                         width = int(val * 4)
                     elif param == 'h':
@@ -227,9 +232,9 @@ def parse(path):
                     elif param == 'x':
                         if lastoverhang:
                             # total hack to prevent overlaps in ISO enter
-                            newrow.append( (int(val * -4), None, '0') )
+                            newrow.append((int(val * -4), None, NULL_SYMBOL))
                         else:
-                            newrow.append( (int(val * 4), None, '0') )
+                            newrow.append((int(val * 4), None, NULL_SYMBOL))
                         totalwidth += int(val * 4)
                     elif param == 'y':
                         layout.append(int(val * 4))

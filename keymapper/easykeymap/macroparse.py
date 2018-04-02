@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
 #
@@ -14,26 +17,41 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+"""This module contains code for parsing the macro mini-language and converting strings to
+a sequence of scancodes as required by the EasyAVR firmware.
+"""
 
-import re
 from array import array
+import re
 
-from easykeymap.scancodes import scancodes, char_map
+from .scancodes import scancodes, char_map
+
+
+class MacroException(Exception):
+    """Raised when an error is encountered while parsing a macro string."""
+    pass
+
 
 modmap = {
     "CTRL": 1,
-    "SHIFT": 2,
-    "ALT": 4,
-    "WIN": 8,
     "LCTRL": 1,
+    "SHIFT": 2,
     "LSHIFT": 2,
+    "ALT": 4,
+    "OPTION": 4,
     "LALT": 4,
+    "GUI": 8,
+    "WIN": 8,
+    "COMMAND": 8,
+    "META": 8,
+    "LGUI": 8,
     "LWIN": 8,
     "RCTRL": 16,
     "RSHIFT": 32,
+    "ALTGR": 64,
     "RALT": 64,
-    "RWIN": 128
+    "RGUI": 128,
+    "RWIN": 128,
 }
 
 kpmap = {
@@ -55,31 +73,30 @@ kpmap = {
     '.': "KPDOT"
 }
 
-DEBUG = False
 
-
-def waitparse(input_string, externaldata):
+def waitparse(input_string, external_data):
     try:
         n = int(input_string)
         assert(n >= 0)
         assert(n <= 255)
-    except:
-        raise Exception("The WAIT function requires an integer between "
-                        "0 and 255.")
+    except Exception:
+        raise MacroException("The WAIT function requires an integer between "
+                             "0 and 255.")
     # use HID_KEYBOARD_SC_ERROR_ROLLOVER as the scancode for WAIT
     return (1, n)
 
 
-def hintparse(input_string, externaldata):
+def hintparse(input_string, external_data):
     try:
         n = int(input_string)
         assert(n >= 0)
         assert(n <= 9)
-    except:
-        raise Exception("The HINT function requires an integer between "
-                        "0 and 9.")
-    layermap = externaldata['hints'][n]
-    return parse(layermap.replace('\\','\\\\,'))
+    except Exception:
+        raise MacroException("The HINT function requires an integer between "
+                             "0 and 9.")
+    layermap = external_data['hints'][n]
+    return parse(layermap.replace('$', '$$'))
+
 
 funcs = {
     "WAIT": waitparse,
@@ -87,7 +104,12 @@ funcs = {
 }
 
 
-def parse(macro_string, modval=0, externaldata={}):
+def parse(macro_string, modval=0, external_data={}):
+    """Take the string from `macro_string` and convert it to a sequence of scancodes.  The string
+    is interpreted using the macro mini-language.  This is a recursive function, so macro
+    functions that contain substrings will cause another call to this function with the bit
+    packed modifier word in `modval`.  Layer hints are expected in `external_data['hints']`.
+    """
     data = array('B')
     escaping = False
     esc_string = ""
@@ -99,32 +121,34 @@ def parse(macro_string, modval=0, externaldata={}):
     is_alt_code = isaltcode(macro_string, modval)
     for c in macro_string:
         if escaping:
-            if c == ',':
-                escaping = False
-                if esc_string in modmap:
-                    raise Exception("Mod keys must be followed by a '('.")
-                elif esc_string in funcs:
-                    raise Exception("Functions must be followed by a '('.")
-                else:
-                    if esc_string == 'n':
-                        esc_string = '\n'
-                    if esc_string == 't':
-                        esc_string = '\t'
-                    data.extend(emit(modval, esc_string))
+            if c == '{':
+                continue
             elif c == '(':
                 if esc_string in modmap:
                     sub_modval = modval | modmap[esc_string]
                 elif esc_string in funcs:
                     func_input = esc_string
                 else:
-                    raise Exception("Substrings must be preceded by "
-                                    "a mod key or function.")
+                    raise MacroException("Substrings must be preceded by "
+                                         "a mod key or function.")
                 escaping = False
                 subbing = True
                 sub_string = ""
                 nested += 1
+            elif c == '$':
+                escaping = False
+                data.extend(emit(modval, '$'))
+            elif re.match(r"[A-Za-z0-9_]", c):
+                esc_string = esc_string + c.upper()
             else:
-                esc_string = esc_string + c
+                # c is } or any other character besides { and ( that can't be a keyword
+                escaping = False
+                if esc_string in modmap:
+                    raise MacroException("Mod keys must be followed by a '('.")
+                elif esc_string in funcs:
+                    raise MacroException("Functions must be followed by a '('.")
+                else:
+                    data.extend(emit(modval, esc_string))
         elif subbing:
             if c == '(':
                 nested += 1
@@ -134,7 +158,7 @@ def parse(macro_string, modval=0, externaldata={}):
                 if nested == 0:
                     subbing = False
                     if func_input:
-                        data.extend(funcs[func_input](sub_string, externaldata))
+                        data.extend(funcs[func_input](sub_string, external_data))
                         func_input = None
                     else:
                         data.extend(parse(sub_string, sub_modval))
@@ -143,7 +167,7 @@ def parse(macro_string, modval=0, externaldata={}):
             else:
                 sub_string = sub_string + c
         else:
-            if c == '\\':
+            if c == '$':
                 escaping = True
                 esc_string = ""
             else:
@@ -154,15 +178,20 @@ def parse(macro_string, modval=0, externaldata={}):
                         pass
                 data.extend(emit(modval, c))
     if escaping:
-        raise Exception("Unclosed escape character.")
+        raise MacroException("Unclosed escape character.")
     if subbing:
-        raise Exception("Unclosed substring.")
+        raise MacroException("Unclosed substring.")
     if (modval != 0) and (len(data) == 0):
         data.extend(emit(modval, 0))
     return data
 
 
 def isaltcode(macro_string, modval):
+    """This function attempts to recognize 'Alt codes', which have to be entered
+    with the keypad instead of the number row.  Windows recognizes several types
+    of codes, so the trick is to catch them without modifying a combination that
+    the user intended for the number row.
+    """
     # '+' followed by a hex number
     if re.match(r"^\+[0-9a-fA-F]{1,4}$", macro_string):
         # if either of the ALT keys is pressed and no other mods
@@ -188,45 +217,9 @@ def emit(modval, macro_char):
         scancode = char_map[macro_char][0]
         shift_needed = char_map[macro_char][1]
     except KeyError:
-        raise Exception("Unrecognized escape sequence '%s'." % macro_char)
+        raise MacroException("Unrecognized escape sequence '%s'." % macro_char)
     if (shift_needed) and (not shift_is_pressed):
         effective_modval = modval | modmap['SHIFT']
     else:
         effective_modval = modval
-    if DEBUG:
-        if effective_modval == 0:
-            print("%s," % (scancode,))
-        elif scancode == '0':
-            print("%#04x00," % (effective_modval,))
-        else:
-            print("(%#04x00 | %s)," % (effective_modval, scancode))
     return (scancodes[scancode][1], effective_modval)
-
-if __name__ == '__main__':
-    DEBUG = True
-    s = "the quick brown fox jumps over the lazy dog.,/;'[]"
-    parse(s)
-    s = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG><?:\"{}"
-    parse(s)
-    s = "\\ENTER,\MUTE,\F4,\BKSP,\ESC,\CAPSLK,\DOWN,"
-    parse(s)
-    s = "\\n,\\t,\\\\,"
-    parse(s)
-    s = "\\SHIFT(test)"
-    parse(s)
-    s = "\\CTRL(\\ALT(\\DEL,))"
-    parse(s)
-    s = "\\RSHIFT(nocaps CAPS)"
-    parse(s)
-    s = "\\ALT(one \\WIN(two) \\CTRL(three))"
-    parse(s)
-    s = "\\RSHIFT()\\RWIN(\\LWIN())"
-    parse(s)
-    s = "\\ALT(62)"
-    parse(s)
-    s = "\\ALT(0162)"
-    parse(s)
-    s = "\\ALT(+11b)"
-    parse(s)
-    s = "\\RALT(2)"
-    parse(s)
