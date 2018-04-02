@@ -28,12 +28,11 @@ class EasyApp(wx.App):
     """Launches the application by creating a MainFrame window."""
 
     def OnInit(self):
-        self.RedirectStdio()
         self.SetVendorName("dhowland")
         self.SetAppName("easykeymap")
         self.SetClassName("easykeymap")
         main_frame = MainFrame(None)
         self.SetTopWindow(main_frame)
         main_frame.Show(True)
-        # self.RedirectStdio()
+        self.RedirectStdio()
         return True
