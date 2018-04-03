@@ -22,4 +22,9 @@
 from easykeymap.gui.easyapp import EasyApp
 
 
-EasyApp().MainLoop()
+def main():
+    EasyApp().MainLoop()
+
+
+if __name__ == "__main__":
+    main()
