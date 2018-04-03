@@ -1167,6 +1167,9 @@ class GUI(object):
         start, bytes = hexdata[0]
         # overwrite data for key maps
         fw_rows,fw_cols = templates.matrix_dims[config.firmware.size]
+        if fw_cols < config.num_cols or fw_rows < config.num_rows:
+            raise Exception("The configured row_num or col_num is "
+                            "large than the allowable size.")
         col_diff = fw_cols - config.num_cols
         row_diff = (fw_rows - config.num_rows) * fw_cols
         address = config.firmware.layers_map
