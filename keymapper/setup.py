@@ -17,7 +17,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from setuptools import setup, find_packages
-from easykeymap import __version__
+from easykeymap.version import __version__
 
 setup(
     name = 'easykeymap',
@@ -32,21 +32,29 @@ setup(
     platforms = 'any',
     classifiers = [
         'Development Status :: 4 - Beta',
+        'Environment :: MacOS X',
+        'Environment :: Win32 (MS Windows)',
+        'Environment :: X11 Applications :: GTK',
         'Intended Audience :: End Users/Desktop',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: C',
         'Topic :: Utilities',
     ],
+    install_requires = ['wxPython >= 4.0.1'],
     packages = find_packages(),
     package_data = {
-        'easykeymap': ['builds/*.hex', 'configs/*.cfg', 'configs/*.txt', 'icons/*.ico', 'manuals/*.txt']
+        'easykeymap': ['builds/*.hex', 'configs/*.cfg', 'res/*.*']
     },
     entry_points = {
         'gui_scripts': [
-            'easykeymap = easykeymap.gui:main',
+            'easykeymap = easykeymap.__main__:main',
         ]
     }
 )
