@@ -17,7 +17,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from setuptools import setup, find_packages
-from easykeymap.version import __version__
+from easykeymap import __version__
 
 setup(
     name = 'easykeymap',

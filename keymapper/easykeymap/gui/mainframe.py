@@ -34,7 +34,7 @@ from ..legacy import load_legacy, LegacySaveFileException
 from ..macroparse import MacroException
 from ..pkgdata import get_pkg_path, import_boards
 from ..userdata import UserData, SaveFileException
-from ..version import __version__
+from ..version import version_string
 from .layoutpanel import LayoutPanel
 from .ledpanel import LedPanel
 from .macropanel import MacroPanel
@@ -423,7 +423,7 @@ class MainFrame(wx.Frame):
     def OnHelpAbout(self, event):
         info = wx.adv.AboutDialogInfo()
         info.SetName("EasyAVR")
-        info.SetVersion(__version__)
+        info.SetVersion(version_string)
         info.SetDescription("Keymapper for the Easy AVR USB Keyboard Firmware")
         info.SetCopyright("Copyright (C) 2013-2018 David Howland")
         info.SetWebSite("https://github.com/dhowland/EasyAVR")

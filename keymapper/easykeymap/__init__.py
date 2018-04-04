@@ -18,3 +18,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """The easykeymap package holds the EasyAVR keymapper application."""
+
+from easykeymap.version import version_string
+
+__version__ = version_string

@@ -17,7 +17,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cx_Freeze import setup, Executable
-from easykeymap.version import __version__
+from easykeymap import __version__
 
 # fixing cx_Freeze's failures
 #   includes DLLs from TortoiseSVN for no reason

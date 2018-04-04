@@ -25,7 +25,7 @@ from .macroparse import parse, MacroException
 from .pkgdata import get_pkg_path
 from .scancodes import scancodes
 from .templates import matrix_dims, macro_lengths, max_leds
-from .version import __version__
+from .version import version_string
 import easykeymap.intelhex as intelhex
 
 
@@ -299,6 +299,6 @@ def overlay_misc(user_data, hex_data):
     offset = config.firmware.prod_str_map - start
     while bytes[offset] != ord('#'):
         offset += 1
-    for c in __version__:
+    for c in version_string:
         bytes[offset] = ord(c)
         offset += 2

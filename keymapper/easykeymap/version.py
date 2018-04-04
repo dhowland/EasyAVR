@@ -20,4 +20,4 @@
 """EasyAVR version string."""
 
 # Version is functionally required to be formatted as #.##.##
-__version__ = '3.00.00'
+version_string = '3.00.00'
