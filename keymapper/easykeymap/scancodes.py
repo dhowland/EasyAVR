@@ -326,6 +326,7 @@ scancodes = {
     # 0xE_ Range is reserved for modifiers
     # 0xF_ Range is reserved for layer select
     "SCANCODE_FN0": SCDef("Fn 0", 0xF0, "FN0"),
+    "SCANCODE_FN": SCDef("Fn 1", 0xF1, "FN1"),
     "SCANCODE_FN1": SCDef("Fn 1", 0xF1, "FN1"),
     "SCANCODE_FN2": SCDef("Fn 2", 0xF2, "FN2"),
     "SCANCODE_FN3": SCDef("Fn 3", 0xF3, "FN3"),
