@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Layout Mod Configs &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="Supporting Custom Boards" href="newboard.html"/>
+        <link rel="prev" title="The Config Console" href="console.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Layout Mod Configs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Layout Mod Configs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cfgfiles.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="layout-mod-configs">
+<h1>Layout Mod Configs<a class="headerlink" href="#layout-mod-configs" title="Permalink to this headline">¶</a></h1>
+<p>The .cfg files allow the user to modify the layout of the keyboard.  This is
+used for keyboards that allow the builder to configure many different layouts
+with the same PCB.  For example, the Phantom can be configured for ANSI and
+ISO layouts, as well as many other custom layouts.</p>
+<p>By default, the layout mapper will show every possible key for a supported
+hardware.  Selecting an alternate layout from the .cfg file will change the
+appearance of the layout.  Each line in the .cfg file changes one key in the
+layout.</p>
+<dl class="docutils">
+<dt>All lines must be one of the following:</dt>
+<dd><div class="first last line-block">
+<div class="line">blank</div>
+<div class="line">comment</div>
+<div class="line">config header</div>
+<div class="line">modifier command</div>
+</div>
+</dd>
+</dl>
+<p>Blank lines are ignored.  Comments are lines that start with “#”.  They are
+also ignored.</p>
+<p>Config headers delineate and name each layout.  They are formatted as a
+string in brackets, like this: <code class="docutils literal notranslate"><span class="pre">[name]</span></code></p>
+<p>Beneath each config header is a list of modifier commands.  Modifier commands
+must be one either <code class="docutils literal notranslate"><span class="pre">MAKE_KEY(row,</span> <span class="pre">column,</span> <span class="pre">width,</span> <span class="pre">height)</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">MAKE_SPACER(row,</span> <span class="pre">column,</span> <span class="pre">width)</span></code></p>
+<p>All arguments are integers.  Row and column are the layout coordinates (not
+the Matrix coordinates) of the key to be modified.  The layout coordinates of
+a key may be found at the top of the editor box in the GUI.  Width and height
+are in units of 1/4 of a key.  That means a normal 1u key is (width=4,
+height=4).  An ANSI 2u backspace is (width=8, height=4). An ISO Enter is
+(width=5, height=8).  A 6.25u space bar is (width=25, height=4).</p>
+<p>MAKE_KEY() will change the size of a key at the given location.</p>
+<p>MAKE_SPACER() will change a given location into empty space of a given width.</p>
+<p>To remove a key, change it to a spacer with zero width.  Do not set a key to
+zero width.</p>
+<p>Note: Old versions of the tool also had a MAKE_BLANK() command.  It is still
+supported for backwards compatibility, but it is now identical to
+MAKE_SPACER().</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example .cfg that turns the generic Costar layout into either a
+standard ANSI layout or a standard ISO layout:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ANSI</span> <span class="mi">104</span><span class="p">]</span>
+<span class="c1"># Remove the non-US Backslash key</span>
+<span class="n">MAKE_SPACER</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Extend the left Shift key to 2.25u</span>
+<span class="n">MAKE_KEY</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="c1"># Remove the non-US Hashmark key</span>
+<span class="n">MAKE_SPACER</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Extend the Enter key to 2.25u width</span>
+<span class="n">MAKE_KEY</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="p">[</span><span class="n">ISO</span> <span class="mi">105</span><span class="p">]</span>
+<span class="c1"># Remove the Backslash key</span>
+<span class="n">MAKE_BLANK</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="c1"># Extend the Enter key to 2u height (negative height extends upwards)</span>
+<span class="n">MAKE_KEY</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="newboard.html" class="btn btn-neutral float-right" title="Supporting Custom Boards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="console.html" class="btn btn-neutral" title="The Config Console" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

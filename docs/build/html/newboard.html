@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Supporting Custom Boards &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="Frequently Asked Questions" href="faq.html"/>
+        <link rel="prev" title="Layout Mod Configs" href="cfgfiles.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Supporting Custom Boards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#know-your-hardware">Know Your Hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design-the-layout">Design the Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-custom-board">Create the Custom Board</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Supporting Custom Boards</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/newboard.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="supporting-custom-boards">
+<h1>Supporting Custom Boards<a class="headerlink" href="#supporting-custom-boards" title="Permalink to this headline">¶</a></h1>
+<p>EasyAVR can be extended to support custom keyboards that aren’t already
+included in the default install.  To add support for a custom keyboard, you
+will need the following:</p>
+<ul class="simple">
+<li>The EasyAVR keymapper</li>
+<li>A text editor</li>
+<li>Reading comprehension</li>
+</ul>
+<div class="section" id="know-your-hardware">
+<h2>Know Your Hardware<a class="headerlink" href="#know-your-hardware" title="Permalink to this headline">¶</a></h2>
+<p>You are going to need to know how the controller is connected to your
+keyboard matrix.  This is often the most difficult part for new users, so get
+this figured out before doing anything else.  AVR pins have names such as B6,
+C1, F4, and so on.  You need to be able to specify which pins are connected
+to the rows and columns of the keyboard matrix, and which are connected to
+the LEDs.  If you want to add support for a handwired board, you should know
+this already.  If you want to add support for a board that is already
+supported by another firmware, you can often just look at that source code
+for the pin list.</p>
+</div>
+<div class="section" id="design-the-layout">
+<h2>Design the Layout<a class="headerlink" href="#design-the-layout" title="Permalink to this headline">¶</a></h2>
+<p>Create the layout at &lt;<a class="reference external" href="http://www.keyboard-layout-editor.com/">http://www.keyboard-layout-editor.com/</a>&gt;.  You should
+start with the ANSI 104 or ISO 105 presets, because those legends will be
+recognized and automatically translated.  Really all that matters is getting
+the sizes of the keys correct.  Properties such as colors, rotation, and
+stepped keys aren’t supported by EasyAVR.</p>
+<p>When you’re done, download the layout data by using the “Download JSON”
+button.  Don’t copy/paste from the “Raw data” tab, it isn’t valid JSON.</p>
+</div>
+<div class="section" id="create-the-custom-board">
+<h2>Create the Custom Board<a class="headerlink" href="#create-the-custom-board" title="Permalink to this headline">¶</a></h2>
+<p>In the keymapper, choose “Define Keyboard…” in the File menu.  This starts
+the New Keyboard Definition Wizard.  Follow the directions.</p>
+<p>The keymapper automatically creates a directory on your filesystem to hold
+custom boards and layout configs.  The path is <code class="docutils literal notranslate"><span class="pre">~/.EasyAVR/</span></code>, which is
+probably <code class="docutils literal notranslate"><span class="pre">/home/username/.EasyAVR</span></code> on Linux or
+<code class="docutils literal notranslate"><span class="pre">C:\Users\username\.EasyAVR</span></code> on Windows.</p>
+<p>After completing the wizard, the generated config will be in
+<code class="docutils literal notranslate"><span class="pre">~/.EasyAVR/boards/</span></code>.  Open the file in a text editor.  This file is a pure
+Python script that describes the keyboard hardware.  You must use correct
+<a class="reference external" href="https://docs.python.org/3/">Python syntax</a>!</p>
+<p>Read ALL comments in the file and follow those directions.  In particular,
+make sure to fix the row/column matrix for each key in keyboard_definition,
+because the tool was not given that information and had to make a wild guess.</p>
+<p>Save your edits, then restart the EasyAVR keymapper.  Create a new layout,
+select the board you just configured, and test it.  Remember that if you
+change the hardware description in the config file, you must not load saved
+keymaps created with the old config file because it could lead to corrupted
+builds</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cfgfiles.html" class="btn btn-neutral" title="Layout Mod Configs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

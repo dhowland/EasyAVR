@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Special Functions and Modes &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="Writing Macros" href="macros.html"/>
+        <link rel="prev" title="Getting Started" href="getstarted.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Special Functions and Modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#special-functions">Special Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#layers">Layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-modes">Key Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-modifiers">Automatic Modifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ram-macros">RAM Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Special Functions and Modes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/functions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="special-functions-and-modes">
+<h1>Special Functions and Modes<a class="headerlink" href="#special-functions-and-modes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="special-functions">
+<h2>Special Functions<a class="headerlink" href="#special-functions" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the standard USB keyboard scancodes, EasyAVR supports several
+special functions, many of which are not available on regular keyboards.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Scancode</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SCANCODE_FN0</td>
+<td>Activate the “Default” layer</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FN1</td>
+<td>Activate the 1st function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_FN2</td>
+<td>Activate the 2nd function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FN3</td>
+<td>Activate the 3rd function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_FN4</td>
+<td>Activate the 4th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FN5</td>
+<td>Activate the 5th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_FN6</td>
+<td>Activate the 6th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FN7</td>
+<td>Activate the 7th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_FN8</td>
+<td>Activate the 8th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FN9</td>
+<td>Activate the 9th function layer (or deactivate, depending on mode)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BL_DIMMER</td>
+<td>Cycle through backlight brightness levels, also
+controls indicator LED brightness</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_BL_MODE</td>
+<td>Cycle through the backlighting modes (static,
+breathing, reactive, and erosion)</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BL_ENABLE</td>
+<td>Enable/disable the backlight and cycle through the
+different lighting zones</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_KEYLOCK</td>
+<td>(toggle) Disable sending scancodes to PC</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_WINLOCK</td>
+<td>(toggle) Disable the windows key</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_ESCGRAVE</td>
+<td>Acts like grave key if shift is pressed (to make tilde).
+Otherwise acts like Esc key.  Used for 60% keyboards.</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BOOT</td>
+<td>Jump to bootloader (Keyboard will not work again until it is reset)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_CONFIG</td>
+<td>Go into interactive configuration console</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M1</td>
+<td>Play macro 1</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M2</td>
+<td>Play macro 2</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M3</td>
+<td>Play macro 3</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M4</td>
+<td>Play macro 4</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M5</td>
+<td>Play macro 5</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M6</td>
+<td>Play macro 6</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M7</td>
+<td>Play macro 7</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M8</td>
+<td>Play macro 8</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M9</td>
+<td>Play macro 9</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M10</td>
+<td>Play macro 10</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M11</td>
+<td>Play macro 11</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M12</td>
+<td>Play macro 12</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M13</td>
+<td>Play macro 13</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M14</td>
+<td>Play macro 14</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_M15</td>
+<td>Play macro 15</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_M16</td>
+<td>Play macro 16</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MRAM_RECORD</td>
+<td>Start/Stop recording the RAM macro</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_MRAM_PLAY</td>
+<td>Play the RAM macro</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MOUSE1</td>
+<td>Mouse button 1</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_MOUSE2</td>
+<td>Mouse button 2</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MOUSE3</td>
+<td>Mouse button 3</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_MOUSEXL</td>
+<td>Move mouse pointer left</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MOUSEXR</td>
+<td>Move mouse pointer right</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_MOUSEYD</td>
+<td>Move mouse pointer down</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MOUSEYU</td>
+<td>Move mouse pointer up
+(Double-tap the mouse keys to move the cursor faster.
+Triple-tap for even more speed, and so on.)</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_POWER</td>
+<td>Power down the system</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_SLEEP</td>
+<td>Put the system to sleep</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_WAKE</td>
+<td>Wake the system from sleep state</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_NEXT_TRACK</td>
+<td>Skip to next track in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_PREV_TRACK</td>
+<td>Skip to last track in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_STOP</td>
+<td>Stop playback in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_PLAY_PAUSE</td>
+<td>Play or Pause playback in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BRIGHT_INC</td>
+<td>Increase screen brightness in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_BRIGHT_DEC</td>
+<td>Decrease screen brightness in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MUTE</td>
+<td>Mute main volume in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_BASS_BOOST</td>
+<td>Toggle bass boost in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_VOL_INC</td>
+<td>Increase main volume in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_VOL_DEC</td>
+<td>Decrease main volume in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BASS_INC</td>
+<td>Increase bass equalizer in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_BASS_DEC</td>
+<td>Decrease bass equalizer in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_TREB_INC</td>
+<td>Increase treble equalizer in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_TREB_DEC</td>
+<td>Decrease treble equalizer in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MAIL</td>
+<td>Open system mail reader in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_CALC</td>
+<td>Open calculator in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_MYCOMP</td>
+<td>Open My Computer in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_SEARCH</td>
+<td>Open search dialog in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_BROWSER</td>
+<td>Open web browser to homepage in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_BACK</td>
+<td>Navigate backward in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_FORWARD</td>
+<td>Navigate forward in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_WWWSTOP</td>
+<td>Stop navigation in Windows</td>
+</tr>
+<tr class="row-even"><td>SCANCODE_REFRESH</td>
+<td>Refresh navigation in Windows</td>
+</tr>
+<tr class="row-odd"><td>SCANCODE_FAVES</td>
+<td>Open favorites dialog in Windows</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="layers">
+<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
+<p>The system contains ten keymap layers that may be configured by the user.
+There is a default layer which is used when no Fn keys are active.  This is
+layer 0 by default, but that can be changed in the config console.  The most
+used mapping layer should be default.  There are also nine further function
+layers. ‘Layer 1’ is accessed using the ‘Fn 1’ special modifier key, ‘Layer
+2’ by ‘Fn 2’, and so on.</p>
+<p>Holding a Fn key in normal mode accesses the associated layer, and using one
+of the lock modes on that Fn key keeps the associated layer active from that
+point forward until another Fn key is pressed. If a new layer is locked while
+another layer is already locked, then the most recent lock takes precedence
+(only one layer can ever be locked at a time).</p>
+<p>A Fn key may be accessed from within another Fn layer (chaining).  The
+firmware keeps track of which Fn keys are active and the order they were
+activated.</p>
+</div>
+<div class="section" id="key-modes">
+<h2>Key Modes<a class="headerlink" href="#key-modes" title="Permalink to this headline">¶</a></h2>
+<p>Any individual key on any layer may be assigned a special operating mode.
+These modes change the key press behavior to something different than the
+normal momentary switch behavior.  The possible settings are described in the
+table, below.  These special modes only work on standard keys (HID
+scancodes), modifiers, and Fn keys.</p>
+<p>A key ‘tap’ is a rapid press and release of a key by itself.  A ‘double tap’
+is two taps in quick succession. Think of mouse clicks.</p>
+<dl class="docutils">
+<dt>Normal</dt>
+<dd>Momentary switch.  Press to activate the key and un-press to deactivate.</dd>
+<dt>Toggle</dt>
+<dd>Toggle switch.  Press to change the state of the key.  If the key is
+deactivated, pressing will activate it and vice-versa.</dd>
+<dt>Tap Key</dt>
+<dd>Also known as a ‘dual use’ key.  When a key is assigned to this mode, it
+acts the same as normal but, if tapped, will send a normal scancode of
+your choosing.  This is only available on modifiers and Fn keys.</dd>
+<dt>Lockable</dt>
+<dd>Acts the same as normal but double tapping the key will toggle it active.
+Pressing the key again will deactivate it.</dd>
+<dt>Rapid Fire</dt>
+<dd>This is an auto-repeating mode.  The key acts the same as normal except it
+will be rapidly retyped when the key is held.  Think of old video game
+controllers.  This is only available on standard keys.</dd>
+</dl>
+<p>When a scancode is bound to a tap key, it will be sent on the upstroke, but
+only if the mod/fn key was tapped and not combined with another key. This is
+useful in several situations.  For example, the Application key may be used as
+a function key but also retain it’s use as a normal key.  In another example,
+the function keys may be used to simulate Matias half-keyboard by making the
+space bar a Fn key with Space as its tap action.</p>
+</div>
+<div class="section" id="automatic-modifiers">
+<h2>Automatic Modifiers<a class="headerlink" href="#automatic-modifiers" title="Permalink to this headline">¶</a></h2>
+<p>Any key may be assigned an additional modifier state of any combination of
+Shift, Ctrl, Alt, and GUI (meta).  As long as the key is pressed, it will
+also hold the assigned modifiers.  This means you can create a “login” key by
+binding it to Del with Ctrl+Alt.  Or, you could create a “#” key by binding
+it to Shift+3.  This feature only makes sense when the key is in Normal mode.
+Remember that the auto mods can interfere with the actual modifier keys if
+they are held at the same time.</p>
+</div>
+<div class="section" id="ram-macros">
+<h2>RAM Macros<a class="headerlink" href="#ram-macros" title="Permalink to this headline">¶</a></h2>
+<p>The system supports one RAM-based macro that can be recorded on the fly.
+Simply press the ‘Macro Rec’ key, which will set the “Recording” LED Mode to
+indicate that the keyboard is listening.  Type the pattern to be recorded and
+then press the ‘Macro Rec’ key again.  To play it back, press the ‘Macro
+Play’ key.  The macro will be lost when the keyboard loses power.  Only
+normal scancodes are supported in the RAM macro at this time.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="macros.html" class="btn btn-neutral float-right" title="Writing Macros" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getstarted.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

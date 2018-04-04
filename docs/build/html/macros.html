@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Writing Macros &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="LED Functions" href="leds.html"/>
+        <link rel="prev" title="Special Functions and Modes" href="functions.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing Macros</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specials-list">Specials List</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Writing Macros</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/macros.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-macros">
+<h1>Writing Macros<a class="headerlink" href="#writing-macros" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>Current Macro limits:</dt>
+<dd><div class="first last line-block">
+<div class="line">16 firmware macros</div>
+<div class="line">2000 characters total</div>
+<div class="line">(macros can be any length, as long as all of them fit in the macro buffer)</div>
+<div class="line">unlimited mods per character</div>
+<div class="line">1 RAM macro with 80 characters (40 on ATmega32U2 devices)</div>
+</div>
+</dd>
+</dl>
+<img alt="_images/easykeymap_ss4.png" src="_images/easykeymap_ss4.png" />
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Macro strings are specified as strings of characters that should be typed by
+the keyboard as if the keys were struck by hand.  So, if you wanted to bind a
+key to auto-type “Hello, World!”, your macro string would simply be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Hello, World!
+</pre></div>
+</div>
+<p>Note from the above example that it is not necessary to manually use Shift to
+get capital letters.  The system knows enough to replace “A” with “Shift+a”
+and “?” with “Shift+/”. (See below for more on the use of modifier keys)</p>
+<p>If you want your macro to include non-printable characters such as modifiers
+or navigation keys, you will need to use some special commands.  Special
+commands start with a dollar sign ($).  For example, to make your macro press
+the Home key, you would use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HOME
+</pre></div>
+</div>
+<p>To make it easier for the macro parser, it is recommended to put your special
+commands in braces, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${HOME}
+${TAB}
+${F5}
+</pre></div>
+</div>
+<p>This syntax should be familiar to anyone who has worked with shell scripts.
+For a complete list of special commands, see the next section.</p>
+<p>Since “$” is a reserved character, if you want to output an actual dollar
+sign, you can use this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$$
+</pre></div>
+</div>
+<p>Mods are specified with a command followed by a string enclosed in
+parenthesis.  The modifier key will be held for the entire sub-string.  For
+example, you can get “HELLO WORLD!” by doing this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$SHIFT(hello, world!)
+</pre></div>
+</div>
+<p>Note that since modifiers always end with a parenthesis, the braces aren’t
+really necessary.  Another example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$CTRL($ALT($DEL))
+</pre></div>
+</div>
+<p>If the substring is empty, the modifier will be pressed by itself:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$GUI()
+</pre></div>
+</div>
+<p>Note that this scheme means you can’t use a mod on “)” because it would be
+interpreted as the end of the sub-string.  But, why would you want to do that?
+Just use a zero, “0”.  The “)” and the “0” are the same key!</p>
+<p>There are often multiple ways to get the same result.  For example, to get
+capital letters, you can just use capital letters in your macro string, or
+you can use “$SHIFT”, but you could also do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${CAPSLK}hello, world!${CAPSLK}
+</pre></div>
+</div>
+<p>Newlines in your macro string are translated to the Enter key.  The following
+two macro strings are equivalent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>First line.
+Second line.
+
+First line.${ENTER}Second line.
+</pre></div>
+</div>
+<p>Unicode characters can be inserted using a macro of an Alt Code.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ALT(130)
+$ALT(0161)
+$ALT(+11b)
+</pre></div>
+</div>
+<p>There are two special function macros.  Like modifiers, they are followed by
+parentheses, but instead of holding a substring, they hold arguments to the
+function.</p>
+<p>The first special function macro is “$WAIT”, which can pause the macro
+processing temporarily.  This is useful to slow the rapid keystroke rate when
+certain keystroke combinations require the computer to complete some
+processing before further input can be accepted.  It takes a decimal number
+as an argument which controls the length of the pause in macro processing.
+The value is stored as a byte so it must be between 0 and 255:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$WAIT(250)
+</pre></div>
+</div>
+<p>The value represents the number of macro cycles to wait. On boards with a
+500Hz macro frequency, a value of 250 should pause for about a half second.
+Some supported boards have a 250Hz macro frequency, so 250 would pause for
+about one second.  Longer pauses will require several wait commands.</p>
+<p>The second special function macro is “$HINT”.  This will translate into a
+large string that displays the currently programmed keymap for a selected
+layer, with zero (0) meaning the default layer and 1-9 referring to the Fn
+layers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$HINT(1)
+</pre></div>
+</div>
+</div>
+<div class="section" id="specials-list">
+<h2>Specials List<a class="headerlink" href="#specials-list" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">Modifier Functions:</div>
+<div class="line">$LCTRL()</div>
+<div class="line">$LSHIFT()</div>
+<div class="line">$LALT()</div>
+<div class="line">$LGUI()</div>
+<div class="line">$RCTRL()</div>
+<div class="line">$RSHIFT()</div>
+<div class="line">$RALT()</div>
+<div class="line">$RGUI()</div>
+<div class="line"><br /></div>
+<div class="line">Modifier Aliases:</div>
+<div class="line">$CTRL() …alias for $LCTRL()</div>
+<div class="line">$SHIFT() …alias for $LSHIFT()</div>
+<div class="line">$ALT() …alias for $LALT()</div>
+<div class="line">$ALTGR() …alias for $RALT()</div>
+<div class="line">$OPTION() …alias for $LALT()</div>
+<div class="line">$GUI() …alias for $LGUI()</div>
+<div class="line">$WIN() …alias for $LGUI()</div>
+<div class="line">$COMMAND() …alias for $LGUI()</div>
+<div class="line">$META() …alias for $LGUI()</div>
+<div class="line"><br /></div>
+<div class="line">Special Functions:</div>
+<div class="line">$WAIT()</div>
+<div class="line">$HINT()</div>
+<div class="line"><br /></div>
+<div class="line">Non-printable keys:</div>
+<div class="line">${ESC}</div>
+<div class="line">${F1} through ${F24}</div>
+<div class="line">${PRINT}</div>
+<div class="line">${PAUSE}</div>
+<div class="line">${SCRLK}</div>
+<div class="line">${NUMLK}</div>
+<div class="line">${CAPSLK}</div>
+<div class="line">${INS}</div>
+<div class="line">${DEL}</div>
+<div class="line">${HOME}</div>
+<div class="line">${END}</div>
+<div class="line">${PGUP}</div>
+<div class="line">${PGDN}</div>
+<div class="line">${TAB}</div>
+<div class="line">${BKSP}</div>
+<div class="line">${ENTER}</div>
+<div class="line">${UP}</div>
+<div class="line">${DOWN}</div>
+<div class="line">${LEFT}</div>
+<div class="line">${RIGHT}</div>
+<div class="line">${SPACE}</div>
+<div class="line">${APP}</div>
+<div class="line">${NON_US_BACKSLASH}</div>
+<div class="line"><br /></div>
+<div class="line">Keypad keys:</div>
+<div class="line">${KPSLA}</div>
+<div class="line">${KPAST}</div>
+<div class="line">${KPMIN}</div>
+<div class="line">${KPPLS}</div>
+<div class="line">${KPENT}</div>
+<div class="line">${KP1}</div>
+<div class="line">${KP2}</div>
+<div class="line">${KP3}</div>
+<div class="line">${KP4}</div>
+<div class="line">${KP5}</div>
+<div class="line">${KP6}</div>
+<div class="line">${KP7}</div>
+<div class="line">${KP8}</div>
+<div class="line">${KP9}</div>
+<div class="line">${KP0}</div>
+<div class="line">${KPDOT}</div>
+<div class="line">${KPEQ}</div>
+<div class="line"><br /></div>
+<div class="line">Media keys:</div>
+<div class="line">${MUTE}</div>
+<div class="line">${VOLUP}</div>
+<div class="line">${VOLDN}</div>
+<div class="line">${BASS}</div>
+<div class="line">${NEXT}</div>
+<div class="line">${PREV}</div>
+<div class="line">${STOP}</div>
+<div class="line">${PLAY}</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="leds.html" class="btn btn-neutral float-right" title="LED Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="functions.html" class="btn btn-neutral" title="Special Functions and Modes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
