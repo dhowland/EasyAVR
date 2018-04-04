@@ -113,4 +113,21 @@
         <File name="easykeymap\__init__.py" />
         <File name="easykeymap\__main__.py" />
     </Project>
+    <Project name="docs">
+        <File name="D:\Code\EasyAVR\docs\source\cfgfiles.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\conf.py" />
+        <File name="D:\Code\EasyAVR\docs\source\console.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\devguide.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\faq.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\firmware.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\functions.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\getstarted.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\index.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\install.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\keymapper.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\leds.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\macros.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\newboard.rst" />
+        <File name="D:\Code\EasyAVR\docs\source\userguide.rst" />
+    </Project>
 </NotepadPlus>
