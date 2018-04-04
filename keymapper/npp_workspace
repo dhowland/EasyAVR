@@ -79,6 +79,9 @@
             <File name="easykeymap\gui\scale.py" />
             <File name="easykeymap\gui\__init__.py" />
         </Folder>
+        <Folder name="res">
+            <File name="easykeymap\res\newboard_template.txt" />
+        </Folder>
         <Folder name="templates">
             <File name="easykeymap\templates\AT90USB1286_16MHz_COSTAR.py" />
             <File name="easykeymap\templates\AT90USB1286_16MHz_FULLSIZE.py" />
@@ -102,7 +105,6 @@
         <File name="easykeymap\kleparse.py" />
         <File name="easykeymap\legacy.py" />
         <File name="easykeymap\macroparse.py" />
-        <File name="easykeymap\newboard_template.txt" />
         <File name="easykeymap\pkgdata.py" />
         <File name="easykeymap\programming.py" />
         <File name="easykeymap\scancodes.py" />
