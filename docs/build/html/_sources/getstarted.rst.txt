@@ -5,6 +5,8 @@ Getting Started
 Creating a Custom Keymap
 ------------------------
 
+.. image:: easykeymap_ss7.png
+
 From the main window, select "File->New...".  In the "New Layout" dialog, 
 select your keyboard type, then select your layout at the bottom.  Not all 
 keyboards have multiple layouts.  The default is <All Keys>, which means 

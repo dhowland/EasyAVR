@@ -1,5 +1,7 @@
-# EasyAVR
-Easy AVR USB Keyboard Firmware and Keymapper
+# Easy AVR USB Keyboard Firmware and Keymapper
+
+EasyAVR is a keyboard firmware and keymapper GUI for custom keyboards based 
+on USB AVRs.  It is powerful but also really easy to use.
 
 Read the documentation on GitHub:
 http://dhowland.github.io/EasyAVR/
@@ -17,3 +19,5 @@ Additional info at the DT Wiki:
 https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware
 
 ![Screenshot](docs/source/easykeymap_ss1.png?raw=true "Screenshot")
+
+[Read the User's Guide](http://dhowland.github.io/EasyAVR/build/html/userguide.html)
