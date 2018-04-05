@@ -417,8 +417,7 @@ class MainFrame(wx.Frame):
     #
 
     def OnHelpView(self, event):
-        pass
-        # XXX TODO implement
+        wx.LaunchDefaultBrowser("http://dhowland.github.io/EasyAVR/")
 
     def OnHelpAbout(self, event):
         info = wx.adv.AboutDialogInfo()
