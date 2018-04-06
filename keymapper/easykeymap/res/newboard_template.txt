@@ -28,7 +28,7 @@ Auto-generated from ${path}
 # defined in the templates/__init__.py file of the keymapper.
 # Leave the rest of the imports like they are here.
 
-import easykeymap.templates.ATmega32U4_16MHz_${matrix} as firmware
+import easykeymap.templates.${avr}_16MHz_${matrix} as firmware
 from easykeymap.ioports import *
 from easykeymap.helper import make_matrix_config, make_led_config
 
