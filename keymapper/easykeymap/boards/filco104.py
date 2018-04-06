@@ -26,9 +26,6 @@ cfg_name = "costar104"
 teensy = False
 hw_boot_key = False
 
-display_height = int(6.5*4)
-display_width = int(22.5*4)
-
 num_rows = 8
 num_cols = 18
 
@@ -233,5 +230,3 @@ keyboard_definition = [
      ((4, 4), (6, 4), 'HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE'),
      (-4, None, '0')]
 ]
-
-alt_layouts = {}

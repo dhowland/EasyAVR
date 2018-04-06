@@ -26,9 +26,6 @@ cfg_name = "tau"
 teensy = False
 hw_boot_key = False
 
-display_height = int(6.25*4)
-display_width = int(6.25*4)
-
 num_rows = 6
 num_cols = 6
 
@@ -142,5 +139,3 @@ keyboard_definition = [
      ((4, 4), (5, 4), 'HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE'),
      (-4, None, '0')]
 ]
-
-alt_layouts = {}

@@ -26,9 +26,6 @@ cfg_name = "octagon"
 teensy = False
 hw_boot_key = True
 
-display_height = int(6*4)
-display_width = int(16*4)
-
 num_rows = 6
 num_cols = 15
 
@@ -216,5 +213,3 @@ keyboard_definition = [
      ((4, 4), (5, 13), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (5, 14), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-alt_layouts = {}

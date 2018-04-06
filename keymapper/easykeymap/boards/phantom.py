@@ -26,9 +26,6 @@ cfg_name = "phantom"
 teensy = True
 hw_boot_key = False
 
-display_height = int(6.5*4)
-display_width = int(18.25*4)
-
 num_rows = 6
 num_cols = 17
 
@@ -216,5 +213,3 @@ keyboard_definition = [
      ((4, 4), (5, 15), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (5, 16), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-alt_layouts = {}

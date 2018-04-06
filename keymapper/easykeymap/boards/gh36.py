@@ -26,9 +26,6 @@ cfg_name = "gh36"
 teensy = True
 hw_boot_key = False
 
-display_height = int(6*4)
-display_width = int(12.5*4)
-
 num_rows = 6
 num_cols = 12
 
@@ -182,5 +179,3 @@ keyboard_definition = [
      ((4, 4), (5, 4), '0'),
      ((4, 4), (5, 5), '0')]
 ]
-
-alt_layouts = {}

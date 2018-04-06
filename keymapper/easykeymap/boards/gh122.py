@@ -27,9 +27,6 @@ cfg_name = "gh122"
 teensy = True
 hw_boot_key = False
 
-display_height = int(7.5*4)
-display_width = int(24.75*4)
-
 num_rows = 7
 num_cols = 24
 
@@ -257,5 +254,3 @@ keyboard_definition = [
      ((4, 4), (6, 22), 'HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE'),
      ((4, 4), (6, 23), '0')]
 ]
-
-alt_layouts = {}

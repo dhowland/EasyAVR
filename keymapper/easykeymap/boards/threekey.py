@@ -26,9 +26,6 @@ cfg_name = "threekey"
 teensy = False
 hw_boot_key = True
 
-display_height = int(3*4)
-display_width = int(3*4)
-
 num_rows = 1
 num_cols = 3
 
@@ -87,5 +84,3 @@ keyboard_definition = [
      (4, None, '0'),
      (4, None, '0')]
 ]
-
-alt_layouts = {}

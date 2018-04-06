@@ -27,9 +27,6 @@ cfg_name = "atreus"
 teensy = False
 hw_boot_key = True
 
-display_height = int(4*4)
-display_width = int(12*4)
-
 num_rows = 4
 num_cols = 11
 
@@ -118,5 +115,3 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE'),
      ((4, 4), (3, 10), 'HID_KEYBOARD_SC_ENTER')]
 ]
-
-alt_layouts = {}

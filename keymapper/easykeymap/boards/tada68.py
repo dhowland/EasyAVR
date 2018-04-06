@@ -42,14 +42,6 @@ teensy = False
 # BOOT key to your layout.
 hw_boot_key = True
 
-# These two parameters define the size of the keyboard in the display.
-# Must be whole numbers in units of quarter key lengths.  A TKL
-# usually is 6 rows high with a 1/2 key length gutter under the Fn row.
-# Therefore int(6.5*4).  Apply the same logic the width.  Remember
-# we are talking visual width, not number of columns.
-display_height = int(5*4)
-display_width = int(15*4)
-
 # The number of rows and columns in the matrix.  In a hand-wired board
 # each of these will correspond to a single pin.
 num_rows = 5
@@ -215,6 +207,3 @@ keyboard_definition = [
      ((4, 4), (4, 13), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (4, 14), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-# Just leave this here as-is.
-alt_layouts = {}

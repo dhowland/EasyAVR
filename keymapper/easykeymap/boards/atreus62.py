@@ -27,9 +27,6 @@ cfg_name = "atreus62"
 teensy = False
 hw_boot_key = True
 
-display_height = int(5*4)
-display_width = int(13*4)
-
 num_rows = 5
 num_cols = 13
 
@@ -137,6 +134,3 @@ keyboard_definition = [
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_ENTER'),
      ((4, 4), (4, 12), 'HID_KEYBOARD_SC_RIGHT_GUI')]
 ]
-
-# Just leave this here as-is.
-alt_layouts = {}

@@ -27,9 +27,6 @@ cfg_name = "smallfry"
 teensy = True
 hw_boot_key = False
 
-display_height = int(4*4)
-display_width = int(12*4)
-
 num_rows = 4
 num_cols = 12
 
@@ -111,5 +108,3 @@ keyboard_definition = [
      ((5, 4), (3, 9), 'HID_KEYBOARD_SC_DOT_AND_GREATER_THAN_SIGN'),
      ((5, 4), (3, 10), 'HID_KEYBOARD_SC_SLASH_AND_QUESTION_MARK')]
 ]
-
-alt_layouts = {}

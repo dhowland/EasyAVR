@@ -26,9 +26,6 @@ cfg_name = "zeta"
 teensy = False
 hw_boot_key = False
 
-display_height = int(6*4)
-display_width = int(17*4)
-
 num_rows = 6
 num_cols = 16
 
@@ -219,5 +216,3 @@ keyboard_definition = [
      ((4, 4), (5, 14), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (5, 15), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-alt_layouts = {}
