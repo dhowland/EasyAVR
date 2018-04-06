@@ -58,11 +58,17 @@ class MainFrame(wx.Frame):
         self.make_gui()
 
     def make_data(self):
-        self.configurations = import_boards()
+        self.configurations, self.config_errors = import_boards()
+        wx.CallAfter(self.show_config_errors)
         self.user_data = None
         self.unsaved_changes = False
         self.build_path = None
         self.op_msg = None
+
+    def show_config_errors(self):
+        for err in self.config_errors:
+            wx.MessageBox(str(err), caption="Error loading board config",
+                          style=wx.ICON_ERROR|wx.OK|wx.CENTRE, parent=self)
 
     def make_gui(self):
         iconpath = get_pkg_path('res/keyboard.ico')

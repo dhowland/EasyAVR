@@ -62,16 +62,6 @@ teensy = ${teensy}
 hw_boot_key = ${teensy}
 
 
-# These two parameters define the size of the keyboard in the display.
-# Must be whole numbers in units of quarter key lengths.  A TKL
-# usually is 6 rows high with a 1/2 key length gutter under the Fn row.
-# Therefore int(6.5*4).  Apply the same logic the width.  Remember
-# we are talking visual width, not number of columns.
-
-display_height = ${display_height}
-display_width = ${display_width}
-
-
 # The number of rows and columns in the matrix.  In a hand-wired board
 # each of these will correspond to a single pin.
 
@@ -158,9 +148,6 @@ led_definition = ${led_definition}
 
 keyboard_definition = ${keyboard_definition}
 
-
-# Just leave this here as-is.
-alt_layouts = {}
 
 # Just leave this here as-is.
 KMAC_key = None

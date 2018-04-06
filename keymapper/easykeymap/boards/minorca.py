@@ -44,8 +44,8 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     device=firmware.device
 )
 
-num_leds = 2
-num_ind = 1
+num_leds = 0
+num_ind = 0
 num_bl_enab = 2
 
 led_definition = []
