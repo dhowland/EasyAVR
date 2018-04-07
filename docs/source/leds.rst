@@ -59,6 +59,9 @@ Here is an explanation of all LED functions:
 'Win Lock'
     Lights up when the Windows Key is disabled.
 
+'KB Lock'
+    Lights up when the keyboard is locked.
+
 'Fn1 Active', 'Fn2 Active', ..., 'Fn9 Active'
     Lights up when the corresponding layer is selected.  Locked layers will
     continue to indicate that the layer is active after the Fn key is lifted.
