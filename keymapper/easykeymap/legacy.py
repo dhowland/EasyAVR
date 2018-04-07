@@ -149,7 +149,11 @@ def convert_legacy(user_data, legacy_data):
         else:
             user_data.led_modes.append(led_modes.index('Disabled'))
     if legacy_data['useadvancedleds']:
-        user_data.led_funcs = legacy_data['advancedleds']
+        for i, func in enumerate(legacy_data['advancedleds']):
+            led_id, _ = func
+            if led_id < len(user_data.led_modes):
+                user_data.led_modes[led_id] = led_modes.index('Indicator')
+            user_data.led_funcs[i] = func
     # copy the rest
     user_data.led_layers = legacy_data['ledlayers']
 

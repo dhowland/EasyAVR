@@ -246,9 +246,8 @@ class UserData():
                     fixed.append(tuple(map))
                 else:
                     raise SaveFileException("Invalid save file: incorrect leds value")
-            if len(fixed) < len(led_assignments):
-                tmp = [(255, 0)] * (len(led_assignments) - len(fixed))
-                fixed.extend(tmp)
+            while len(fixed) < len(led_assignments):
+                fixed.append((255, 0))
             return fixed
         else:
             raise SaveFileException("Invalid save file: incorrect leds")

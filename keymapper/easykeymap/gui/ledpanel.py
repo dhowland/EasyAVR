@@ -32,17 +32,17 @@ hid_leds = ['Num Lock', 'Caps Lock', 'Scroll Lock', 'Compose', 'Kana']
 led_blips = ['Solid', '1 Blip', '2 Blips', '3 Blips', '4 Blips',
              '5 Blips', '6 Blips', '7 Blips', '8 Blips', '9 Blips']
 # view_order items must match led_assignments!
-view_order = ['Num Lock',    'Fn1 Active',    # noqa: E241
-              'Caps Lock',   'Fn2 Active',    # noqa: E241
-              'Scroll Lock', 'Fn3 Active',    # noqa: E241
-              'Compose',     'Fn4 Active',    # noqa: E241
-              'Kana',        'Fn5 Active',    # noqa: E241
-              'Win Lock',    'Fn6 Active',    # noqa: E241
-              'Recording',   'Fn7 Active',    # noqa: E241
-              'USB Init',    'Fn8 Active',    # noqa: E241
-              'USB Error',   'Fn9 Active',    # noqa: E241
-              'USB Suspend', 'Any Fn Active',
-              'USB Normal']
+view_order = ['Num Lock',    'Recording',      # noqa: E241
+              'Caps Lock',   'Fn1 Active',     # noqa: E241
+              'Scroll Lock', 'Fn2 Active',     # noqa: E241
+              'Compose',     'Fn3 Active',     # noqa: E241
+              'Kana',        'Fn4 Active',     # noqa: E241
+              'Win Lock',    'Fn5 Active',     # noqa: E241
+              'KB Lock',     'Fn6 Active',     # noqa: E241
+              'USB Init',    'Fn7 Active',     # noqa: E241
+              'USB Error',   'Fn8 Active',     # noqa: E241
+              'USB Suspend', 'Fn9 Active',     # noqa: E241
+              'USB Normal',  'Any Fn Active']  # noqa: E241
 
 
 class LedPanel(wx.Panel):

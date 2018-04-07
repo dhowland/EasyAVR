@@ -48,7 +48,8 @@ const led_fn_t PROGMEM LED_FN[NUMBER_OF_LED_FUNCTIONS] = {
 	/* LED_USB_INIT    */  { 255, 0 },
 	/* LED_USB_ERROR   */  { 255, 0 },
 	/* LED_USB_SUSPEND */  { 255, 0 },
-	/* LED_USB_NORMAL */   { 255, 0 }
+	/* LED_USB_NORMAL  */  { 255, 0 },
+	/* LED_KB_LOCK     */  { 255, 0 }
 };
 
 #ifdef MAX_NUMBER_OF_BACKLIGHTS

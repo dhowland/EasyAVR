@@ -740,6 +740,10 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
 	case SCANCODE_KEYLOCK:
 		g_keylock_flag ^= 1;
+		if (g_keylock_flag == 0)
+			led_host_off(LED_KB_LOCK);
+		else
+			led_host_on(LED_KB_LOCK);
 		break;
 	case SCANCODE_WINLOCK:
 		g_winlock_flag ^= 1;
