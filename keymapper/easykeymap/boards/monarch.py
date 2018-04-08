@@ -28,9 +28,6 @@ cfg_name = "monarch"
 teensy = False
 hw_boot_key = False
 
-display_height = int(5*4)
-display_width = int(19*4)
-
 num_rows = 5
 num_cols = 18
 
@@ -155,5 +152,3 @@ keyboard_definition = [
      ((5, 4), (4, 16), 'HID_KEYBOARD_SC_APPLICATION'),
      ((5, 4), (4, 17), 'HID_KEYBOARD_SC_RIGHT_CONTROL')],
 ]
-
-alt_layouts = {}

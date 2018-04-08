@@ -1190,11 +1190,46 @@ void init_USB(void)
 	}
 }
 
+#ifdef SIMPLE_DEVICE
 void USB_cycle(void)
 {
 	static uint8_t stored_USB_DeviceState;
 	
 	HID_Device_USBTask(&Keyboard_HID_Interface);
+	if (MEDIA_IS_ENABLED)
+	{
+		HID_Device_USBTask(&Media_HID_Interface);
+		HID_Device_USBTask(&Power_HID_Interface);
+	}
+	USB_USBTask();
+
+	if (stored_USB_DeviceState != USB_DeviceState)
+	{
+		report_event(EVENT_CODE_USB_STATE_CHANGE, USB_DeviceState, MODE_REOCCUR);
+		stored_USB_DeviceState = USB_DeviceState;
+	}
+}
+
+#else /* ndef SIMPLE_DEVICE */
+
+void USB_cycle_kb(void)
+{
+	static uint8_t stored_USB_DeviceState;
+	
+	HID_Device_USBTask(&Keyboard_HID_Interface);
+	USB_USBTask();
+
+	if (stored_USB_DeviceState != USB_DeviceState)
+	{
+		report_event(EVENT_CODE_USB_STATE_CHANGE, USB_DeviceState, MODE_REOCCUR);
+		stored_USB_DeviceState = USB_DeviceState;
+	}
+}
+
+void USB_cycle_aux(void)
+{
+	static uint8_t stored_USB_DeviceState;
+	
 	if (MEDIA_IS_ENABLED)
 	{
 		HID_Device_USBTask(&Media_HID_Interface);
@@ -1212,6 +1247,7 @@ void USB_cycle(void)
 		stored_USB_DeviceState = USB_DeviceState;
 	}
 }
+#endif /* SIMPLE_DEVICE */
 
 void USB_wakeup(void)
 {

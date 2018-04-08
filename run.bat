@@ -1,3 +1,3 @@
 cd keymapper
-python -m easykeymap.gui
+python -m easykeymap
 @pause

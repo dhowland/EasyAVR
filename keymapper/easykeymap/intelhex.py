@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
 # Copyright (C) 2013-2016 David Howland
 #
@@ -44,6 +47,9 @@ from array import array
 
 
 def read(hex_file):
+    """Read `hex_file` and return an array of bytes.  `hex_file` should be an
+    opened text file (or file-like object).
+    """
     if not ((hasattr(hex_file, '__iter__')) and (hasattr(hex_file, 'read'))):
         raise Exception("Not a valid file-like object")
     data = []
@@ -76,6 +82,9 @@ def read(hex_file):
 
 
 def write(hex_file, data):
+    """Write the array of bytes in data to `hex_file`.  `hex_file` should be
+    an opened text file (or file-like object).
+    """
     if not (hasattr(hex_file, 'write')):
         raise Exception("Not a valid file-like object")
     for address, bytes in data:

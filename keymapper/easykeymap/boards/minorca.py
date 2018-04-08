@@ -27,9 +27,6 @@ cfg_name = "minorca"
 teensy = True
 hw_boot_key = True
 
-display_height = int(4*4)
-display_width = int(12*4)
-
 num_rows = 4
 num_cols = 12
 
@@ -44,8 +41,8 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     device=firmware.device
 )
 
-num_leds = 2
-num_ind = 1
+num_leds = 0
+num_ind = 0
 num_bl_enab = 2
 
 led_definition = []
@@ -108,5 +105,3 @@ keyboard_definition = [
      ((5, 4), (3, 10), ['HID_KEYBOARD_SC_APOSTROPHE_AND_QUOTE', 'HID_KEYBOARD_SC_END', 'HID_KEYBOARD_SC_DOWN_ARROW']),
      ((5, 4), (3, 11), ['SCANCODE_FN1', 'SCANCODE_FN1', 'SCANCODE_FN1'])]
 ]
-
-alt_layouts = {}

@@ -27,9 +27,6 @@ cfg_name = "jd40v2"
 teensy = False
 hw_boot_key = True
 
-display_height = int(4*4)
-display_width = int(12*4)
-
 num_rows = 4
 num_cols = 12
 
@@ -116,5 +113,3 @@ keyboard_definition = [
      ((4, 4), (3, 9), ['HID_KEYBOARD_SC_DOWN_ARROW', 'HID_KEYBOARD_SC_PAGE_DOWN']),
      ((4, 4), (3, 10), ['HID_KEYBOARD_SC_RIGHT_ARROW', 'HID_KEYBOARD_SC_END'])]
 ]
-
-alt_layouts = {}

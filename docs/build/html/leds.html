@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>LED Functions &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="The Config Console" href="console.html"/>
+        <link rel="prev" title="Writing Macros" href="macros.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getstarted.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">LED Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#led-modes">LED Modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">LED Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#led-auto-layer-select">LED Auto Layer Select</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#backlight-modes">Backlight Modes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>LED Functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/leds.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="led-functions">
+<h1>LED Functions<a class="headerlink" href="#led-functions" title="Permalink to this headline">¶</a></h1>
+<p>There are two kinds of LEDs to configure in EasyAVR.  The first is LED
+indicators.  These are LEDs that mean something, such as Caps Lock and Num
+Lock.    The second kind is LED backlights.  These are purely for
+decoration.  Not all keyboards have backlights, but nearly all have
+indicators.  On keyboards that support backlighting, indicators can be
+programmed to act like backlights, but not the other way around.</p>
+<p>LED indicators can be assigned to LED functions.  The first five functions
+are part of the USB keyboard spec and are turned on and off by the host PC.
+The rest are controlled by the state of the keyboard itself.  EasyAVR allows
+you to overload each LED with multiple functions by using blip codes.  These
+are explained below.</p>
+<p>LEDs are configured using the “LEDs” tab.  In that tab, there are three
+sections: LED Modes Configuration, LED Function Assignments, and LED Auto
+Layer Select.</p>
+<img alt="_images/easykeymap_ss3.png" src="_images/easykeymap_ss3.png" />
+<div class="section" id="led-modes">
+<h2>LED Modes<a class="headerlink" href="#led-modes" title="Permalink to this headline">¶</a></h2>
+<p>In this section of the “LEDs” tab, indicator LEDs are listed and each can be
+configured to act as an indicator, a backlight, or neither (disabled).
+Normally, you want to leave these all set to “Indicator”.  If you want an
+indicator to blend in with the surrounding backlights, you can choose
+“Backlight” instead.</p>
+</div>
+<div class="section" id="id1">
+<h2>LED Functions<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>In this section of the “LEDs” tab, you can configure what should be done to
+signal each LED function (if anything).  Most users do not need to be
+notified of every possible function.  Perhaps only the first three are
+important to you, and the rest may be left as “Unassigned”.</p>
+<p>If, for example, you wanted to see a signal that the keyboard is recording a
+RAM macro, you could assign your “Caps” LED to the “Recording” function.
+However, you probably would already have the “Caps” LED assigned to the “Caps
+Lock” function, so for “Recording”, you could configure it to use “2 Blips”.
+Therefore, when recording a RAM macro, it would blink the “Caps” LED twice in
+rapid succession, and that can be easily distinguished from “Caps Lock”,
+which would simply turn the LED on (Solid).</p>
+<p>In this way, a single LED may be used to indicate several possible states.
+Blink modes override eachother, so overloading an LED should only be done
+with mutually exclusive functions.</p>
+<p>Here is an explanation of all LED functions:</p>
+<dl class="docutils">
+<dt>‘Num Lock’, ‘Caps Lock’, ‘Scroll Lock’, ‘Compose’, ‘Kana’</dt>
+<dd>These are the standard USB HID host status indicators.  The last two are
+only used on non-US keyboards.</dd>
+<dt>‘Win Lock’</dt>
+<dd>Lights up when the Windows Key is disabled.</dd>
+<dt>‘KB Lock’</dt>
+<dd>Lights up when the keyboard is locked.</dd>
+<dt>‘Fn1 Active’, ‘Fn2 Active’, …, ‘Fn9 Active’</dt>
+<dd>Lights up when the corresponding layer is selected.  Locked layers will
+continue to indicate that the layer is active after the Fn key is lifted.
+The default layer does not set any LED indicator.</dd>
+<dt>‘Any Fn Active’</dt>
+<dd>Similar to above but lights up when any non-default layer is selected.</dd>
+<dt>‘Recording’</dt>
+<dd>Lights up when the keyboard is recording keystrokes.</dd>
+<dt>‘USB Init’, ‘USB Error’, ‘USB Suspend’, ‘USB Normal’</dt>
+<dd>Indicates the status of the USB connection to the host.</dd>
+</dl>
+</div>
+<div class="section" id="led-auto-layer-select">
+<h2>LED Auto Layer Select<a class="headerlink" href="#led-auto-layer-select" title="Permalink to this headline">¶</a></h2>
+<p>In this section of the “LEDs” tab, you can configure your keyboard to change
+the default layer when the host PC sets Num Lock, Caps Lock, or Scroll Lock.
+Most users will not need this feature, so all settings can safely be set to
+“No Action”.</p>
+<p>For example, if you want your PC to automatically select Layer 2 when Num
+Lock is active, you would set “Num Lock” to “Layer 2”.</p>
+<p>This can be useful for keyboards that don’t have a num pad.  You can
+configure Layer 2 to be exactly like Layer 0, except that the number row is
+replaced with the equivalent num pad keys, then simply turn on Num Lock to
+access them.</p>
+</div>
+<div class="section" id="backlight-modes">
+<h2>Backlight Modes<a class="headerlink" href="#backlight-modes" title="Permalink to this headline">¶</a></h2>
+<p>Keyboards with backlighting can select between one of four backlighting
+modes.  These modes are not configured in the keymapper utility, they are
+selectable at run time.  Pressing the BL_MODE key will cycle through the four
+options.  No backlight effects will be observed if the user did not enable
+any lighting zones with the BL_ENABLE key.</p>
+<dl class="docutils">
+<dt>‘Static’</dt>
+<dd>Backlights are turned on and steady, with a brightness determined by the
+user-controlled dimmer (BL_DIMMER key).</dd>
+<dt>‘Breathing’</dt>
+<dd>Backlight brightness will continuously wax and wane in a smooth motion.</dd>
+<dt>‘Reactive’</dt>
+<dd>Backlights will glow at max brightness when the user presses a key, then
+dim to a low brightness in a smooth motion.</dd>
+<dt>‘Erosion’</dt>
+<dd>Backlights will be dimmed slightly on every key press, but continuously
+grow brighter in a smooth motion.  Fast typists will be able to extinguish
+the light.</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="console.html" class="btn btn-neutral float-right" title="The Config Console" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="macros.html" class="btn btn-neutral" title="Writing Macros" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

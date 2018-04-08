@@ -34,7 +34,6 @@
 #include "keymap.h"
 #include "mouse.h"
 #include "autokey.h"
-#include "password.h"
 #include "nvm.h"
 #include "USB.h"
 
@@ -55,7 +54,6 @@ void application_init(void)
 	init_keymap();
 	init_mouse();
 	init_autokey();
-	init_password();
 	init_scheduler();
 	init_USB();
 	

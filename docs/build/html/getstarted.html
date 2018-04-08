@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; EasyAVR 3.00.00 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="EasyAVR 3.00.00 documentation" href="index.html"/>
+        <link rel="up" title="User’s Guide" href="userguide.html"/>
+        <link rel="next" title="Special Functions and Modes" href="functions.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EasyAVR
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="userguide.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-keymap">Creating a Custom Keymap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#programming-a-build">Programming a Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manually-programming">Manually Programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#teensy">Teensy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flip">Flip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dfu-programmer">dfu-programmer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#avr-dude">AVR-dude</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyAVR</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getstarted.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-custom-keymap">
+<h2>Creating a Custom Keymap<a class="headerlink" href="#creating-a-custom-keymap" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/easykeymap_ss7.png" src="_images/easykeymap_ss7.png" />
+<p>From the main window, select “File-&gt;New…”.  In the “New Layout” dialog,
+select your keyboard type, then select your layout at the bottom.  Not all
+keyboards have multiple layouts.  The default is &lt;All Keys&gt;, which means
+every key the hardware supports is shown.  Layout mods are discussed in
+<a class="reference internal" href="cfgfiles.html"><span class="doc">Layout Mod Configs</span></a>. Press OK to confirm your selection and create a new keymap.</p>
+<img alt="_images/easykeymap_ss1.png" src="_images/easykeymap_ss1.png" />
+<p>You are presented with a view of the keyboard with a default map already
+assigned to the keys on the first layer (AKA the “default” layer).  In
+addition to the “Layout” view, there are also tabs for “Macros” and “LEDs”.
+They are discussed in the <a class="reference internal" href="macros.html"><span class="doc">Writing Macros</span></a> and <a class="reference internal" href="leds.html"><span class="doc">LED Functions</span></a> chapters, respectively.</p>
+<p>Your keymap can use up to 10 different layers.  Layers are discussed in the
+<a class="reference internal" href="functions.html"><span class="doc">Special Functions and Modes</span></a> chapter.  To open a layer for editing, select it using the
+radio buttons near the top.  Most layers are initially empty.  You can easily
+populate a layer by copy/pasting from a different layer using the “Edit” menu.</p>
+<img alt="_images/easykeymap_ss2.png" src="_images/easykeymap_ss2.png" />
+<p>To customize your keymap, you need to assign scancodes to keys.  Edit a key
+assignment by clicking it, which will bring up the editor box.  This gives
+you some information about the key, and allows you to change the scancode
+assignment.  To reassign the selected key to a normal scancode, you can
+simply press the desired key on your physical keyboard (except for arrow
+keys, space, and escape, which are used to navigate the editor box).  To
+access the full range of available scancodes, you can select the “Scancode”
+parameter and click the “…” button, which will bring up the scancode picker
+tool.</p>
+<img alt="_images/easykeymap_ss5.png" src="_images/easykeymap_ss5.png" />
+<p>The editor box also allows you to change the mode and automods of a key.
+These features, as well as all the special function scancodes, are discussed
+in the the <a class="reference internal" href="functions.html"><span class="doc">Special Functions and Modes</span></a> chapter.</p>
+<p>You’re going to want to make sure you assign SCANCODE_BOOT somewhere on one
+of your layers.  It makes reprogramming easier.  I like to use Fn1+Esc.</p>
+<p>When you’re done with your layout, save it with “File-&gt;Save As…”.</p>
+</div>
+<div class="section" id="programming-a-build">
+<h2>Programming a Build<a class="headerlink" href="#programming-a-build" title="Permalink to this headline">¶</a></h2>
+<p>From the main window, select “Build-&gt;Build and Reprogram…”.  This will
+create a .hex file that can be loaded onto your custom keyboard and then
+execute a programming tool to perform the load.  The “AVR Programming” dialog
+will open.</p>
+<p>There are several programming tasks that may be selected.  These support
+various AVR and OS combinations.  The task you want is probably the one that
+has been auto-selected for you.</p>
+<img alt="_images/easykeymap_ss6.png" src="_images/easykeymap_ss6.png" />
+<p>Put your keyboard into boot mode.  Either press the key sequence that was
+previously programmed for boot, or use a hardware reset.  Teensy controllers
+have a button.  Most bpiphany controllers have a magnetic switch.  KMAC uses
+the Caps Lock key while plugging it in.  Other PCBs have a jumper.  Know your
+hardware.</p>
+<p>Press “Run”.  The programming process should only take a few seconds.  When
+it is done, the keyboard should automatically reconnect and start working.</p>
+</div>
+<div class="section" id="manually-programming">
+<h2>Manually Programming<a class="headerlink" href="#manually-programming" title="Permalink to this headline">¶</a></h2>
+<p>It is not necessary to use the built-in programming dialog if you don’t want
+to.  You may build a .hex file and program yourself it using an external tool.</p>
+<div class="section" id="teensy">
+<h3>Teensy<a class="headerlink" href="#teensy" title="Permalink to this headline">¶</a></h3>
+<p>Follow the instructions at the <a class="reference external" href="https://www.pjrc.com/teensy/loader.html">Teensy website</a></p>
+</div>
+<div class="section" id="flip">
+<h3>Flip<a class="headerlink" href="#flip" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Open the Atmel Flip app</li>
+<li>Click the microchip “Select a Target Device” icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)</li>
+<li>Put your keyboard into bootloader mode</li>
+<li>Click the USB “Select a Communications Medium” icon and choose “USB” from the menu</li>
+<li>Click the red “Load HEX File” icon and open the .hex file you created in the keymapper</li>
+<li>With the AVR now connected, click the “Run” button to reprogram with the new firmware</li>
+<li>With a successful completion, click the “Start Application” button</li>
+</ol>
+</div>
+<div class="section" id="dfu-programmer">
+<h3>dfu-programmer<a class="headerlink" href="#dfu-programmer" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Put your keyboard into bootloader mode</p>
+</li>
+<li><p class="first">Program your .hex file (replace device type as necessary):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dfu</span><span class="o">-</span><span class="n">programmer</span> <span class="n">atmega32u4</span> <span class="n">erase</span>
+<span class="n">sleep</span> <span class="mi">10</span>
+<span class="n">sudo</span> <span class="n">dfu</span><span class="o">-</span><span class="n">programmer</span> <span class="n">atmega32u4</span> <span class="n">flash</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">firmware</span><span class="o">.</span><span class="n">hex</span>
+<span class="n">sudo</span> <span class="n">dfu</span><span class="o">-</span><span class="n">programmer</span> <span class="n">atmega32u4</span> <span class="n">launch</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="avr-dude">
+<h3>AVR-dude<a class="headerlink" href="#avr-dude" title="Permalink to this headline">¶</a></h3>
+<p>AVR-dude may also be used on Linux, as explained <a class="reference external" href="https://geekhack.org/index.php?topic=51252.msg2066099#msg2066099">here</a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="functions.html" class="btn btn-neutral float-right" title="Special Functions and Modes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Howland.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

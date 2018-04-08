@@ -26,9 +26,6 @@ cfg_name = "sixshooter"
 teensy = True
 hw_boot_key = True
 
-display_height = int(2*4)
-display_width = int(3*4)
-
 num_rows = 1
 num_cols = 6
 
@@ -100,5 +97,3 @@ keyboard_definition = [
      ((4, 4), (0, 4), 'SCANCODE_PLAY_PAUSE'),
      ((4, 4), (0, 3), 'SCANCODE_NEXT_TRACK')],
 ]
-
-alt_layouts = {}

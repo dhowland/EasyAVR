@@ -26,9 +26,6 @@ cfg_name = "techcard"
 teensy = False
 hw_boot_key = True
 
-display_height = int(2*4)
-display_width = int(4*4)
-
 num_rows = 1
 num_cols = 3
 
@@ -83,12 +80,10 @@ keyboard_definition = [
     [(4, None, '0'),
      ((4, 4), (0, 0), 'SCANCODE_BROWSER'),
      ((4, 4), (0, 1), 'SCANCODE_MAIL'),
-     ((4, 4), (0, 2), 'SCANCODE_MEDIA')],
+     ((4, 4), (0, 2), 'SCANCODE_CALC')],
 
     [(4, None, '0'),
      (4, None, '0'),
      (4, None, '0'),
      (4, None, '0')]
 ]
-
-alt_layouts = {}

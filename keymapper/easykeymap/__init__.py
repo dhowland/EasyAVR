@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+#
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2013-2016 David Howland
+# Copyright (C) 2018 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +17,8 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Version is functionally required to be formatted as #.##.##
-__version__ = '2.06.02'
+"""The easykeymap package holds the EasyAVR keymapper application."""
 
-__all__ = ['gui']
+from easykeymap.version import version_string
+
+__version__ = version_string

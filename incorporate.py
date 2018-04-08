@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
 #
 # Easy AVR USB Keyboard Firmware
 # Copyright (C) 2013-2016 David Howland
@@ -19,8 +20,6 @@
 """Compile all hardware configurations and incorporate the binaries into
 the keymapper application.
 """
-
-from __future__ import print_function
 
 import os
 import os.path
@@ -202,8 +201,6 @@ for hw in hardware_table:
         write_symbol(outfile, symbols, 'MATRIX_SENSE_LIST')
         outfile.write("\nkmac_key_map = ")
         write_symbol(outfile, symbols, 'KMAC_KEY')
-        outfile.write("\npw_defs_map = ")
-        write_symbol(outfile, symbols, 'PWDEFS')
         outfile.write("\nboot_ptr_map = ")
         write_symbol(outfile, symbols, 'BOOTLOADER')
         outfile.write("\nprod_str_map = ")

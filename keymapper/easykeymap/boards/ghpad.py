@@ -26,9 +26,6 @@ cfg_name = "ghpad"
 teensy = False
 hw_boot_key = False
 
-display_height = int(6*4)
-display_width = int(4*4)
-
 num_rows = 6
 num_cols = 4
 
@@ -121,5 +118,3 @@ keyboard_definition = [
      ((4, 4), (5, 2), 'HID_KEYBOARD_SC_RIGHT_ARROW'),
      ((4, 4), (5, 3), 'SCANCODE_FN1')]
 ]
-
-alt_layouts = {}

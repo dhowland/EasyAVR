@@ -28,7 +28,6 @@
 #include "mouse.h"
 #include "led.h"
 #include "nvm.h"
-#include "password.h"
 #include "keymap.h"
 
 const mod_map_t PROGMEM MODIFIER_MAP[8] = {
@@ -390,27 +389,6 @@ void inline toggle_macro_record(void)
 		led_host_off(LED_RECORDING);
 	}
 }
-
-void inline start_password_record(const uint8_t code)
-{
-	g_recording_macro = 1;
-	g_ram_macro_ptr = 0;
-	g_keylock_flag = 1;
-	g_pw_select = (code - SCANCODE_PASSWORD1);
-	led_host_on(LED_RECORDING);
-}
-
-void inline check_finish_password_record(const uint8_t code)
-{
-	if ((code == HID_KEYBOARD_SC_ENTER) || (code == HID_KEYBOARD_SC_TAB))
-	{
-		g_keylock_flag = 0;
-		g_recording_macro = 0;
-		g_ram_macro_length = g_ram_macro_ptr - 1;
-		g_pw_phase = PHASE_INIT;
-		led_host_off(LED_RECORDING);
-	}
-}
 #endif /* MACRO_RAM_SIZE */
 
 void play_macro(const uint8_t code)
@@ -760,17 +738,12 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 		led_dimmer();
 		break;
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
-#ifdef MACRO_RAM_SIZE
-	case SCANCODE_PASSWORD1:
-	case SCANCODE_PASSWORD2:
-	case SCANCODE_PASSWORD3:
-	case SCANCODE_PASSWORD4:
-		if (!g_recording_macro)
-			start_password_record(code);
-		break;
-#endif /* MACRO_RAM_SIZE */
 	case SCANCODE_KEYLOCK:
 		g_keylock_flag ^= 1;
+		if (g_keylock_flag == 0)
+			led_host_off(LED_KB_LOCK);
+		else
+			led_host_on(LED_KB_LOCK);
 		break;
 	case SCANCODE_WINLOCK:
 		g_winlock_flag ^= 1;
@@ -1023,10 +996,6 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case HID_KEYBOARD_SC_F22:
 	case HID_KEYBOARD_SC_F23:
 	case HID_KEYBOARD_SC_F24:
-#ifdef MACRO_RAM_SIZE
-		if (g_recording_macro && g_keylock_flag)
-			check_finish_password_record(code);
-#endif /* MACRO_RAM_SIZE */
 		alpha_up(code, action, tapkey, tap);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_CAPS_LOCK:
@@ -1044,10 +1013,6 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_BL_DIMMER:
 	case SCANCODE_BL_MODE:
 	case SCANCODE_BL_ENABLE:
-	case SCANCODE_PASSWORD1:
-	case SCANCODE_PASSWORD2:
-	case SCANCODE_PASSWORD3:
-	case SCANCODE_PASSWORD4:
 	case SCANCODE_KEYLOCK:
 	case SCANCODE_WINLOCK:
 		break;

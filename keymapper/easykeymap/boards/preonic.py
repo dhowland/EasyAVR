@@ -28,9 +28,6 @@ cfg_name = "preonic"
 teensy = False
 hw_boot_key = True
 
-display_height = int(4*4)
-display_width = int(12*4)
-
 num_rows = 5
 num_cols = 12
 
@@ -134,5 +131,3 @@ keyboard_definition = [
      ((4, 4), (4, 10), 'HID_KEYBOARD_SC_UP_ARROW'),
      ((4, 4), (4, 11), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-alt_layouts = {}

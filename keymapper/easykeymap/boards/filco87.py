@@ -26,9 +26,6 @@ cfg_name = "costar87"
 teensy = False
 hw_boot_key = False
 
-display_height = int(6.5*4)
-display_width = int(18.25*4)
-
 num_rows = 8
 num_cols = 18
 
@@ -208,5 +205,3 @@ keyboard_definition = [
      ((4, 4), (0, 10), 'HID_KEYBOARD_SC_DOWN_ARROW'),
      ((4, 4), (0, 11), 'HID_KEYBOARD_SC_RIGHT_ARROW')]
 ]
-
-alt_layouts = {}

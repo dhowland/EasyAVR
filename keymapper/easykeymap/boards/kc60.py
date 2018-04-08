@@ -28,9 +28,6 @@ cfg_name = "gh60revb"
 teensy = False
 hw_boot_key = False
 
-display_height = int(5*4)
-display_width = int(15*4)
-
 num_rows = 5
 num_cols = 14
 
@@ -142,5 +139,3 @@ keyboard_definition = [
      ((5, 4), (4, 12), 'HID_KEYBOARD_SC_APPLICATION'),
      ((5, 4), (4, 13), 'HID_KEYBOARD_SC_RIGHT_CONTROL')]
 ]
-
-alt_layouts = {}

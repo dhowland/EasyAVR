@@ -27,9 +27,6 @@ cfg_name = "jd45"
 teensy = True
 hw_boot_key = False
 
-display_height = int(4*4)
-display_width = int(13*4)
-
 num_rows = 4
 num_cols = 12
 
@@ -118,5 +115,3 @@ keyboard_definition = [
      ((4, 4), (3, 9), 'SCANCODE_FN2'),
      ((5, 4), (3, 10), 'HID_KEYBOARD_SC_RIGHT_CONTROL')]
 ]
-
-alt_layouts = {}
