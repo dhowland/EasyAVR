@@ -411,12 +411,11 @@ class MainFrame(wx.Frame):
             wx.MessageBox(msg, caption="Error building firmware",
                           style=wx.ICON_ERROR|wx.OK|wx.CENTRE, parent=self)
         else:
+            self.op_msg = "Build complete.  Firmware saved successfully."
+            self.set_status()
             if reprogram:
                 with ProgramDialog(self, user_data=self.user_data, path=self.build_path) as dlg:
                     dlg.ShowModal()
-            else:
-                self.op_msg = "Build complete.  Firmware saved successfully."
-                self.set_status()
 
     #
     # Help methods
