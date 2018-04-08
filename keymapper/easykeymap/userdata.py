@@ -117,6 +117,7 @@ class UserData():
                 self.led_modes = self.check_led_modes(data['led_modes'])
                 self.led_funcs = self.check_led_funcs(data['led_funcs'])
                 self.led_layers = self.check_led_layers(data['led_layers'])
+                self.path = path
             except KeyError as err:
                 raise SaveFileException("Invalid save file: missing property " + err.args[0])
 
