@@ -26,6 +26,7 @@ max_indicators = 8
 max_bl_enables = 16
 
 matrix_dims = {
+    'SQUARE': (12, 12),
     'JUMBO': (7, 24),
     'FULLSIZE': (6, 22),
     'COSTAR': (8, 18),
