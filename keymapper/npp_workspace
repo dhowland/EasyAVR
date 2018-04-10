@@ -13,6 +13,7 @@
             <File name="easykeymap\boards\gh36.py" />
             <File name="easykeymap\boards\gh60.py" />
             <File name="easykeymap\boards\gh60_satan.py" />
+            <File name="easykeymap\boards\gh80_3000.py" />
             <File name="easykeymap\boards\ghpad.py" />
             <File name="easykeymap\boards\jd40.py" />
             <File name="easykeymap\boards\jd40v2.py" />
@@ -53,6 +54,7 @@
             <File name="easykeymap\configs\gh36.cfg" />
             <File name="easykeymap\configs\gh60revb.cfg" />
             <File name="easykeymap\configs\gh60satan.cfg" />
+            <File name="easykeymap\configs\gh80_3000.cfg" />
             <File name="easykeymap\configs\ghpad.cfg" />
             <File name="easykeymap\configs\jd40v2.cfg" />
             <File name="easykeymap\configs\jd45.cfg" />
