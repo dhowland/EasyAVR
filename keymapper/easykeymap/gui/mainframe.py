@@ -80,6 +80,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
     def make_menubar(self):
+        self.disabled_items = []
         # File menu
         file_menu = wx.Menu()
         new_item = file_menu.Append(wx.ID_NEW, "&New...\tCtrl+N",
@@ -90,9 +91,11 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnFileOpen, open_item)
         save_item = file_menu.Append(wx.ID_SAVE, "&Save\tCtrl+S",
                                      "Save the current keymap")
+        self.disabled_items.append(save_item)
         self.Bind(wx.EVT_MENU, self.OnFileSave, save_item)
         saveas_item = file_menu.Append(wx.ID_SAVEAS, "Save &As...",
                                        "Save the current keymap with a new file name")
+        self.disabled_items.append(saveas_item)
         self.Bind(wx.EVT_MENU, self.OnFileSaveAs, saveas_item)
         file_menu.AppendSeparator()
         newboard_item = file_menu.Append(wx.ID_ANY, "&Define Keyboard...",
@@ -105,20 +108,25 @@ class MainFrame(wx.Frame):
         edit_menu = wx.Menu()
         copy_item = edit_menu.Append(wx.ID_COPY, "Copy Layer\tCtrl+C",
                                      "Copy from the selected layer to the clipboard")
+        self.disabled_items.append(copy_item)
         self.Bind(wx.EVT_MENU, self.OnCopy, copy_item)
         paste_item = edit_menu.Append(wx.ID_PASTE, "Paste Layer\tCtrl+V",
                                       "Paste to the selected layer from the clipboard")
+        self.disabled_items.append(paste_item)
         self.Bind(wx.EVT_MENU, self.OnPaste, paste_item)
         # Build menu
         build_menu = wx.Menu()
         build_item = build_menu.Append(wx.ID_ANY, "&Build...\tF7",
                                        "Build a loadable file using the current keymap")
+        self.disabled_items.append(build_item)
         self.Bind(wx.EVT_MENU, self.OnBuild, build_item)
         buildas_item = build_menu.Append(wx.ID_ANY, "Build As...\tShift+F7",
                                          "Build a loadable file with a new file name")
+        self.disabled_items.append(buildas_item)
         self.Bind(wx.EVT_MENU, self.OnBuildAs, buildas_item)
         reprog_item = build_menu.Append(wx.ID_ANY, "Build and &Reprogram...\tF5",
                                         "Build a loadable file and open the reprogramming tool")
+        self.disabled_items.append(reprog_item)
         self.Bind(wx.EVT_MENU, self.OnBuildAndReprogram, reprog_item)
         # Help menu
         help_menu = wx.Menu()
@@ -135,6 +143,12 @@ class MainFrame(wx.Frame):
         menubar.Append(build_menu, "&Build")
         menubar.Append(help_menu, "&Help")
         self.SetMenuBar(menubar)
+        # Disable menu items that can't be used until a file is loaded
+        self.enable_menus(False)
+
+    def enable_menus(self, enable=True):
+        for menu_item in self.disabled_items:
+            menu_item.Enable(enable=enable)
 
     def make_statusbar(self):
         self.statusbar = self.CreateStatusBar(NUM_STATUS_FIELDS)
@@ -173,6 +187,9 @@ class MainFrame(wx.Frame):
         self.Title = title
 
     def set_status(self):
+        if self.user_data is None:
+            return
+
         sb = self.GetStatusBar()
 
         text = "" if (self.op_msg is None) else self.op_msg
@@ -253,8 +270,6 @@ class MainFrame(wx.Frame):
         self.load_config()
 
     def OnFileSave(self, event):
-        if not self.check_loaded('save'):
-            return
         if self.user_data.path is None:
             return self.OnFileSaveAs(event)
         try:
@@ -269,8 +284,6 @@ class MainFrame(wx.Frame):
         self.set_status()
 
     def OnFileSaveAs(self, event):
-        if not self.check_loaded('save'):
-            return
         wildcard = "EasyAVR keymaps (*.json)|*.json"
         with wx.FileDialog(self, message="Save", wildcard=wildcard,
                            style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT) as file_dialog:
@@ -320,37 +333,27 @@ class MainFrame(wx.Frame):
         self.main_nb.Fit()
         self.main_sizer.SetSizeHints(self)
 
+        self.enable_menus()
         self.unsaved_changes = False
         self.build_path = None
         self.op_msg = "Keymap loaded successfully."
         self.set_title()
         self.set_status()
 
-    def check_loaded(self, op='continue'):
-        if self.user_data is None:
-            wx.MessageBox("Create a keymap first!", caption="Can't {0}".format(op),
-                          style=wx.ICON_EXCLAMATION|wx.OK|wx.CENTRE, parent=self)
-            return False
-        return True
-
     #
     # Edit methods
     #
 
     def OnCopy(self, event):
-        if not self.check_loaded('copy'):
-            return
         layer = self.layout_panel.copy_layer()
         if layer is not None:
-            self.op_msg = "Copied layer {1} to the clipboard".format(layer)
+            self.op_msg = "Copied layer {0} to the clipboard".format(layer)
             self.set_status()
 
     def OnPaste(self, event):
-        if not self.check_loaded('paste'):
-            return
         layer = self.layout_panel.paste_layer()
         if layer is not None:
-            self.op_msg = "Pasted layer {1} from the clipboard".format(layer)
+            self.op_msg = "Pasted layer {0} from the clipboard".format(layer)
             self.set_status()
 
     #
@@ -392,8 +395,6 @@ class MainFrame(wx.Frame):
                 self.set_status()
 
     def do_build(self, override=False, reprogram=False):
-        if not self.check_loaded('build'):
-            return
         if not self.boot_check():
             return
         self.get_build_path(override=override)
