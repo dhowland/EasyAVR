@@ -44,6 +44,7 @@ log_path = os.path.join(proj_dir, "log.txt")
 componentinfo_path = os.path.join(proj_dir, "autobuild.componentinfo.xml")
 
 hardware_table = [
+    ("ATmega32U4", "16000000UL", "BOARD_SIZE_SQUARE"),
     ("ATmega32U4", "16000000UL", "BOARD_SIZE_COSTAR"),
     ("ATmega32U4", "16000000UL", "BOARD_SIZE_TKL"),
     ("ATmega32U4", "16000000UL", "BOARD_SIZE_SIXTY"),

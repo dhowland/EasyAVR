@@ -40,6 +40,10 @@
 
 #define PULLUP_UNUSED_PINS
 
+#ifdef BOARD_SIZE_SQUARE
+#define NUMBER_OF_ROWS (12)
+#define NUMBER_OF_COLS (12)
+#endif
 #ifdef BOARD_SIZE_JUMBO
 #define NUMBER_OF_ROWS (7)
 #define NUMBER_OF_COLS (24)

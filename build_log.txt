@@ -1,4 +1,14 @@
 
+ATmega32U4_16MHz_SQUARE.hex
+Compiling...
+Copying HEX file
+Parsing MAP file
+Checking RAM usage
+Used 1163 bytes of 2560 (45.4 % full)
+Checking Flash usage
+Used 26912 bytes of 28672 (93.9 % full)
+Updating config source
+
 ATmega32U4_16MHz_COSTAR.hex
 Compiling...
 Copying HEX file
