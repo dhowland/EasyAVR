@@ -106,6 +106,7 @@ class PickerKey:
         label = scancodes[scancode].display
         size = wx.Size(GRID_SIZE.width * dim.width, GRID_SIZE.height * dim.height)
         self.btn = wx.Button(self.parent, wx.ID_ANY, label, size=size)
+        self.btn.SetToolTip(scancode)
         self.btn.Bind(wx.EVT_BUTTON, self.OnClicked)
         self.special = scancodes[scancode].value > SPECIAL_BOUNDARY
 
