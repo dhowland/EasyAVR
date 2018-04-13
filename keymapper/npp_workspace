@@ -44,6 +44,7 @@
             <File name="easykeymap\boards\techcard.py" />
             <File name="easykeymap\boards\threekey.py" />
             <File name="easykeymap\boards\xd60.py" />
+            <File name="easykeymap\boards\xmmx_toad.py" />
             <File name="easykeymap\boards\zeta.py" />
             <File name="easykeymap\boards\__init__.py" />
         </Folder>
@@ -66,6 +67,7 @@
             <File name="easykeymap\configs\sentraq.cfg" />
             <File name="easykeymap\configs\sigma.cfg" />
             <File name="easykeymap\configs\tada68.cfg" />
+            <File name="easykeymap\configs\xmmx_toad.cfg" />
         </Folder>
         <Folder name="gui">
             <File name="easykeymap\gui\easyapp.py" />
