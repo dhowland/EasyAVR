@@ -1,13 +1,13 @@
 /*
              LUFA Library
-     Copyright (C) Dean Camera, 2015.
+     Copyright (C) Dean Camera, 2017.
 
   dean [at] fourwalledcubicle [dot] com
            www.lufa-lib.org
 */
 
 /*
-  Copyright 2015  Dean Camera (dean [at] fourwalledcubicle [dot] com)
+  Copyright 2017  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
@@ -445,7 +445,7 @@
 				HID_RI_REPORT_SIZE(8, 0x03),                \
 				HID_RI_OUTPUT(8, HID_IOF_CONSTANT),         \
 				HID_RI_LOGICAL_MINIMUM(8, 0x00),            \
-				HID_RI_LOGICAL_MAXIMUM(8, 0xFF),            \
+				HID_RI_LOGICAL_MAXIMUM(16, 0xFF),           \
 				HID_RI_USAGE_PAGE(8, 0x07),                 \
 				HID_RI_USAGE_MINIMUM(8, 0x00),              \
 				HID_RI_USAGE_MAXIMUM(8, 0xFF),              \
@@ -679,4 +679,3 @@
 #endif
 
 /** @} */
-
