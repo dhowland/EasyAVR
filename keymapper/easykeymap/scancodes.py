@@ -344,14 +344,6 @@ scancodes = {
 CharDef = namedtuple('CharDef', ['scancode', 'needs_shift'])
 char_map = {
     0: ("0", False),
-    "MUTE": CharDef("SCANCODE_MUTE", False),
-    "VOLUP": CharDef("SCANCODE_VOL_INC", False),
-    "VOLDN": CharDef("SCANCODE_VOL_DEC", False),
-    "BASS": CharDef("SCANCODE_BASS_BOOST", False),
-    "NEXT": CharDef("SCANCODE_NEXT_TRACK", False),
-    "PREV": CharDef("SCANCODE_PREV_TRACK", False),
-    "STOP": CharDef("SCANCODE_STOP", False),
-    "PLAY": CharDef("SCANCODE_PLAY_PAUSE", False),
     "ESC": CharDef("HID_KEYBOARD_SC_ESCAPE", False),
     "F1": CharDef("HID_KEYBOARD_SC_F1", False),
     "F2": CharDef("HID_KEYBOARD_SC_F2", False),
