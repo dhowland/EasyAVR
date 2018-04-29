@@ -4,6 +4,7 @@ hex_file_name = 'AT90USB1286_16MHz_JUMBO.hex'
 device = 'AT90USB1286'
 speed = '16MHz'
 size = 'JUMBO'
+simple = False
 
 layers_map = 0x00000f05
 actions_map = 0x00000875
@@ -25,5 +26,7 @@ matrix_init_map = 0x000037c4
 matrix_strobe_map = 0x00003734
 matrix_sense_map = 0x00003704
 kmac_key_map = None
-boot_ptr_map = 0x00003fc3
-prod_str_map = 0x00004009
+boot_ptr_map = 0x00003f5c
+prod_str_map = 0x00003fa2
+endpoint_opt_map = 0x00004134
+conf_desc_map = 0x00003ff2

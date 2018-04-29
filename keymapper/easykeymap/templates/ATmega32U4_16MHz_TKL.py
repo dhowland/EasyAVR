@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_TKL.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'TKL'
+simple = False
 
 layers_map = 0x000009f1
 actions_map = 0x000005f5
@@ -25,5 +26,7 @@ matrix_init_map = 0x00001fd3
 matrix_strobe_map = 0x00001f7e
 matrix_sense_map = 0x00001f5c
 kmac_key_map = None
-boot_ptr_map = 0x000027c4
-prod_str_map = 0x0000280a
+boot_ptr_map = 0x0000275d
+prod_str_map = 0x000027a3
+endpoint_opt_map = 0x00002935
+conf_desc_map = 0x000027f3
