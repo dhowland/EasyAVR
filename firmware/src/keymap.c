@@ -98,7 +98,8 @@ uint8_t g_locked_layer;
 uint8_t g_layer_select;
 uint8_t g_modifier_state;
 uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
-uint8_t g_nkro_field[REAL_NKRO_SIZE];
+uint8_t g_nkro_field[NKRO_ARRAY_LENGTH];
+uint8_t g_nkro_active;
 #ifdef KEYMAP_MEMORY_SAVE
 uint8_t g_matrixlayer[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #else
@@ -115,6 +116,7 @@ int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
 uint8_t g_powermgmt_field;
+uint8_t g_media_power_activity;
 uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
@@ -136,10 +138,6 @@ int8_t g_ram_macro_length;
 void enqueue_key(const uint8_t code)
 {
 	int8_t i;
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] |= (1 << off);
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -162,10 +160,6 @@ void enqueue_key(const uint8_t code)
 void delete_key(const uint8_t code)
 {
 	int8_t i;
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] &= ~(1 << off);
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -188,10 +182,6 @@ found:
 void toggle_key(const uint8_t code)
 {
 	int8_t i;
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] ^= (1 << off);
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -254,6 +244,30 @@ void delete_fn(const uint8_t code)
 }
 /* End keypress queue functions */
 
+void inline set_nkro(const uint8_t code)
+{
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] |= (1 << off);
+}
+
+void inline unset_nkro(const uint8_t code)
+{
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] &= ~(1 << off);
+}
+
+void inline toggle_nkro(const uint8_t code)
+{
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] ^= (1 << off);
+}
+
 uint8_t inline getmap(const uint8_t row, const uint8_t col)
 {
 	return pgm_read_byte(&LAYERS[g_layer_select][row][col]);
@@ -303,6 +317,7 @@ void inline set_media(const uint8_t code)
 	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (!g_media_key)
 		g_media_key = pgm_read_word(&MEDIA_MAP[i]);
+	g_media_power_activity = 0;
 }
 
 void inline unset_media(const uint8_t code)
@@ -553,10 +568,16 @@ void alpha_down(const uint8_t code, const uint8_t action)
 	case ACTION_LOCKABLE:
 	case ACTION_TAPKEY:
 	case ACTION_RAPIDFIRE:
-		enqueue_key(code);
+		if (g_nkro_active)
+			set_nkro(code);
+		else
+			enqueue_key(code);
 		break;
 	case ACTION_TOGGLE:
-		toggle_key(code);
+		if (g_nkro_active)
+			toggle_nkro(code);
+		else
+			toggle_key(code);
 		break;
 	default:
 		break;
@@ -573,7 +594,10 @@ void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, co
 	case ACTION_NORMAL:
 	case ACTION_TAPKEY:
 	case ACTION_RAPIDFIRE:
-		delete_key(code);
+		if (g_nkro_active)
+			unset_nkro(code);
+		else
+			delete_key(code);
 		break;
 	case ACTION_TOGGLE:
 	default:
@@ -759,6 +783,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_WAKE:
 		/* Assume power keys never coincide */
 		g_powermgmt_field = (1 << (code - SCANCODE_POWER));
+		g_media_power_activity = 1;
 		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
@@ -1252,17 +1277,27 @@ void keymap_interrupt(const uint8_t row, const uint8_t col)
 
 void get_keyboard_report(uint8_t * const buffer)
 {
-	uint8_t i;
-	
 	if (g_keylock_flag)
 		return;
 	
-	for (i=0; i<HID_ROLLOVER_SIZE; i++)
+	/* Skip the for loop, HID_ROLLOVER_SIZE is always 6 */
+	if (g_rollover_error)
 	{
-		if (g_rollover_error)
-			buffer[i] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
-		else
-			buffer[i] = g_report_buffer[i];
+		buffer[0] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+		buffer[1] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+		buffer[2] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+		buffer[3] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+		buffer[4] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+		buffer[5] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+	}
+	else
+	{
+		buffer[0] = g_report_buffer[0];
+		buffer[1] = g_report_buffer[1];
+		buffer[2] = g_report_buffer[2];
+		buffer[3] = g_report_buffer[3];
+		buffer[4] = g_report_buffer[4];
+		buffer[5] = g_report_buffer[5];
 	}
 }
 
@@ -1273,7 +1308,7 @@ void get_nkro_report(uint8_t * const buffer)
 	if (g_keylock_flag)
 		return;
 	
-	for (i=0; i<REAL_NKRO_SIZE; i++)
+	for (i=0; i<NKRO_ARRAY_LENGTH; i++)
 	{
 		buffer[i] = g_nkro_field[i];
 	}

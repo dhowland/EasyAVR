@@ -54,10 +54,8 @@ const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys
 const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
 const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll lock is enabled.\n";
 const char PROGMEM g_vwinlock_no[] = "Scroll lock will not affect win lock.\n";
-const char PROGMEM g_bootkeyboard_full[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard only.\n";
-const char PROGMEM g_bootkeyboard_half[] = "Keyboard: 6KRO, media/power keys: YES, mouse: YES.\n";
-const char PROGMEM g_bootkeyboard_nomouse[] = "Keyboard: NKRO, media/power keys: YES, mouse: NO.\n";
-const char PROGMEM g_bootkeyboard_none[] = "Keyboard: NKRO, media/power keys: YES, mouse: YES.\n";
+const char PROGMEM g_bootkeyboard_yes[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard only.\n";
+const char PROGMEM g_bootkeyboard_no[] = "Keyboard will use NKRO interface if it is enabled.\n";
 const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
 const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
 const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm and resetting debounce time.\n";
@@ -184,30 +182,12 @@ void console_main(void)
 			}
 			else if (code == 4)
 			{
-				if (g_boot_keyboard_only == KB_TYPE_NKRO_PLUS)
-				{
-					g_boot_keyboard_only = KB_TYPE_6KRO_PLUS;
-					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
-					queue_autotext(g_bootkeyboard_half);
-				}
-				else if (g_boot_keyboard_only == KB_TYPE_6KRO_PLUS)
-				{
-					g_boot_keyboard_only = KB_TYPE_NKRO_NOMOUSE;
-					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
-					queue_autotext(g_bootkeyboard_nomouse);
-				}
-				else if (g_boot_keyboard_only == KB_TYPE_NKRO_NOMOUSE)
-				{
-					g_boot_keyboard_only = KB_TYPE_6KRO_ONLY;
-					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
-					queue_autotext(g_bootkeyboard_full);
-				}
+				g_boot_keyboard_only ^= 1;
+				nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+				if (g_boot_keyboard_only)
+					queue_autotext(g_bootkeyboard_yes);
 				else
-				{
-					g_boot_keyboard_only = KB_TYPE_NKRO_PLUS;
-					nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
-					queue_autotext(g_bootkeyboard_none);
-				}
+					queue_autotext(g_bootkeyboard_no);
 			}
 			else if (code == 5)
 			{

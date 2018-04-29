@@ -54,17 +54,17 @@ class LedPanel(wx.Panel):
         self.main_sizer = main_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.modes_sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "LED Mode Configuration")
-        self.modes_panel = wx.Panel(self, size=(2*MARGIN, 2*MARGIN))
+        self.modes_panel = wx.Panel(self.modes_sizer.GetStaticBox(), size=(2*MARGIN, 2*MARGIN))
         self.modes_sizer.Add(self.modes_panel)
         main_sizer.Add(self.modes_sizer, flag=wx.ALL, border=MARGIN)
 
         self.assign_sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "LED Function Assignments")
-        self.assign_panel = wx.Panel(self, size=(2*MARGIN, 2*MARGIN))
+        self.assign_panel = wx.Panel(self.assign_sizer.GetStaticBox(), size=(2*MARGIN, 2*MARGIN))
         self.assign_sizer.Add(self.assign_panel)
         main_sizer.Add(self.assign_sizer, flag=wx.ALL, border=MARGIN)
 
         self.autofn_sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "LED Auto Layer Select")
-        self.autofn_panel = wx.Panel(self, size=(2*MARGIN, 2*MARGIN))
+        self.autofn_panel = wx.Panel(self.autofn_sizer.GetStaticBox(), size=(2*MARGIN, 2*MARGIN))
         self.autofn_sizer.Add(self.autofn_panel)
         main_sizer.Add(self.autofn_sizer, flag=wx.ALL, border=MARGIN)
 

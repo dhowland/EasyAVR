@@ -81,6 +81,7 @@
             <File name="easykeymap\gui\pickerdialog.py" />
             <File name="easykeymap\gui\programdialog.py" />
             <File name="easykeymap\gui\scale.py" />
+            <File name="easykeymap\gui\usbpanel.py" />
             <File name="easykeymap\gui\__init__.py" />
         </Folder>
         <Folder name="res">
@@ -103,6 +104,7 @@
         </Folder>
         <File name="easykeymap\build.py" />
         <File name="easykeymap\cfgparse.py" />
+        <File name="easykeymap\descriptors.py" />
         <File name="easykeymap\helper.py" />
         <File name="easykeymap\intelhex.py" />
         <File name="easykeymap\ioports.py" />

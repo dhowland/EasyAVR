@@ -25,8 +25,8 @@
 
 #include "config_keymap.h"
 
+/* MUST be 6 */
 #define HID_ROLLOVER_SIZE (6)
-#define REAL_NKRO_SIZE (13)
 
 #if defined (BOARD_SIZE_COSTAR) && defined (__AVR_ATmega32U2__)
 #define KEYMAP_MEMORY_SAVE
@@ -55,11 +55,13 @@ typedef enum {
 
 extern uint8_t g_modifier_state;
 extern uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
+extern uint8_t g_nkro_active;
 extern uint8_t g_mousebutton_state;
 extern int8_t g_mouse_req_X;
 extern int8_t g_mouse_req_Y;
 extern uint16_t g_media_key;
 extern uint8_t g_powermgmt_field;
+extern uint8_t g_media_power_activity;
 extern uint8_t g_hid_lock_flags;
 extern uint8_t g_winlock_flag;
 #if MACRO_RAM_SIZE
