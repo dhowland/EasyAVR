@@ -134,6 +134,7 @@
         <File name="..\docs\source\leds.rst" />
         <File name="..\docs\source\macros.rst" />
         <File name="..\docs\source\newboard.rst" />
+        <File name="..\docs\source\usb.rst" />
         <File name="..\docs\source\userguide.rst" />
     </Project>
 </NotepadPlus>

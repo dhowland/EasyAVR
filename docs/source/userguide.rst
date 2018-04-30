@@ -14,6 +14,7 @@ New users should read all the documents in this section.
    functions
    macros
    leds
+   usb
    console
    cfgfiles
    newboard
