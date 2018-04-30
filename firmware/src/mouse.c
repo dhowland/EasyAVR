@@ -66,17 +66,22 @@ void update_mouse(void)
 	{
 		/* Tell the USB code that we have data to send */
 		g_mouse_active = 1;
-		/* Calculate a mouse delta (over a mouse cycle) based on the number of taps */
-		total_cycle_request = (g_mouse_min_delta + (g_mouse_multiply * g_mouse_delta_mult));
 		/* Check to see if the USB code is ready for a new mouse report */
 		if (!g_mouse_service)
 		{
+			/* Calculate a mouse delta (over a mouse cycle) based on the number of taps */
+			total_cycle_request = (g_mouse_min_delta + (g_mouse_multiply * g_mouse_delta_mult));
 			mouse_report = mouse_cycle(total_cycle_request);
 			/* Get direction (+/-) from the mouse_req var */
 			g_mouse_report_X = mouse_report * g_mouse_req_X;
 			g_mouse_report_Y = mouse_report * g_mouse_req_Y;
+			/* Signal a new report */
+			g_mouse_service = 1;
 		}
 	} else {
+		/* Signal a final report before halting movement */
+		if (g_mouse_active)
+			g_mouse_service = 1;
 		/* When the user lifts up their fingers, reset everything */
 		g_mouse_active = 0;
 		g_cumulative_count = 0;
@@ -87,10 +92,6 @@ void update_mouse(void)
 			over the mouse cycle puts small requests at the end of the cycle. */
 		g_slot = MOUSE_CYCLES;
 	}
-	
-	/* We have seen that the USB has taken a report */
-	if (!g_mouse_service)
-		g_mouse_service = 1;
 }
 
 /* Calculate the requested X or Y value for the current USB mouse update slot.

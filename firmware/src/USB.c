@@ -367,18 +367,6 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 	return Size;
 }
 
-static uint8_t PrevKeyboardHIDReportBuffer[sizeof(USB_KeyboardReport_Data_t)];
-
-#ifndef SIMPLE_DEVICE
-static uint8_t PrevMouseHIDReportBuffer[sizeof(USB_MouseReport_Data_t)];
-#endif /* SIMPLE_DEVICE */
-
-static uint8_t PrevMediaHIDReportBuffer[sizeof(USB_MediaReport_Data_t)];
-
-#ifndef SIMPLE_DEVICE
-static uint8_t PrevNkroHIDReportBuffer[sizeof(USB_NkroReport_Data_t)];
-#endif /* SIMPLE_DEVICE */
-
 USB_ClassInfo_HID_Device_t Keyboard_HID_Interface =
 	{
 		.Config =
@@ -390,8 +378,8 @@ USB_ClassInfo_HID_Device_t Keyboard_HID_Interface =
 				.Size                 = HID_EPSIZE_KEYBOARD,
 				.Banks                = 1,
 			},
-			.PrevReportINBuffer           = PrevKeyboardHIDReportBuffer,
-			.PrevReportINBufferSize       = sizeof(PrevKeyboardHIDReportBuffer),
+			.PrevReportINBuffer           = NULL,
+			.PrevReportINBufferSize       = sizeof(USB_KeyboardReport_Data_t),
 		},
 	};
 
@@ -408,8 +396,8 @@ USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 						.Size                 = HID_EPSIZE_MOUSE,
 						.Banks                = 1,
 					},
-				.PrevReportINBuffer           = PrevMouseHIDReportBuffer,
-				.PrevReportINBufferSize       = sizeof(PrevMouseHIDReportBuffer),
+				.PrevReportINBuffer           = NULL,
+				.PrevReportINBufferSize       = sizeof(USB_MouseReport_Data_t),
 			},
 	};
 #endif /* SIMPLE_DEVICE */
@@ -426,8 +414,8 @@ USB_ClassInfo_HID_Device_t Media_HID_Interface =
 			.Size                 = HID_EPSIZE_MEDIA,
 			.Banks                = 1,
 		},
-		.PrevReportINBuffer           = PrevMediaHIDReportBuffer,
-		.PrevReportINBufferSize       = sizeof(PrevMediaHIDReportBuffer),
+		.PrevReportINBuffer           = NULL,
+		.PrevReportINBufferSize       = sizeof(USB_MediaReport_Data_t),
 	},
 };
 
@@ -444,8 +432,8 @@ USB_ClassInfo_HID_Device_t Nkro_HID_Interface =
 			.Size                 = HID_EPSIZE_NKRO,
 			.Banks                = 1,
 		},
-		.PrevReportINBuffer           = PrevNkroHIDReportBuffer,
-		.PrevReportINBufferSize       = sizeof(PrevNkroHIDReportBuffer),
+		.PrevReportINBuffer           = NULL,
+		.PrevReportINBufferSize       = sizeof(USB_NkroReport_Data_t),
 	},
 };
 #endif /* SIMPLE_DEVICE */
@@ -535,53 +523,87 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
+	/* Outputs are ReportData and ReportSize.  ReportData is zeroed out before calling.
+	   ReportSize must be set because this could be a control request. */
+	
+	static uint8_t nkro_active;
+	
 	if (HIDInterfaceInfo->Config.InterfaceNumber == KEYBOARD_INTERFACE)
 	{
-		g_keyboard_service = 0;
 #ifndef SIMPLE_DEVICE
 		if (Nkro_HID_Interface.Config.InterfaceNumber)
-			g_nkro_active = (!g_boot_keyboard_only && HIDInterfaceInfo->State.UsingReportProtocol);
+			nkro_active = (!g_boot_keyboard_only && HIDInterfaceInfo->State.UsingReportProtocol);
 #endif /* SIMPLE_DEVICE */
 		USB_KeyboardReport_Data_t* const KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
-		get_keyboard_report(KeyboardReport->KeyCode);
 		get_modifier_report(&KeyboardReport->Modifier);
 		*ReportSize = sizeof(USB_KeyboardReport_Data_t);
+		if (!nkro_active)
+		{
+			get_keyboard_report(KeyboardReport->KeyCode);
+			if (g_alphanum_service | g_modifier_service)
+			{
+				g_alphanum_service = 0;
+				g_modifier_service = 0;
+				return true;
+			}
+		}
+		if (g_modifier_service)
+		{
+			g_modifier_service = 0;
+			return true;
+		}
 	}
 #ifndef SIMPLE_DEVICE
 	else if (HIDInterfaceInfo->Config.InterfaceNumber == Nkro_HID_Interface.Config.InterfaceNumber)
 	{
-		get_nkro_report(((USB_NkroReport_Data_t*)ReportData)->KeyCode);
 		*ReportSize = sizeof(USB_NkroReport_Data_t);
+		if (nkro_active)
+		{
+			get_nkro_report(((USB_NkroReport_Data_t*)ReportData)->KeyCode);
+			if (g_alphanum_service)
+			{
+				g_alphanum_service = 0;
+				return true;
+			}
+		}
 	}
 	else if (HIDInterfaceInfo->Config.InterfaceNumber == Mouse_HID_Interface.Config.InterfaceNumber)
 	{
-		g_mouse_service = 0;
 		USB_MouseReport_Data_t* const MouseReport = (USB_MouseReport_Data_t*)ReportData;
 		MouseReport->Button = g_mousebutton_state;
 		MouseReport->X = g_mouse_report_X;
 		MouseReport->Y = g_mouse_report_Y;
 		*ReportSize = sizeof(USB_MouseReport_Data_t);
-		if (g_mouse_active)
+		if (g_mouse_service)
+		{
+			g_mouse_service = 0;	
 			return true;
+		}
 	}
 #endif /* SIMPLE_DEVICE */
 	else
 	{
-		if (*ReportID != 0)
-		{
-			g_media_power_activity = (*ReportID - 1);
-		}
-		if (g_media_power_activity)
+		if (g_power_service | (*ReportID == 3))
 		{
 			((USB_PowerReport_Data_t*)ReportData)->Field = g_powermgmt_field;
 			*ReportSize = sizeof(USB_PowerReport_Data_t);
 			*ReportID = 0x03;
+			if (g_power_service)
+			{
+				g_power_service = 0;
+				return true;
+			}
 		}
 		else
 		{
 			((USB_MediaReport_Data_t*)ReportData)->Button = g_media_key;
 			*ReportSize = sizeof(USB_MediaReport_Data_t);
 			*ReportID = 0x02;
+			if (g_media_service)
+			{
+				g_media_service = 0;
+				return true;
+			}
 		}
 	}
 	

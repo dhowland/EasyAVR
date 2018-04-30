@@ -45,7 +45,6 @@ typedef union {
 	} bytes;
 } union16_t;
 
-extern uint8_t g_keyboard_service;
 extern uint8_t g_autokey_status;
 extern uint8_t g_autokey_modifier;
 extern uint8_t g_read_buffer[READ_BUFFER_SIZE];

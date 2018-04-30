@@ -55,13 +55,15 @@ typedef enum {
 
 extern uint8_t g_modifier_state;
 extern uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
-extern uint8_t g_nkro_active;
+extern uint8_t g_modifier_service;
+extern uint8_t g_alphanum_service;
+extern uint8_t g_media_service;
+extern uint8_t g_power_service;
 extern uint8_t g_mousebutton_state;
 extern int8_t g_mouse_req_X;
 extern int8_t g_mouse_req_Y;
 extern uint16_t g_media_key;
 extern uint8_t g_powermgmt_field;
-extern uint8_t g_media_power_activity;
 extern uint8_t g_hid_lock_flags;
 extern uint8_t g_winlock_flag;
 #if MACRO_RAM_SIZE

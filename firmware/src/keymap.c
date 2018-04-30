@@ -99,7 +99,10 @@ uint8_t g_layer_select;
 uint8_t g_modifier_state;
 uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
 uint8_t g_nkro_field[NKRO_ARRAY_LENGTH];
-uint8_t g_nkro_active;
+uint8_t g_modifier_service;
+uint8_t g_alphanum_service;
+uint8_t g_media_service;
+uint8_t g_power_service;
 #ifdef KEYMAP_MEMORY_SAVE
 uint8_t g_matrixlayer[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #else
@@ -116,7 +119,6 @@ int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
 uint16_t g_media_key;
 uint8_t g_powermgmt_field;
-uint8_t g_media_power_activity;
 uint8_t g_hid_lock_flags;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
@@ -138,6 +140,12 @@ int8_t g_ram_macro_length;
 void enqueue_key(const uint8_t code)
 {
 	int8_t i;
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] |= (1 << off);
+	
+	g_alphanum_service = 1;
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -160,6 +168,12 @@ void enqueue_key(const uint8_t code)
 void delete_key(const uint8_t code)
 {
 	int8_t i;
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] &= ~(1 << off);
+	
+	g_alphanum_service = 1;
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -182,6 +196,12 @@ found:
 void toggle_key(const uint8_t code)
 {
 	int8_t i;
+	const uint8_t pos = (code / 8);
+	const uint8_t off = (code % 8);
+	
+	g_nkro_field[pos] ^= (1 << off);
+	
+	g_alphanum_service = 1;
 	
 	for (i=0; i<g_buffer_length; i++)
 	{
@@ -244,30 +264,6 @@ void delete_fn(const uint8_t code)
 }
 /* End keypress queue functions */
 
-void inline set_nkro(const uint8_t code)
-{
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] |= (1 << off);
-}
-
-void inline unset_nkro(const uint8_t code)
-{
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] &= ~(1 << off);
-}
-
-void inline toggle_nkro(const uint8_t code)
-{
-	const uint8_t pos = (code / 8);
-	const uint8_t off = (code % 8);
-	
-	g_nkro_field[pos] ^= (1 << off);
-}
-
 uint8_t inline getmap(const uint8_t row, const uint8_t col)
 {
 	return pgm_read_byte(&LAYERS[g_layer_select][row][col]);
@@ -293,11 +289,13 @@ void inline set_modifier(const uint8_t code)
 	g_modifier_state |= get_modfier_mask(code);
 	if (g_winlock_flag)
 		g_modifier_state &= 0x77;
+	g_modifier_service = 1;
 }
 
 void inline unset_modifier(const uint8_t code)
 {
 	g_modifier_state &= ~(get_modfier_mask(code));
+	g_modifier_service = 1;
 }
 
 void inline toggle_modifier(const uint8_t code)
@@ -305,6 +303,7 @@ void inline toggle_modifier(const uint8_t code)
 	g_modifier_state ^= get_modfier_mask(code);
 	if (g_winlock_flag)
 		g_modifier_state &= 0x77;
+	g_modifier_service = 1;
 }
 
 uint8_t inline is_mod_set(const uint8_t code)
@@ -317,7 +316,7 @@ void inline set_media(const uint8_t code)
 	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (!g_media_key)
 		g_media_key = pgm_read_word(&MEDIA_MAP[i]);
-	g_media_power_activity = 0;
+	g_media_service = 1;
 }
 
 void inline unset_media(const uint8_t code)
@@ -325,6 +324,7 @@ void inline unset_media(const uint8_t code)
 	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (g_media_key == pgm_read_word(&MEDIA_MAP[i]))
 		g_media_key = 0;
+	g_media_service = 1;
 }
 
 void inline set_mousebutton(const uint8_t code)
@@ -568,16 +568,10 @@ void alpha_down(const uint8_t code, const uint8_t action)
 	case ACTION_LOCKABLE:
 	case ACTION_TAPKEY:
 	case ACTION_RAPIDFIRE:
-		if (g_nkro_active)
-			set_nkro(code);
-		else
-			enqueue_key(code);
+		enqueue_key(code);
 		break;
 	case ACTION_TOGGLE:
-		if (g_nkro_active)
-			toggle_nkro(code);
-		else
-			toggle_key(code);
+		toggle_key(code);
 		break;
 	default:
 		break;
@@ -594,10 +588,7 @@ void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, co
 	case ACTION_NORMAL:
 	case ACTION_TAPKEY:
 	case ACTION_RAPIDFIRE:
-		if (g_nkro_active)
-			unset_nkro(code);
-		else
-			delete_key(code);
+		delete_key(code);
 		break;
 	case ACTION_TOGGLE:
 	default:
@@ -613,6 +604,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	{
 		// Autokey macros are assumed to be mutually exclusive with keypresses
 		g_autokey_modifier = modaction;
+		g_modifier_service = 1;
 	}
 	
 	switch(code)
@@ -783,7 +775,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_WAKE:
 		/* Assume power keys never coincide */
 		g_powermgmt_field = (1 << (code - SCANCODE_POWER));
-		g_media_power_activity = 1;
+		g_power_service = 1;
 		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
@@ -905,6 +897,7 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	if (modaction)
 	{
 		g_autokey_modifier = 0;
+		g_modifier_service = 1;
 	}
 	
 	switch(code)
@@ -1053,6 +1046,7 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_WAKE:
 		/* Assume power keys never coincide */
 		g_powermgmt_field = 0;
+		g_power_service = 1;
 		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:
