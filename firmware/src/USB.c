@@ -526,26 +526,49 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 	/* Outputs are ReportData and ReportSize.  ReportData is zeroed out before calling.
 	   ReportSize must be set because this could be a control request. */
 	
+#ifdef SIMPLE_DEVICE
+	if (HIDInterfaceInfo->Config.InterfaceNumber == KEYBOARD_INTERFACE)
+	{
+		USB_KeyboardReport_Data_t* const KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
+		get_keyboard_report(KeyboardReport->KeyCode);
+		get_modifier_report(&KeyboardReport->Modifier);
+		*ReportSize = sizeof(USB_KeyboardReport_Data_t);
+		if (g_alphanum_service | g_modifier_service)
+		{
+			g_alphanum_service = 0;
+			g_modifier_service = 0;
+			return true;
+		}
+	}
+#else /* ndef SIMPLE_DEVICE */
 	static uint8_t nkro_active;
 	
 	if (HIDInterfaceInfo->Config.InterfaceNumber == KEYBOARD_INTERFACE)
 	{
-#ifndef SIMPLE_DEVICE
 		if (Nkro_HID_Interface.Config.InterfaceNumber)
-			nkro_active = (!g_boot_keyboard_only && HIDInterfaceInfo->State.UsingReportProtocol);
-#endif /* SIMPLE_DEVICE */
+		{
+			nkro_active <<= 1;
+			nkro_active += (!g_boot_keyboard_only && HIDInterfaceInfo->State.UsingReportProtocol);
+		}
 		USB_KeyboardReport_Data_t* const KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
 		get_modifier_report(&KeyboardReport->Modifier);
 		*ReportSize = sizeof(USB_KeyboardReport_Data_t);
-		if (!nkro_active)
+		if ((nkro_active & 0x01) == 0)
 		{
 			get_keyboard_report(KeyboardReport->KeyCode);
-			if (g_alphanum_service | g_modifier_service)
+			if (g_alphanum_service)
 			{
 				g_alphanum_service = 0;
 				g_modifier_service = 0;
 				return true;
 			}
+		}
+		else if ((nkro_active & 0x02) == 0)
+		{
+			/* nkro_active has just changed over, send a blank report to clear things out */
+			g_alphanum_service = 0;
+			g_modifier_service = 0;
+			return true;
 		}
 		if (g_modifier_service)
 		{
@@ -553,11 +576,10 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 			return true;
 		}
 	}
-#ifndef SIMPLE_DEVICE
 	else if (HIDInterfaceInfo->Config.InterfaceNumber == Nkro_HID_Interface.Config.InterfaceNumber)
 	{
 		*ReportSize = sizeof(USB_NkroReport_Data_t);
-		if (nkro_active)
+		if ((nkro_active & 0x01) != 0)
 		{
 			get_nkro_report(((USB_NkroReport_Data_t*)ReportData)->KeyCode);
 			if (g_alphanum_service)
@@ -565,6 +587,12 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 				g_alphanum_service = 0;
 				return true;
 			}
+		}
+		else if ((nkro_active & 0x02) != 0)
+		{
+			/* nkro_active has just changed over, send a blank report to clear things out */
+			g_alphanum_service = 0;
+			return true;
 		}
 	}
 	else if (HIDInterfaceInfo->Config.InterfaceNumber == Mouse_HID_Interface.Config.InterfaceNumber)
