@@ -4,9 +4,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1167 bytes of 2560 (45.6 % full)
+Used 1143 bytes of 2560 (44.6 % full)
 Checking Flash usage
-Used 26616 bytes of 28672 (92.8 % full)
+Used 26758 bytes of 28672 (93.3 % full)
 Updating config source
 
 ATmega32U4_16MHz_COSTAR.hex
@@ -14,9 +14,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1159 bytes of 2560 (45.3 % full)
+Used 1135 bytes of 2560 (44.3 % full)
 Checking Flash usage
-Used 25864 bytes of 28672 (90.2 % full)
+Used 26004 bytes of 28672 (90.7 % full)
 Updating config source
 
 ATmega32U4_16MHz_TKL.hex
@@ -24,9 +24,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1164 bytes of 2560 (45.5 % full)
+Used 1140 bytes of 2560 (44.5 % full)
 Checking Flash usage
-Used 26552 bytes of 28672 (92.6 % full)
+Used 26702 bytes of 28672 (93.1 % full)
 Updating config source
 
 ATmega32U4_16MHz_SIXTY.hex
@@ -34,9 +34,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1029 bytes of 2560 (40.2 % full)
+Used 1005 bytes of 2560 (39.3 % full)
 Checking Flash usage
-Used 25728 bytes of 28672 (89.7 % full)
+Used 25878 bytes of 28672 (90.3 % full)
 Updating config source
 
 ATmega32U4_16MHz_PAD.hex
@@ -44,9 +44,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 834 bytes of 2560 (32.6 % full)
+Used 810 bytes of 2560 (31.6 % full)
 Checking Flash usage
-Used 24500 bytes of 28672 (85.4 % full)
+Used 24650 bytes of 28672 (86.0 % full)
 Updating config source
 
 ATmega32U4_16MHz_CARD.hex
@@ -54,9 +54,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 428 bytes of 2560 (16.7 % full)
+Used 419 bytes of 2560 (16.4 % full)
 Checking Flash usage
-Used 16156 bytes of 28672 (56.3 % full)
+Used 16248 bytes of 28672 (56.7 % full)
 Updating config source
 
 ATmega32U2_16MHz_COSTAR.hex
@@ -64,9 +64,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 777 bytes of 1024 (75.9 % full)
+Used 753 bytes of 1024 (73.5 % full)
 Checking Flash usage
-Used 25990 bytes of 28672 (90.6 % full)
+Used 26130 bytes of 28672 (91.1 % full)
 Updating config source
 
 ATmega16U2_16MHz_CARD.hex
@@ -74,9 +74,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 243 bytes of 512 (47.5 % full)
+Used 234 bytes of 512 (45.7 % full)
 Checking Flash usage
-Used 11968 bytes of 12288 (97.4 % full)
+Used 12060 bytes of 12288 (98.1 % full)
 Updating config source
 
 AT90USB1286_16MHz_COSTAR.hex
@@ -84,9 +84,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1553 bytes of 8192 (19.0 % full)
+Used 1529 bytes of 8192 (18.7 % full)
 Checking Flash usage
-Used 31906 bytes of 122880 (26.0 % full)
+Used 32060 bytes of 122880 (26.1 % full)
 Updating config source
 
 AT90USB1286_16MHz_FULLSIZE.hex
@@ -94,9 +94,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1493 bytes of 8192 (18.2 % full)
+Used 1469 bytes of 8192 (17.9 % full)
 Checking Flash usage
-Used 31578 bytes of 122880 (25.7 % full)
+Used 31732 bytes of 122880 (25.8 % full)
 Updating config source
 
 AT90USB1286_16MHz_JUMBO.hex
@@ -104,9 +104,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1673 bytes of 8192 (20.4 % full)
+Used 1649 bytes of 8192 (20.1 % full)
 Checking Flash usage
-Used 32674 bytes of 122880 (26.6 % full)
+Used 32828 bytes of 122880 (26.7 % full)
 Updating config source
 
 AT90USB1286_8MHz_FULLSIZE.hex
@@ -114,9 +114,9 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1493 bytes of 8192 (18.2 % full)
+Used 1469 bytes of 8192 (17.9 % full)
 Checking Flash usage
-Used 31580 bytes of 122880 (25.7 % full)
+Used 31734 bytes of 122880 (25.8 % full)
 Updating config source
 
 ATmega32U4_8MHz_TKL.hex
@@ -124,7 +124,7 @@ Compiling...
 Copying HEX file
 Parsing MAP file
 Checking RAM usage
-Used 1178 bytes of 2560 (46.0 % full)
+Used 1154 bytes of 2560 (45.1 % full)
 Checking Flash usage
-Used 26772 bytes of 28672 (93.4 % full)
+Used 26916 bytes of 28672 (93.9 % full)
 Updating config source
