@@ -182,13 +182,3 @@ Specials List
 | ${KP0}
 | ${KPDOT}
 | ${KPEQ}
-| 
-| Media keys:
-| ${MUTE}
-| ${VOLUP}
-| ${VOLDN}
-| ${BASS}
-| ${NEXT}
-| ${PREV}
-| ${STOP}
-| ${PLAY}
