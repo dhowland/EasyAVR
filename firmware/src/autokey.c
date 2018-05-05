@@ -48,7 +48,7 @@ void init_autokey(void)
 void autokey_send(void)
 {
 	union16_t code;
-	const uint8_t keyboard_service = (g_alphanum_service | g_modifier_service);
+	const uint8_t keyboard_service = (g_alphanum_service | g_modifier_service | g_media_service | g_power_service);
 	
 	/* Check if we still have work to do */
 	if (g_send_buffer_length != 0)
@@ -84,14 +84,35 @@ void autokey_send(void)
 							else
 							{
 								g_autokey_buffer = code.bytes.lsb;
-								if (g_autokey_buffer)
+								if ((g_autokey_buffer != 0) && (g_autokey_buffer < 0x80))
+								{
 									enqueue_key(g_autokey_buffer);
+								}
+								else if ((g_autokey_buffer >= SCANCODE_NEXT_TRACK) && (g_autokey_buffer <= SCANCODE_FAVES))
+								{
+									set_media(g_autokey_buffer);
+								}
+								else if ((g_autokey_buffer >= SCANCODE_POWER) && (g_autokey_buffer <= SCANCODE_WAKE))
+								{
+									set_power(g_autokey_buffer);
+								}
 								g_send_buffer_pos++;
 							}
 						}
 					}
 				} else {
-					delete_key(g_autokey_buffer);
+					if (g_autokey_buffer < 0x80)
+					{
+						delete_key(g_autokey_buffer);
+					}
+					else if ((g_autokey_buffer >= SCANCODE_NEXT_TRACK) && (g_autokey_buffer <= SCANCODE_FAVES))
+					{
+						unset_media(g_autokey_buffer);
+					}
+					else if ((g_autokey_buffer >= SCANCODE_POWER) && (g_autokey_buffer <= SCANCODE_WAKE))
+					{
+						unset_power(g_autokey_buffer);
+					}
 					g_autokey_buffer = 0;
 				}
 			} else {

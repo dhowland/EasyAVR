@@ -85,6 +85,15 @@ Unicode characters can be inserted using a macro of an Alt Code.  For example::
     $ALT(0161)
     $ALT(+11b)
 
+Media keys can be part of macros.  To bind a key to open a browser and 
+navigate to a website, you could do this::
+
+    ${BROWSER}$WAIT(200)$CTRL(l)$WAIT(100)www.geekhack.org${ENTER}
+
+To open a new tab instead of a browser, you could do this::
+
+    $CTRL(t)$WAIT(100)www.geekhack.org${ENTER}
+
 There are two special function macros.  Like modifiers, they are followed by 
 parentheses, but instead of holding a substring, they hold arguments to the 
 function.
@@ -182,3 +191,23 @@ Specials List
 | ${KP0}
 | ${KPDOT}
 | ${KPEQ}
+| 
+| Media keys:
+| ${MUTE}
+| ${VOLUP}
+| ${VOLDN}
+| ${BASS}
+| ${NEXT}
+| ${PREV}
+| ${STOP}
+| ${PLAY}
+| ${MAIL}
+| ${CALC}
+| ${MYCOMP}
+| ${SEARCH}
+| ${BROWSER}
+| ${BACK}
+| ${FORWARD}
+| ${WWWSTOP}
+| ${REFRESH}
+| ${FAVES}

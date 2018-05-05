@@ -311,7 +311,7 @@ uint8_t inline is_mod_set(const uint8_t code)
 	return ((g_modifier_state & get_modfier_mask(code)) != 0);
 }
 
-void inline set_media(const uint8_t code)
+void set_media(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (!g_media_key)
@@ -319,12 +319,27 @@ void inline set_media(const uint8_t code)
 	g_media_service = 1;
 }
 
-void inline unset_media(const uint8_t code)
+void unset_media(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_NEXT_TRACK);
 	if (g_media_key == pgm_read_word(&MEDIA_MAP[i]))
 		g_media_key = 0;
 	g_media_service = 1;
+}
+
+void set_power(const uint8_t code)
+{
+	const uint8_t n = (code - SCANCODE_POWER);
+	/* Assume power keys never coincide */
+	g_powermgmt_field = (1 << n);
+	g_power_service = 1;
+}
+
+void unset_power(const uint8_t code)
+{
+	/* Assume power keys never coincide */
+	g_powermgmt_field = 0;
+	g_power_service = 1;
 }
 
 void inline set_mousebutton(const uint8_t code)
@@ -773,9 +788,7 @@ void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t
 	case SCANCODE_POWER:
 	case SCANCODE_SLEEP:
 	case SCANCODE_WAKE:
-		/* Assume power keys never coincide */
-		g_powermgmt_field = (1 << (code - SCANCODE_POWER));
-		g_power_service = 1;
+		set_power(code);
 		break;
 	case SCANCODE_BOOT:
 		g_reset_requested = RESET_TO_BOOT;
@@ -1044,9 +1057,7 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_POWER:
 	case SCANCODE_SLEEP:
 	case SCANCODE_WAKE:
-		/* Assume power keys never coincide */
-		g_powermgmt_field = 0;
-		g_power_service = 1;
+		unset_power(code);
 		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:
