@@ -115,12 +115,12 @@ class UserData():
             data = json.load(fdin)
         # get unique_id and layout_mod, which are absolutely required
         try:
-            unique_id = self.check_unique_id(data['unique_id'])
-            layout_mod = self.check_layout_mod(data['layout_mod'])
+            self.unique_id = self.check_unique_id(data['unique_id'])
+            self.layout_mod = self.check_layout_mod(data['layout_mod'])
         except KeyError as err:
             raise SaveFileException("Invalid save file: missing property " + err.args[0])
         # set default settings for everything
-        self.new(unique_id, layout_mod)
+        self.new(self.unique_id, self.layout_mod)
         # replace default settings with data from the save file
         if 'keymap' in data:
             self.keymap = self.check_keymap(data['keymap'])
@@ -187,7 +187,7 @@ class UserData():
 
     def check_layout_mod(self, data):
         """make sure layout_mod is known if set"""
-        if (data is not None) and (data not in self.config.alt_layouts):
+        if (data is not None) and (data not in self.configurations[self.unique_id].alt_layouts):
             raise SaveFileException("Invalid save file: unknown layout_mod " + data)
         return data
 
