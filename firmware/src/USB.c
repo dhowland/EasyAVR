@@ -765,49 +765,26 @@ void init_USB(void)
 #endif /* SIMPLE_DEVICE */
 }
 
-#ifdef SIMPLE_DEVICE
-void USB_cycle(void)
+void USB_service(void)
 {
 	static uint8_t stored_USB_DeviceState;
+	
+	/* Disable interrupts for asynchronous USB */
+	cli();
 	
 	HID_Device_USBTask(&Keyboard_HID_Interface);
 	if (Media_HID_Interface.Config.InterfaceNumber)
 		HID_Device_USBTask(&Media_HID_Interface);
-	USB_USBTask();
-
-	if (stored_USB_DeviceState != USB_DeviceState)
-	{
-		report_event(EVENT_CODE_USB_STATE_CHANGE, USB_DeviceState, MODE_REOCCUR);
-		stored_USB_DeviceState = USB_DeviceState;
-	}
-}
-
-#else /* ndef SIMPLE_DEVICE */
-
-void USB_cycle_kb(void)
-{
-	static uint8_t stored_USB_DeviceState;
-	
-	HID_Device_USBTask(&Keyboard_HID_Interface);
-	USB_USBTask();
-
-	if (stored_USB_DeviceState != USB_DeviceState)
-	{
-		report_event(EVENT_CODE_USB_STATE_CHANGE, USB_DeviceState, MODE_REOCCUR);
-		stored_USB_DeviceState = USB_DeviceState;
-	}
-}
-
-void USB_cycle_aux(void)
-{
-	static uint8_t stored_USB_DeviceState;
-	
-	if (Media_HID_Interface.Config.InterfaceNumber)
-		HID_Device_USBTask(&Media_HID_Interface);
+#ifndef SIMPLE_DEVICE
 	if (Nkro_HID_Interface.Config.InterfaceNumber)
 		HID_Device_USBTask(&Nkro_HID_Interface);
 	if (Mouse_HID_Interface.Config.InterfaceNumber)
 		HID_Device_USBTask(&Mouse_HID_Interface);
+#endif /* SIMPLE_DEVICE */
+	
+	/* Re-enable interrupts */
+	sei();
+	
 	USB_USBTask();
 	
 	if (stored_USB_DeviceState != USB_DeviceState)
@@ -816,7 +793,7 @@ void USB_cycle_aux(void)
 		stored_USB_DeviceState = USB_DeviceState;
 	}
 }
-#endif /* SIMPLE_DEVICE */
+
 
 void USB_wakeup(void)
 {

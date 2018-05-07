@@ -132,12 +132,7 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
 										  const uint16_t ReportSize);
 
 void init_USB(void);
-#ifdef SIMPLE_DEVICE
-void USB_cycle(void);
-#else /* ndef SIMPLE_DEVICE */
-void USB_cycle_kb(void);
-void USB_cycle_aux(void);
-#endif /* SIMPLE_DEVICE */
+void USB_service(void);
 void USB_wakeup(void);
 
 

@@ -30,6 +30,9 @@
 #define SCHEDULE_CYCLE_MS (SCHEDULE_PERIOD_MS * NUMBER_OF_SCHEDULE_SLOTS)
 #define CLOCK_KHZ (F_CPU/1000)
 
+#define SCHEDULE_CYCLE_CLOCKS (CLOCK_KHZ * SCHEDULE_PERIOD_MS)
+#define SCHEDULE_LIMIT ((SCHEDULE_CYCLE_CLOCKS * 3) / 4)
+
 /* Generic names for timer registers so timer can be easily selected */
 #define TCCRA (TCCR1A)
 #define TCCRB (TCCR1B)

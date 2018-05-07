@@ -29,7 +29,6 @@
 
 volatile uint8_t g_next_slice;
 volatile uint8_t g_next_item;
-volatile uint8_t g_cycle_flag;
 #ifdef ENABLE_DEBUG_CONSOLE
 uint16_t g_schedule_clocks[NUMBER_OF_SCHEDULE_SLOTS][NUMBER_OF_ITEMS_PER_SLOT];
 #endif /* ENABLE_DEBUG_CONSOLE */
@@ -48,15 +47,12 @@ void init_scheduler(void)
 	GTCCR = 0;	// no synchronized counters
 	TCCRA = 0;	// normal mode, no output ports
 	TCCRC = 0;	// no force output compare
-	OCRA = (CLOCK_KHZ * SCHEDULE_PERIOD_MS);  // 1kHz
+	OCRA = SCHEDULE_CYCLE_CLOCKS;
 }
 
 void schedule_start(void)
 {
 	g_next_slice = 0;
-	
-	/* enable global interrupts */
-	sei();
 	
 	/* Start the timer */
 	TCNT = 0;	// clear timer state
@@ -86,29 +82,13 @@ inline void schedule_tick(void)
 {
 	TCNT = 0;	// clear timer state
 	
-	if (g_cycle_flag != 0)
-	{
-		report_event(EVENT_CODE_SCHED_OVER, ((g_next_slice<<8)|g_next_item), MODE_UPDATE);
-		g_cycle_flag++;
-	} else {
-		g_cycle_flag = 1;
-		
-		/* re-enable global interrupts */
-		sei();
-		
-		/* execute the schedule for this slice */
-		exec_slice();
-		if (++g_next_slice >= NUMBER_OF_SCHEDULE_SLOTS)
-			g_next_slice = 0;
-		
-		/* check for cycle overrun */
-		if (g_cycle_flag > 1)
-			report_event(EVENT_CODE_SCHED_OVER_CNT, g_cycle_flag, MODE_UPDATE);
-		
-		/* service the watchdog timer */
-		wdt_reset();
-		g_cycle_flag = 0;
-	}
+	/* execute the schedule for this slice */
+	exec_slice();
+	if (++g_next_slice >= NUMBER_OF_SCHEDULE_SLOTS)
+		g_next_slice = 0;
+	
+	/* service the watchdog timer */
+	wdt_reset();
 }
 
 inline void exec_slice(void)
@@ -130,6 +110,13 @@ inline void clock_in(void)
 {
 #ifdef ENABLE_DEBUG_CONSOLE
 	const uint16_t count = TCNT;
+	
+	/* check for cycle overrun */
+	//if (count > SCHEDULE_LIMIT)
+	//{
+		//report_event(EVENT_CODE_SCHED_OVER, ((g_next_slice<<8)|g_next_item), MODE_UPDATE);
+		//report_event(EVENT_CODE_SCHED_OVER_CNT, count, MODE_UPDATE);
+	//}
 	
 	if (count > g_schedule_clocks[g_next_slice][g_next_item])
 		g_schedule_clocks[g_next_slice][g_next_item] = count;

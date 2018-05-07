@@ -62,16 +62,24 @@ void application_init(void)
 	
 	/* Start USB */
 	USB_Init();
+	
+	/* Enable global interrupts */
+	sei();
 }
 
 /* This function executes the main program */
 void application_loop(void)
 {
+	/* USB enumeration takes a long time, so let that finish first */
+	while (USB_DeviceState < DEVICE_STATE_Configured)
+		USB_service();
+	
 	schedule_start();
 	while(1)
 	{
 		if (g_reset_requested != NO_RESET)
 			break;
+		USB_service();
 	}
 	schedule_stop();
 }
