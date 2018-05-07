@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Writing Macros &mdash; EasyAVR 3.00.02 documentation</title>
+  <title>Writing Macros &mdash; EasyAVR 3.01.01 documentation</title>
   
 
   
@@ -25,27 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="EasyAVR 3.00.02 documentation" href="index.html"/>
-        <link rel="up" title="User’s Guide" href="userguide.html"/>
-        <link rel="next" title="LED Functions" href="leds.html"/>
-        <link rel="prev" title="Special Functions and Modes" href="functions.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LED Functions" href="leds.html" />
+    <link rel="prev" title="Special Functions and Modes" href="functions.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +59,7 @@
             
             
               <div class="version">
-                3.00.02
+                3.01.01
               </div>
             
           
@@ -103,6 +95,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">USB Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
@@ -121,7 +114,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">EasyAVR</a>
@@ -129,9 +122,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -259,6 +253,15 @@ $ALT(0161)
 $ALT(+11b)
 </pre></div>
 </div>
+<p>Media keys can be part of macros.  To bind a key to open a browser and
+navigate to a website, you could do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${BROWSER}$WAIT(200)$CTRL(l)$WAIT(100)www.geekhack.org${ENTER}
+</pre></div>
+</div>
+<p>To open a new tab instead of a browser, you could do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$CTRL(t)$WAIT(100)www.geekhack.org${ENTER}
+</pre></div>
+</div>
 <p>There are two special function macros.  Like modifiers, they are followed by
 parentheses, but instead of holding a substring, they hold arguments to the
 function.</p>
@@ -354,15 +357,33 @@ layers:</p>
 <div class="line">${KP0}</div>
 <div class="line">${KPDOT}</div>
 <div class="line">${KPEQ}</div>
+<div class="line"><br /></div>
+<div class="line">Media keys:</div>
+<div class="line">${MUTE}</div>
+<div class="line">${VOLUP}</div>
+<div class="line">${VOLDN}</div>
+<div class="line">${BASS}</div>
+<div class="line">${NEXT}</div>
+<div class="line">${PREV}</div>
+<div class="line">${STOP}</div>
+<div class="line">${PLAY}</div>
+<div class="line">${MAIL}</div>
+<div class="line">${CALC}</div>
+<div class="line">${MYCOMP}</div>
+<div class="line">${SEARCH}</div>
+<div class="line">${BROWSER}</div>
+<div class="line">${BACK}</div>
+<div class="line">${FORWARD}</div>
+<div class="line">${WWWSTOP}</div>
+<div class="line">${REFRESH}</div>
+<div class="line">${FAVES}</div>
 </div>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -384,7 +405,7 @@ layers:</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -402,7 +423,8 @@ layers:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.00.02',
+            VERSION:'3.01.01',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -420,14 +442,11 @@ layers:</p>
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

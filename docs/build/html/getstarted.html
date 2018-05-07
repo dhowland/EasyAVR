@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; EasyAVR 3.00.02 documentation</title>
+  <title>Getting Started &mdash; EasyAVR 3.01.01 documentation</title>
   
 
   
@@ -25,27 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="EasyAVR 3.00.02 documentation" href="index.html"/>
-        <link rel="up" title="User’s Guide" href="userguide.html"/>
-        <link rel="next" title="Special Functions and Modes" href="functions.html"/>
-        <link rel="prev" title="Installation" href="install.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Special Functions and Modes" href="functions.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +59,7 @@
             
             
               <div class="version">
-                3.00.02
+                3.01.01
               </div>
             
           
@@ -110,6 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
 <li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">USB Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
@@ -128,7 +121,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">EasyAVR</a>
@@ -136,9 +129,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -195,8 +189,9 @@ every key the hardware supports is shown.  Layout mods are discussed in
 <img alt="_images/easykeymap_ss1.png" src="_images/easykeymap_ss1.png" />
 <p>You are presented with a view of the keyboard with a default map already
 assigned to the keys on the first layer (AKA the “default” layer).  In
-addition to the “Layout” view, there are also tabs for “Macros” and “LEDs”.
-They are discussed in the <a class="reference internal" href="macros.html"><span class="doc">Writing Macros</span></a> and <a class="reference internal" href="leds.html"><span class="doc">LED Functions</span></a> chapters, respectively.</p>
+addition to the “Layout” view, there are also tabs for “Macros”, “LEDs”, and
+“USB”.  They are discussed in the <a class="reference internal" href="macros.html"><span class="doc">Writing Macros</span></a>, <a class="reference internal" href="leds.html"><span class="doc">LED Functions</span></a>, and <a class="reference internal" href="usb.html"><span class="doc">USB Options</span></a>
+chapters, respectively.</p>
 <p>Your keymap can use up to 10 different layers.  Layers are discussed in the
 <a class="reference internal" href="functions.html"><span class="doc">Special Functions and Modes</span></a> chapter.  To open a layer for editing, select it using the
 radio buttons near the top.  Most layers are initially empty.  You can easily
@@ -281,9 +276,7 @@ to.  You may build a .hex file and program yourself it using an external tool.</
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -305,7 +298,7 @@ to.  You may build a .hex file and program yourself it using an external tool.</
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -323,7 +316,8 @@ to.  You may build a .hex file and program yourself it using an external tool.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.00.02',
+            VERSION:'3.01.01',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -341,14 +335,11 @@ to.  You may build a .hex file and program yourself it using an external tool.</
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

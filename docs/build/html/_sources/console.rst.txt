@@ -40,12 +40,8 @@ Default Layer
     would be set to 0.
 
 Keyboard Features
-    This setting allows you to progressively disable features of the keyboard
-    until is works exactly as a HID-compliant boot-compatible USB keyboard.
-    You can optionally disable the NKRO interface (6KRO), the mouse interface,
-    and the media/power keys interface.  This may help work around problems
-    on platforms that are confused by the extra endpoints.  This setting will
-    not take effect until the keyboard is unplugged.
+    This setting allows you to disable the NKRO feature so that the keyboard
+    works exactly as a HID-compliant boot compatible USB keyboard.
 
 Unlink Num Lock
     Activating this setting will cause the keyboard or numpad to ignore the

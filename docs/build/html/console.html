@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The Config Console &mdash; EasyAVR 3.00.02 documentation</title>
+  <title>The Config Console &mdash; EasyAVR 3.01.01 documentation</title>
   
 
   
@@ -25,27 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="EasyAVR 3.00.02 documentation" href="index.html"/>
-        <link rel="up" title="User’s Guide" href="userguide.html"/>
-        <link rel="next" title="Layout Mod Configs" href="cfgfiles.html"/>
-        <link rel="prev" title="LED Functions" href="leds.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Layout Mod Configs" href="cfgfiles.html" />
+    <link rel="prev" title="USB Options" href="usb.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +59,7 @@
             
             
               <div class="version">
-                3.00.02
+                3.01.01
               </div>
             
           
@@ -99,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
 <li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">USB Options</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">The Config Console</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-the-config-console">Accessing the Config Console</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
@@ -122,7 +115,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">EasyAVR</a>
@@ -130,9 +123,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -210,12 +204,8 @@ useful for gaming.</dd>
 <dd>The layer to use at startup and when no Fn keys are active.  Usually this
 would be set to 0.</dd>
 <dt>Keyboard Features</dt>
-<dd>This setting allows you to progressively disable features of the keyboard
-until is works exactly as a HID-compliant boot-compatible USB keyboard.
-You can optionally disable the NKRO interface (6KRO), the mouse interface,
-and the media/power keys interface.  This may help work around problems
-on platforms that are confused by the extra endpoints.  This setting will
-not take effect until the keyboard is unplugged.</dd>
+<dd>This setting allows you to disable the NKRO feature so that the keyboard
+works exactly as a HID-compliant boot compatible USB keyboard.</dd>
 <dt>Unlink Num Lock</dt>
 <dd>Activating this setting will cause the keyboard or numpad to ignore the
 system Num Lock and keep track of Num Lock internally.  This prevents the
@@ -287,9 +277,7 @@ clear non-volatile memory by unplugging the keyboard and holding the ENTER key
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -298,7 +286,7 @@ clear non-volatile memory by unplugging the keyboard and holding the ENTER key
         <a href="cfgfiles.html" class="btn btn-neutral float-right" title="Layout Mod Configs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="leds.html" class="btn btn-neutral" title="LED Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="usb.html" class="btn btn-neutral" title="USB Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -311,7 +299,7 @@ clear non-volatile memory by unplugging the keyboard and holding the ENTER key
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -329,7 +317,8 @@ clear non-volatile memory by unplugging the keyboard and holding the ENTER key
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.00.02',
+            VERSION:'3.01.01',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -347,14 +336,11 @@ clear non-volatile memory by unplugging the keyboard and holding the ENTER key
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

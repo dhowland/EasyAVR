@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frequently Asked Questions &mdash; EasyAVR 3.01.01 documentation</title>
+  <title>USB Options &mdash; EasyAVR 3.01.01 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Developer’s Guide" href="devguide.html" />
-    <link rel="prev" title="Supporting Custom Boards" href="newboard.html" /> 
+    <link rel="next" title="The Config Console" href="console.html" />
+    <link rel="prev" title="LED Functions" href="leds.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,11 +91,14 @@
 <li class="toctree-l2"><a class="reference internal" href="functions.html">Special Functions and Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macros.html">Writing Macros</a></li>
 <li class="toctree-l2"><a class="reference internal" href="leds.html">LED Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usb.html">USB Options</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">USB Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#endpoints">Endpoints</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="console.html">The Config Console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cfgfiles.html">Layout Mod Configs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="newboard.html">Supporting Custom Boards</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer’s Guide</a></li>
@@ -146,13 +149,13 @@
         
           <li><a href="userguide.html">User’s Guide</a> &raquo;</li>
         
-      <li>Frequently Asked Questions</li>
+      <li>USB Options</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/faq.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usb.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,63 +168,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="frequently-asked-questions">
-<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="usb-options">
+<h1>USB Options<a class="headerlink" href="#usb-options" title="Permalink to this headline">¶</a></h1>
+<p>An EasyAVR keyboard actually appears as four devices when it is plugged in to
+a PC.  Each is called an “HID endpoint”, where HID stands for Human Interface
+Device.  The extra devices are required for some of the advanced features of
+the firmware.  In most cases it is best to simply leave all of them enabled.
+However, in some situations the extra devices cause problems.  Therefore,
+they may be optionally disabled.  This may help work around problems on
+platforms that are confused by the extra endpoints, but it will prevent those
+features from working.</p>
+<img alt="_images/easykeymap_ss8.png" src="_images/easykeymap_ss8.png" />
+<div class="section" id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
-<dt>I get a runtime error, “The program can’t start because MSVCP100.dll is missing from your computer.”</dt>
-<dd>Install the Visual Studio 2010 redistributable package for x86 from <a class="reference external" href="http://www.microsoft.com/en-in/download/details.aspx?id=5555">Microsoft</a>.</dd>
+<dt>Keyboard</dt>
+<dd>This is a standards-compliant USB HID keyboard.  In other words, this is a
+basic keyboard with no special features.  It is boot compatible, which
+means it requires no driver and will work with BIOS setup screens.  Per the
+spec, it supports 6-key rollover.  This endpoint is required and cannot be
+disabled.</dd>
+<dt>Media/Power</dt>
+<dd>This endpoint, combined with the Keyboard endpoint, implements a Microsoft
+Windows “Enhanced Keyboard”.  It provides “consumer controls” which are the
+media keys, and “system power control” which are the power keys
+(SCANCODE_NEXT_TRACK through SCANCODE_FAVES and SCANCODE_POWER through
+SCANCODE_WAKE in the <a class="reference internal" href="functions.html"><span class="doc">Special Functions and Modes</span></a> chapter).</dd>
+<dt>NKRO</dt>
+<dd>This is an additional keyboard endpoint that provides n-key rollover.  With
+n-key rollover, any number of keys may be pressed at the same time.  In
+other words, there is no 6 key limit.  This endpoint may not be available
+on extremely limited devices, such as the Techkeys Card.</dd>
+<dt>Mouse</dt>
+<dd>This is a standards-compliant USB HID Mouse.  It allows the use of mouse
+keys (SCANCODE_MOUSE1 through SCANCODE_MOUSEYU in the <a class="reference internal" href="functions.html"><span class="doc">Special Functions and Modes</span></a>
+chapter).  This endpoint may not be available on extremely limited devices,
+such as the Techkeys Card.</dd>
 </dl>
-<dl class="docutils">
-<dt>Hey, my number row is mapping to numpad and I didn’t tell it to do that!</dt>
-<dd>Virtual Numpad is enabled.  Either turn off NumLock or disable Virtual Numpad.</dd>
-<dt>Why is my numpad is sending the wrong scancodes? -or- Why won’t the Numlock LED turn on?</dt>
-<dd>You have “Unlink Numlock” enabled.  Disable that setting to get normal
-numpad scancodes.</dd>
-<dt>Why doesn’t my Windows key work?</dt>
-<dd>Turn off Scroll Lock or disable the “Win Lock on Scroll Lock” setting.</dd>
-<dt>Why does my QFR turn on the Windows Lock LED when Scroll Lock is pressed?</dt>
-<dd>Disable the “Win Lock on Scroll Lock” setting.</dd>
-<dt>I lost all my configuration settings!</dt>
-<dd>You probably installed a new version of the firmware.  If the firmware
-detects an different version of EEPROM data, it erases everything and
-installs defaults to be on the safe side.  The settings are easy to
-change, just put them back the way you like.</dd>
-<dt>I bricked my keyboard! What are you going to do about it?</dt>
-<dd>I’ll help you fix it if I can, but I don’t owe you anything.  I’ve
-programmed all sorts of boards with all kinds of firmware (both good and
-bad) and I’ve never bricked anything.  Just press the reset switch.  If
-you really managed to brick it, it’s your own fault.</dd>
-<dt>My computer acts weird when the keyboard is plugged in, or the keyboard just isn’t recognized by some of my computers.</dt>
-<dd>Try disabling the advanced USB interfaces in the config console.  This
-will limit you to 6KRO, but it should improve compatibility with quirky
-hosts.</dd>
-<dt>If this software is supposed to be so “easy”, why do I have to use Flip or Teensy Loader?</dt>
-<dd>It has to do with the bootloader software that’s already part of the
-supported boards.  The short answer is that a goal of the project is to be
-easy to setup and use with good compatibility, and that means using the
-“OEM” software loading methods.</dd>
-<dt>Can you add a swap Caps/Ctrl (or Backspace/Backslash, Esc/grave, etc.) feature?</dt>
-<dd>Those are great features on a normal keyboard.  However, this firmware is
-used on programmable keyboards.  The way to implement those features is
-with alternate layers.  You have 10 to work with.</dd>
-<dt>Why am I getting unwanted extra characters while typing in Linux when pressing the NON_US_HASHMARK_AND_TILDE and/or the BACKSLASH_AND_PIPE key?</dt>
-<dd>The bit-packed vector that is used for NKRO support is not well supported
-in linux when using those keys.  I think there may be some kind of
-translation layer for internationalization that is causing keys to be
-virtually lifted and redetected even though the user holds the key steady
-IRL.  To work around this you can use the “Basic keyboard” config option
-to disable NKRO and use 6KRO instead.</dd>
-<dt>The F13-F24 keys don’t work.</dt>
-<dd>The NKRO field is not wide enough to fit those nonstandard scancodes.  AVR
-microcontrollers are extremely limited in memory and this was a compromise
-that had to be made.  To use those scancodes, disable NKRO.</dd>
-<dt>The BOOT key doesn’t work.</dt>
-<dd>This usually means that the firmware doesn’t have the correct address of
-the bootloader.  Make sure the “Teensy” config item is set correctly for
-your board.  On boards that use the Astar microcontroller, this is a known
-problem.  The custom bootloader on the Astar requires a special value in
-memory that is not reserved by the EasyAVR firmware.</dd>
-</dl>
+</div>
 </div>
 
 
@@ -232,10 +216,10 @@ memory that is not reserved by the EasyAVR firmware.</dd>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="devguide.html" class="btn btn-neutral float-right" title="Developer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="console.html" class="btn btn-neutral float-right" title="The Config Console" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="newboard.html" class="btn btn-neutral" title="Supporting Custom Boards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="leds.html" class="btn btn-neutral" title="LED Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
