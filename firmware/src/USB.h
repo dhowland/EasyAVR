@@ -27,48 +27,40 @@
 
 #include "scheduler.h"
 
+#define KEYBOARD_FLAG (0x01)
+#define MEDIA_FLAG (0x02)
+#define NKRO_FLAG (0x04)
+#define MOUSE_FLAG (0x08)
+
 #define PRODUCT_STR_LEN (36)
 #define PRODUCT_STRING  L"EasyAVR Multimedia Keyboard v#.##.##"
 
-/* Must be 6 for boot-compliant keyboard,
-   Must be 16 for NKRO */
-#define KEYBOARD_ARRAY_LENGTH (16)
-#define MAX_NKRO_CODE (0x7F)
+#define NKRO_ARRAY_LENGTH (13)
+#define NKRO_FIELD_BITS (0x68)
+#define MAX_NKRO_CODE (0x67)
 
 #define USB_KEYBOARD_UPDATE_RATE_MS (1)
 #define USB_MOUSE_UPDATE_RATE_MS (5)
 #define USB_MEDIA_UPDATE_RATE_MS (8)
-#define USB_POWER_UPDATE_RATE_MS (8)
 
-/** Endpoint address of the Keyboard HID reporting IN endpoint. */
 #define KEYBOARD_INTERFACE (0x00)
 #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 1)
-#define HID_EPSIZE_KEYBOARD (KEYBOARD_ARRAY_LENGTH + 2)
-#define HID_EPSIZE_BOOT_KEYBOARD (0x08)
+#define HID_EPSIZE_KEYBOARD (0x08)
 
-/* Media keys */
 #define MEDIA_INTERFACE (0x01)
 #define MEDIA_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
-#define HID_EPSIZE_MEDIA (0x02)
+#define HID_EPSIZE_MEDIA (0x03)
 
-/* Power keys */
-#define POWER_INTERFACE (0x02)
-#define POWER_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
-#define HID_EPSIZE_POWER (0x01)
+#define NKRO_INTERFACE (0x02)
+#define NKRO_IN_EPADDR            (ENDPOINT_DIR_IN | 3)
+#define HID_EPSIZE_NKRO (NKRO_ARRAY_LENGTH)
 
-/** Endpoint address of the Mouse HID reporting IN endpoint. */
 #define MOUSE_INTERFACE (0x03)
 #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
 #define HID_EPSIZE_MOUSE (0x03)
 
-#define TOTAL_INTERFACES_ALL (0x04)
-#define TOTAL_INTERFACES_BOOT (0x01)
-#define TOTAL_INTERFACES_NOMOUSE (0x03)
+#define TOTAL_INTERFACES (0x04)
 
-/** Type define for the device configuration descriptor structure. This must be defined in the
-	*  application code, as the configuration descriptor contains several sub-descriptors which
-	*  vary between devices, and which describe the device's usage to the host.
-	*/
 typedef struct
 {
 	USB_Descriptor_Configuration_Header_t Config;
@@ -83,9 +75,9 @@ typedef struct
 	USB_HID_Descriptor_HID_t              HID2_MediaHID;
 	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
 
-	// Power HID Interface
-	USB_Descriptor_Interface_t            HID3_PowerInterface;
-	USB_HID_Descriptor_HID_t              HID3_PowerHID;
+	// NKRO HID Interface
+	USB_Descriptor_Interface_t            HID3_NkroInterface;
+	USB_HID_Descriptor_HID_t              HID3_NkroHID;
 	USB_Descriptor_Endpoint_t             HID3_ReportINEndpoint;
 
 	// Mouse HID Interface
@@ -94,44 +86,10 @@ typedef struct
 	USB_Descriptor_Endpoint_t             HID4_ReportINEndpoint;
 } USB_Descriptor_Configuration_t;
 
-#ifndef SIMPLE_DEVICE
 typedef struct
 {
-	USB_Descriptor_Configuration_Header_t Config;
-
-	// Keyboard HID Interface
-	USB_Descriptor_Interface_t            HID1_KeyboardInterface;
-	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
-	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
-} USB_Descriptor_Configuration_boot_t;
-
-typedef struct
-{
-	USB_Descriptor_Configuration_Header_t Config;
-
-	// Keyboard HID Interface
-	USB_Descriptor_Interface_t            HID1_KeyboardInterface;
-	USB_HID_Descriptor_HID_t              HID1_KeyboardHID;
-	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
-
-	// Media HID Interface
-	USB_Descriptor_Interface_t            HID2_MediaInterface;
-	USB_HID_Descriptor_HID_t              HID2_MediaHID;
-	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
-
-	// Power HID Interface
-	USB_Descriptor_Interface_t            HID3_PowerInterface;
-	USB_HID_Descriptor_HID_t              HID3_PowerHID;
-	USB_Descriptor_Endpoint_t             HID3_ReportINEndpoint;
-} USB_Descriptor_Configuration_nomouse_t;
-#endif /* SIMPLE_DEVICE */
-
-typedef struct
-{
-	uint8_t Modifier;
-	uint8_t Reserved;
-	uint8_t KeyCode[KEYBOARD_ARRAY_LENGTH];
-} ATTR_PACKED USB_KeyboardModReport_Data_t;
+	uint8_t KeyCode[NKRO_ARRAY_LENGTH];
+} ATTR_PACKED USB_NkroReport_Data_t;
 		
 typedef struct
 {
@@ -143,8 +101,13 @@ typedef struct
 	uint8_t  Field;
 } ATTR_PACKED USB_PowerReport_Data_t;
 
+extern USB_ClassInfo_HID_Device_t Keyboard_HID_Interface;
+extern USB_ClassInfo_HID_Device_t Mouse_HID_Interface;
+extern USB_ClassInfo_HID_Device_t Media_HID_Interface;
+extern USB_ClassInfo_HID_Device_t Nkro_HID_Interface;
+
 uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
-									const uint8_t wIndex,
+									const uint16_t wIndex,
 									const void** const DescriptorAddress)
 									ATTR_WARN_UNUSED_RESULT ATTR_NON_NULL_PTR_ARG(3);
 
@@ -169,12 +132,7 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
 										  const uint16_t ReportSize);
 
 void init_USB(void);
-#ifdef SIMPLE_DEVICE
-void USB_cycle(void);
-#else /* ndef SIMPLE_DEVICE */
-void USB_cycle_kb(void);
-void USB_cycle_aux(void);
-#endif /* SIMPLE_DEVICE */
+void USB_service(void);
 void USB_wakeup(void);
 
 

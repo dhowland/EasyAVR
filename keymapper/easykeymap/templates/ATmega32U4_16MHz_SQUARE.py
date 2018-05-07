@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_SQUARE.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'SQUARE'
+simple = False
 
 layers_map = 0x00000d39
 actions_map = 0x00000799
@@ -25,5 +26,7 @@ matrix_init_map = 0x0000249c
 matrix_strobe_map = 0x00002460
 matrix_sense_map = 0x00002448
 kmac_key_map = None
-boot_ptr_map = 0x00002bfa
-prod_str_map = 0x00002c40
+boot_ptr_map = 0x00002b93
+prod_str_map = 0x00002bd9
+endpoint_opt_map = 0x00002d6b
+conf_desc_map = 0x00002c29

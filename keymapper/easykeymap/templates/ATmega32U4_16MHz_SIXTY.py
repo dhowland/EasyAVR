@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_SIXTY.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'SIXTY'
+simple = False
 
 layers_map = 0x000007d5
 actions_map = 0x000004e7
@@ -25,5 +26,7 @@ matrix_init_map = 0x00001c9b
 matrix_strobe_map = 0x00001c50
 matrix_sense_map = 0x00001c32
 kmac_key_map = None
-boot_ptr_map = 0x0000248c
-prod_str_map = 0x000024d2
+boot_ptr_map = 0x00002425
+prod_str_map = 0x0000246b
+endpoint_opt_map = 0x000025fd
+conf_desc_map = 0x000024bb

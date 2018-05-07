@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_COSTAR.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'COSTAR'
+simple = False
 
 layers_map = 0x00000d39
 actions_map = 0x00000799
@@ -25,5 +26,7 @@ matrix_init_map = 0x000023b5
 matrix_strobe_map = 0x0000235b
 matrix_sense_map = 0x00002337
 kmac_key_map = None
-boot_ptr_map = 0x00002b12
-prod_str_map = 0x00002b58
+boot_ptr_map = 0x00002aab
+prod_str_map = 0x00002af1
+endpoint_opt_map = 0x00002c83
+conf_desc_map = 0x00002b41

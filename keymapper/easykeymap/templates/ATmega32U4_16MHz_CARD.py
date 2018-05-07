@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_CARD.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'CARD'
+simple = True
 
 layers_map = 0x0000013d
 actions_map = 0x00000101
@@ -27,3 +28,5 @@ matrix_sense_map = 0x000012e8
 kmac_key_map = None
 boot_ptr_map = 0x0000137f
 prod_str_map = 0x00001381
+endpoint_opt_map = 0x000014c2
+conf_desc_map = 0x000013d1

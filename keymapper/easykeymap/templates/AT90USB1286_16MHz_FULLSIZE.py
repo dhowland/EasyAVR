@@ -4,6 +4,7 @@ hex_file_name = 'AT90USB1286_16MHz_FULLSIZE.hex'
 device = 'AT90USB1286'
 speed = '16MHz'
 size = 'FULLSIZE'
+simple = False
 
 layers_map = 0x00000c35
 actions_map = 0x0000070d
@@ -25,5 +26,7 @@ matrix_init_map = 0x0000337c
 matrix_strobe_map = 0x000032f8
 matrix_sense_map = 0x000032cc
 kmac_key_map = None
-boot_ptr_map = 0x00003b7b
-prod_str_map = 0x00003bc1
+boot_ptr_map = 0x00003b14
+prod_str_map = 0x00003b5a
+endpoint_opt_map = 0x00003cec
+conf_desc_map = 0x00003baa

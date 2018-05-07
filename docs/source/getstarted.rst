@@ -17,8 +17,9 @@ every key the hardware supports is shown.  Layout mods are discussed in
 
 You are presented with a view of the keyboard with a default map already 
 assigned to the keys on the first layer (AKA the "default" layer).  In 
-addition to the "Layout" view, there are also tabs for "Macros" and "LEDs".  
-They are discussed in the :doc:`macros` and :doc:`leds` chapters, respectively.
+addition to the "Layout" view, there are also tabs for "Macros", "LEDs", and 
+"USB".  They are discussed in the :doc:`macros`, :doc:`leds`, and :doc:`usb` 
+chapters, respectively.
 
 Your keymap can use up to 10 different layers.  Layers are discussed in the 
 :doc:`functions` chapter.  To open a layer for editing, select it using the 

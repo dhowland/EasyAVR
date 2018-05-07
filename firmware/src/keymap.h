@@ -25,8 +25,8 @@
 
 #include "config_keymap.h"
 
+/* MUST be 6 */
 #define HID_ROLLOVER_SIZE (6)
-#define REAL_NKRO_SIZE (13)
 
 #if defined (BOARD_SIZE_COSTAR) && defined (__AVR_ATmega32U2__)
 #define KEYMAP_MEMORY_SAVE
@@ -55,6 +55,10 @@ typedef enum {
 
 extern uint8_t g_modifier_state;
 extern uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
+extern uint8_t g_modifier_service;
+extern uint8_t g_alphanum_service;
+extern uint8_t g_media_service;
+extern uint8_t g_power_service;
 extern uint8_t g_mousebutton_state;
 extern int8_t g_mouse_req_X;
 extern int8_t g_mouse_req_Y;
@@ -73,6 +77,10 @@ void delete_key(const uint8_t code);
 void toggle_key(const uint8_t code);
 void enqueue_fn(const uint8_t code);
 void delete_fn(const uint8_t code);
+void set_media(const uint8_t code);
+void unset_media(const uint8_t code);
+void set_power(const uint8_t code);
+void unset_power(const uint8_t code);
 void init_keymap(void);
 void doubletap_down(const uint8_t row, const uint8_t col, const int16_t idle_time);
 void doubletap_up(const uint8_t row, const uint8_t col, const int16_t hold_time, uint8_t * const tap);

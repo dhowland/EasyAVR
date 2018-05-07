@@ -51,17 +51,6 @@
 #define NVM_ID_MATRIX_SETUP_WAIT (15)
 #define NVM_ID_DEBOUNCE_STYLE (16)
 
-#define KB_TYPE_6KRO_ONLY  (0b11)
-#define KB_TYPE_NKRO_NOMOUSE  (0b10)
-#define KB_TYPE_6KRO_PLUS  (0b01)
-#define KB_TYPE_NKRO_PLUS  (0b00)
-#define NKRO_IS_ENABLED   (!(g_boot_keyboard_only_latched & 0b01))
-#define NKRO_IS_DISABLED    (g_boot_keyboard_only_latched & 0b01)
-#define MEDIA_IS_ENABLED    (g_boot_keyboard_only_latched != 0b11)
-#define MEDIA_IS_DISABLED   (g_boot_keyboard_only_latched == 0b11)
-#define MOUSE_IS_ENABLED  (!(g_boot_keyboard_only_latched & 0b10))
-#define MOUSE_IS_DISABLED   (g_boot_keyboard_only_latched & 0b10)
-
 typedef struct {
 	const void * var;
 	const uint8_t index;
@@ -89,8 +78,6 @@ extern int16_t g_hold_key_ms;
 extern uint8_t g_repeat_ms;
 extern uint8_t g_matrix_setup_wait;
 extern uint8_t g_debounce_style;
-
-extern uint8_t g_boot_keyboard_only_latched;
 
 void init_nvm(void);
 void nvm_init_eeprom(void);

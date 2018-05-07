@@ -41,6 +41,7 @@ uint8_t g_bl_dimmer;
 uint8_t g_bl_tick_counter;
 uint8_t g_bl_breathe_direction;
 uint8_t g_bl_state;
+uint8_t g_bl_usb_on;
 uint8_t g_pwm_bl_counter;
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
 
@@ -117,24 +118,36 @@ void set_led_status(const uint8_t status)
 			led_host_off(LED_USB_ERROR);
 			led_host_off(LED_USB_SUSPEND);
 			led_host_off(LED_USB_NORMAL);
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			g_bl_usb_on = 0;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
 			break;
 		case LED_STATUS_SUSPEND:
 			led_host_off(LED_USB_INIT);
 			led_host_off(LED_USB_ERROR);
 			led_host_on(LED_USB_SUSPEND);
 			led_host_off(LED_USB_NORMAL);
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			g_bl_usb_on = 0;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
 			break;
 		case LED_STATUS_ERROR:
 			led_host_off(LED_USB_INIT);
 			led_host_on(LED_USB_ERROR);
 			led_host_off(LED_USB_SUSPEND);
 			led_host_off(LED_USB_NORMAL);
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			g_bl_usb_on = 0;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
 			break;
 		default:
 			led_host_off(LED_USB_INIT);
 			led_host_off(LED_USB_ERROR);
 			led_host_off(LED_USB_SUSPEND);
 			led_host_on(LED_USB_NORMAL);
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			g_bl_usb_on = 1;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
 			break;
 	}
 }
@@ -385,7 +398,7 @@ void set_backlighting(void)
 	{
 		if (pgm_read_byte(&BACKLIGHT_MASK[i]))
 		{
-			setting = g_bl_state && pgm_read_byte(&BLMODE_LIST[g_bl_enable_index][i]);
+			setting = g_bl_usb_on && g_bl_state && pgm_read_byte(&BLMODE_LIST[g_bl_enable_index][i]);
 			led_output(i, setting);
 		}
 	}

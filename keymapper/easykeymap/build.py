@@ -21,6 +21,7 @@
 
 from array import array
 
+from .descriptors import confdesc_size, update_descriptor
 from .macroparse import parse, MacroException
 from .pkgdata import get_pkg_path
 from .scancodes import scancodes
@@ -65,14 +66,55 @@ num_led_layers = 5
 
 def check_for_boot(user_data):
     """Returns True if the layout in `user_data` contains a key bound to SCANCODE_BOOT
-    otherwsie returns False.
+    or if the hardware has a boot key/button, otherwise returns False.
     """
+    if user_data.config.hw_boot_key:
+        return True
     for layer in user_data.keymap:
         for row in layer:
             for key in row:
                 if key.code == 'SCANCODE_BOOT':
                     return True
     return False
+
+
+def search_scancodes(user_data, low, high):
+    """Returns True if the layout in `user_data` contains a key bound to a scancode in
+    the range (low, high) inclusive, otherwise returns False.
+    """
+    for layer in user_data.keymap:
+        for row in layer:
+            for key in row:
+                value = scancodes[key.code].value
+                if (value >= low) and (value <= high):
+                    return True
+    return False
+
+
+def unexpected_mouse(user_data):
+    """Returns True if the layout in `user_data` contains a key bound to a mouse
+    function while the mouse endpoint is disabled, otherwise returns False.
+    """
+    if user_data.usb_opts.mouse is True:
+        return False
+    low = scancodes['SCANCODE_MOUSE1'].value
+    high = scancodes['SCANCODE_MOUSEYD'].value
+    return search_scancodes(user_data, low, high)
+
+
+def unexpected_media(user_data):
+    """Returns True if the layout in `user_data` contains a key bound to a media or
+    power function while the media endpoint is disabled, otherwise returns False.
+    """
+    if user_data.usb_opts.media is True:
+        return False
+    low = scancodes['SCANCODE_NEXT_TRACK'].value
+    high = scancodes['SCANCODE_FAVES'].value
+    if search_scancodes(user_data, low, high):
+        return True
+    low = scancodes['SCANCODE_POWER'].value
+    high = scancodes['SCANCODE_WAKE'].value
+    return search_scancodes(user_data, low, high)
 
 
 def build_firmware(user_data, path, external_data={}):
@@ -102,6 +144,7 @@ def overlay(user_data, hex_data, external_data={}):
     overlay_leds(user_data, hex_data)
     overlay_backlight(user_data, hex_data)
     overlay_led_layers(user_data, hex_data)
+    overlay_descriptor(user_data, hex_data)
     overlay_misc(user_data, hex_data)
 
 
@@ -283,6 +326,20 @@ def overlay_led_layers(user_data, hex_data):
         else:
             bytes[offset] = 0
         offset += 1
+
+
+def overlay_descriptor(user_data, hex_data):
+    config = user_data.config
+    start, bytes = hex_data[0]
+    # overwrite data for USB endpoint enables
+    offset = config.firmware.endpoint_opt_map - start
+    opts = sum([(int(x) * (2**i)) for i, x in enumerate(user_data.usb_opts)])
+    bytes[offset] = opts
+    # overwrite data for USB HID config descriptor
+    offset = config.firmware.conf_desc_map - start
+    input = bytes[offset:(offset+confdesc_size)]
+    output = update_descriptor(input, user_data.usb_opts)
+    bytes[offset:(offset+confdesc_size)] = array('B', output)[:]
 
 
 def overlay_misc(user_data, hex_data):

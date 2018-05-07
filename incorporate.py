@@ -89,6 +89,7 @@ def write_symbol(outfile, symtable, symbol):
 
 for hw in hardware_table:
 
+    simple_device = (hw[0] == 'ATmega16U2') or (hw[2] == 'BOARD_SIZE_CARD')
     hardware_specs = (hw[0], hw[1].replace('000000UL','') + 'MHz', hw[2].replace('BOARD_SIZE_',''))
     hardware_name = "%s_%s_%s.hex" % hardware_specs
     print('\n'+hardware_name)
@@ -162,7 +163,9 @@ for hw in hardware_table:
         outfile.write(hardware_specs[1])
         outfile.write("'\nsize = '")
         outfile.write(hardware_specs[2])
-        outfile.write("'\n\nlayers_map = ")
+        outfile.write("'\nsimple = ")
+        outfile.write(str(simple_device))
+        outfile.write("\n\nlayers_map = ")
         write_symbol(outfile, symbols, 'LAYERS')
         outfile.write("\nactions_map = ")
         write_symbol(outfile, symbols, 'ACTIONS')
@@ -206,4 +209,8 @@ for hw in hardware_table:
         write_symbol(outfile, symbols, 'BOOTLOADER')
         outfile.write("\nprod_str_map = ")
         write_symbol(outfile, symbols, 'ProductString')
+        outfile.write("\nendpoint_opt_map = ")
+        write_symbol(outfile, symbols, 'EndpointOptions')
+        outfile.write("\nconf_desc_map = ")
+        write_symbol(outfile, symbols, 'ConfigurationDescriptor')
         outfile.write("\n")

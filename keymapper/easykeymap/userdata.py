@@ -26,9 +26,8 @@ import json
 from .build import NUM_LAYERS, NUM_MACROS, NULL_SYMBOL, led_modes, led_assignments, num_led_layers
 
 
-SAVE_VERSION = 20
-
 Map = namedtuple('Map', ['code', 'mode', 'tap', 'wmods'])
+Opts = namedtuple('Opts', ['keyboard', 'media', 'nkro', 'mouse'])
 
 
 class SaveFileException(Exception):
@@ -53,12 +52,14 @@ class UserData():
         self.led_modes = None
         self.led_funcs = None
         self.led_layers = None
+        self.usb_opts = None
         self.subscribers = {
             'keymap': [],
             'macros': [],
             'led_modes': [],
             'led_funcs': [],
             'led_layers': [],
+            'usb_opts': [],
         }
 
     def new(self, unique_id, layout_mod):
@@ -75,6 +76,10 @@ class UserData():
         self.led_modes = [0] * self.config.num_ind
         self.led_funcs = [(255, 0)] * len(led_assignments)
         self.led_layers = [0] * num_led_layers
+        if self.config.firmware.simple:
+            self.usb_opts = Opts(True, True, False, False)
+        else:
+            self.usb_opts = Opts(True, True, True, True)
         self._default_map()
         return self
 
@@ -107,19 +112,30 @@ class UserData():
     def open(self, path):
         """Load keymap data from a JSON file located at `path`."""
         with open(path, 'r') as fdin:
-            try:
-                data = json.load(fdin)
-                self.unique_id = self.check_unique_id(data['unique_id'])
-                self.config = self.configurations[self.unique_id]
-                self.layout_mod = self.check_layout_mod(data['layout_mod'])
-                self.keymap = self.check_keymap(data['keymap'])
-                self.macros = self.check_macros(data['macros'])
-                self.led_modes = self.check_led_modes(data['led_modes'])
-                self.led_funcs = self.check_led_funcs(data['led_funcs'])
-                self.led_layers = self.check_led_layers(data['led_layers'])
-                self.path = path
-            except KeyError as err:
-                raise SaveFileException("Invalid save file: missing property " + err.args[0])
+            data = json.load(fdin)
+        # get unique_id and layout_mod, which are absolutely required
+        try:
+            self.unique_id = self.check_unique_id(data['unique_id'])
+            self.layout_mod = self.check_layout_mod(data['layout_mod'])
+        except KeyError as err:
+            raise SaveFileException("Invalid save file: missing property " + err.args[0])
+        # set default settings for everything
+        self.new(self.unique_id, self.layout_mod)
+        # replace default settings with data from the save file
+        if 'keymap' in data:
+            self.keymap = self.check_keymap(data['keymap'])
+        if 'macros' in data:
+            self.macros = self.check_macros(data['macros'])
+        if 'led_modes' in data:
+            self.led_modes = self.check_led_modes(data['led_modes'])
+        if 'led_funcs' in data:
+            self.led_funcs = self.check_led_funcs(data['led_funcs'])
+        if 'led_layers' in data:
+            self.led_layers = self.check_led_layers(data['led_layers'])
+        if 'usb_opts' in data:
+            self.usb_opts = self.check_usb_opts(data['usb_opts'])
+        # successful load, store the path
+        self.path = path
 
     def save(self, path=None):
         """Save keymap data to a JSON file.  If `path` is specified, it overrides the
@@ -138,6 +154,7 @@ class UserData():
             'led_modes': self.led_modes,
             'led_funcs': self.led_funcs,
             'led_layers': self.led_layers,
+            'usb_opts': self.usb_opts,
         }
         with open(self.path, 'w') as fdout:
             json.dump(data, fdout)
@@ -170,7 +187,7 @@ class UserData():
 
     def check_layout_mod(self, data):
         """make sure layout_mod is known if set"""
-        if (data is not None) and (data not in self.config.alt_layouts):
+        if (data is not None) and (data not in self.configurations[self.unique_id].alt_layouts):
             raise SaveFileException("Invalid save file: unknown layout_mod " + data)
         return data
 
@@ -262,6 +279,13 @@ class UserData():
             return data
         else:
             raise SaveFileException("Invalid save file: incorrect led_layers")
+
+    def check_usb_opts(self, data):
+        """check length and convert from list to tuple"""
+        if isinstance(data, list) and (len(data) == 4):
+            return Opts._make([bool(x) for x in data])
+        else:
+            raise SaveFileException("Invalid save file: incorrect usb_opts")
 
     def __str__(self):
         return pformat(self.__dict__)

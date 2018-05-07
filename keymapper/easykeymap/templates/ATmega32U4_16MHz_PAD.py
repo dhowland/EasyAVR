@@ -4,6 +4,7 @@ hex_file_name = 'ATmega32U4_16MHz_PAD.hex'
 device = 'ATmega32U4'
 speed = '16MHz'
 size = 'PAD'
+simple = False
 
 layers_map = 0x000004c9
 actions_map = 0x00000361
@@ -25,5 +26,7 @@ matrix_init_map = 0x000017ca
 matrix_strobe_map = 0x000017ac
 matrix_sense_map = 0x000017a0
 kmac_key_map = None
-boot_ptr_map = 0x00001fbb
-prod_str_map = 0x00002001
+boot_ptr_map = 0x00001f54
+prod_str_map = 0x00001f9a
+endpoint_opt_map = 0x0000212c
+conf_desc_map = 0x00001fea

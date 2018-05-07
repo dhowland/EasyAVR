@@ -29,7 +29,7 @@ import traceback
 import wx
 import wx.adv
 
-from ..build import check_for_boot, build_firmware
+from ..build import check_for_boot, unexpected_media, unexpected_mouse, build_firmware
 from ..legacy import load_legacy, LegacySaveFileException
 from ..macroparse import MacroException
 from ..pkgdata import get_pkg_path, import_boards
@@ -42,6 +42,7 @@ from .newboardwizard import nbwizard
 from .newdialog import NewDialog
 from .programdialog import ProgramDialog
 from .scale import MIN_STATUS_WIDTH
+from .usbpanel import UsbPanel
 
 
 NUM_STATUS_FIELDS = 4
@@ -116,7 +117,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnPaste, paste_item)
         # Build menu
         build_menu = wx.Menu()
-        build_item = build_menu.Append(wx.ID_ANY, "&Build...\tF7",
+        build_item = build_menu.Append(wx.ID_ANY, "&Build\tF7",
                                        "Build a loadable file using the current keymap")
         self.disabled_items.append(build_item)
         self.Bind(wx.EVT_MENU, self.OnBuild, build_item)
@@ -170,6 +171,9 @@ class MainFrame(wx.Frame):
 
         self.led_panel = LedPanel(self.main_nb)
         self.main_nb.AddPage(self.led_panel, "LEDs")
+
+        self.usb_panel = UsbPanel(self.main_nb)
+        self.main_nb.AddPage(self.usb_panel, "USB")
 
         self.SetSizerAndFit(self.main_sizer)
         self.Layout()
@@ -328,6 +332,7 @@ class MainFrame(wx.Frame):
         self.layout_panel.load_layout(self.user_data)
         self.macro_panel.load_macros(self.user_data)
         self.led_panel.load_leds(self.user_data)
+        self.usb_panel.load_opts(self.user_data)
         self.Thaw()
 
         self.main_nb.Fit()
@@ -370,11 +375,27 @@ class MainFrame(wx.Frame):
         self.do_build(reprogram=True)
 
     def boot_check(self):
-        if (not check_for_boot(self.user_data)) and (self.user_data.config.hw_boot_key is False):
+        if not check_for_boot(self.user_data):
             if (wx.MessageBox("You do not have a key bound to BOOT mode.  "
                               "Without it you can't easily reprogram your keyboard."
                               "  Are you sure this is what you want?",
                               caption="BOOT key not found",
+                              style=wx.ICON_QUESTION|wx.YES_NO|wx.CENTRE,
+                              parent=self) == wx.NO):
+                return False
+        if unexpected_media(self.user_data):
+            if (wx.MessageBox("You have a key bound to a MEDIA or POWER function, but you don't "
+                              "have the Media/Power USB endpoint enabled."
+                              "  Are you sure this is what you want?",
+                              caption="Useless mapping found",
+                              style=wx.ICON_QUESTION|wx.YES_NO|wx.CENTRE,
+                              parent=self) == wx.NO):
+                return False
+        if unexpected_mouse(self.user_data):
+            if (wx.MessageBox("You have a key bound to a MOUSE function, but you don't "
+                              "have the Mouse USB endpoint enabled."
+                              "  Are you sure this is what you want?",
+                              caption="Useless mapping found",
                               style=wx.ICON_QUESTION|wx.YES_NO|wx.CENTRE,
                               parent=self) == wx.NO):
                 return False

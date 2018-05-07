@@ -4,6 +4,7 @@ hex_file_name = 'AT90USB1286_16MHz_COSTAR.hex'
 device = 'AT90USB1286'
 speed = '16MHz'
 size = 'COSTAR'
+simple = False
 
 layers_map = 0x00000d25
 actions_map = 0x00000785
@@ -25,5 +26,7 @@ matrix_init_map = 0x000034c4
 matrix_strobe_map = 0x00003458
 matrix_sense_map = 0x00003434
 kmac_key_map = None
-boot_ptr_map = 0x00003cc3
-prod_str_map = 0x00003d09
+boot_ptr_map = 0x00003c5c
+prod_str_map = 0x00003ca2
+endpoint_opt_map = 0x00003e34
+conf_desc_map = 0x00003cf2

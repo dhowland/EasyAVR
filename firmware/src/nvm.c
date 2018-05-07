@@ -47,8 +47,6 @@ uint8_t g_repeat_ms;
 uint8_t g_matrix_setup_wait;
 uint8_t g_debounce_style;
 
-uint8_t g_boot_keyboard_only_latched;
-
 #ifndef SIMPLE_DEVICE
 
 uint8_t EEMEM NVM_EEPROM[EEPROM_SIZE];
@@ -100,8 +98,6 @@ void init_nvm(void)
 		report_event(EVENT_CODE_NVM_RELOAD_DEFAULTS, g_eeprom_rev, MODE_REOCCUR);
 		nvm_init_eeprom();
 	}
-	
-	g_boot_keyboard_only_latched = g_boot_keyboard_only;
 }
 
 void nvm_init_eeprom(void)
