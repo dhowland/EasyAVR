@@ -28,5 +28,5 @@ matrix_sense_map = 0x00002448
 kmac_key_map = None
 boot_ptr_map = 0x00002b93
 prod_str_map = 0x00002bd9
-endpoint_opt_map = 0x00002d6b
+endpoint_opt_map = 0x00002d7b
 conf_desc_map = 0x00002c29
