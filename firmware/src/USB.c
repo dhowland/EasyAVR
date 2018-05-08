@@ -42,6 +42,15 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM NkroReport[] =
 	HID_RI_USAGE_PAGE(8, 0x01),
 	HID_RI_USAGE(8, 0x06),
 	HID_RI_COLLECTION(8, 0x01),
+		HID_RI_USAGE_PAGE(8, 0x07),
+		HID_RI_USAGE_MINIMUM(8, 0xE0),
+		HID_RI_USAGE_MAXIMUM(8, 0xE7),
+		HID_RI_LOGICAL_MINIMUM(8, 0x00),
+		HID_RI_LOGICAL_MAXIMUM(8, 0x01),
+		HID_RI_REPORT_SIZE(8, 0x01),
+		HID_RI_REPORT_COUNT(8, 0x08),
+		HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+	
 		HID_RI_LOGICAL_MINIMUM(8, 0x00),
 		HID_RI_LOGICAL_MAXIMUM(8, 0x01),
 		HID_RI_USAGE_PAGE(8, 0x07),
@@ -550,13 +559,13 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 			nkro_active <<= 1;
 			nkro_active += (!g_boot_keyboard_only && HIDInterfaceInfo->State.UsingReportProtocol);
 		}
-		USB_KeyboardReport_Data_t* const KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
-		get_modifier_report(&KeyboardReport->Modifier);
 		*ReportSize = sizeof(USB_KeyboardReport_Data_t);
 		if ((nkro_active & 0x01) == 0)
 		{
+			USB_KeyboardReport_Data_t* const KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
+			get_modifier_report(&KeyboardReport->Modifier);
 			get_keyboard_report(KeyboardReport->KeyCode);
-			if (g_alphanum_service)
+			if (g_alphanum_service | g_modifier_service)
 			{
 				g_alphanum_service = 0;
 				g_modifier_service = 0;
@@ -570,21 +579,19 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 			g_modifier_service = 0;
 			return true;
 		}
-		if (g_modifier_service)
-		{
-			g_modifier_service = 0;
-			return true;
-		}
 	}
 	else if (HIDInterfaceInfo->Config.InterfaceNumber == Nkro_HID_Interface.Config.InterfaceNumber)
 	{
 		*ReportSize = sizeof(USB_NkroReport_Data_t);
 		if ((nkro_active & 0x01) != 0)
 		{
-			get_nkro_report(((USB_NkroReport_Data_t*)ReportData)->KeyCode);
-			if (g_alphanum_service)
+			USB_NkroReport_Data_t* const NkroReport = (USB_NkroReport_Data_t*)ReportData;
+			get_modifier_report(&NkroReport->Modifier);
+			get_nkro_report(NkroReport->KeyCode);
+			if (g_alphanum_service | g_modifier_service)
 			{
 				g_alphanum_service = 0;
+				g_modifier_service = 0;
 				return true;
 			}
 		}
@@ -592,6 +599,7 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 		{
 			/* nkro_active has just changed over, send a blank report to clear things out */
 			g_alphanum_service = 0;
+			g_modifier_service = 0;
 			return true;
 		}
 	}

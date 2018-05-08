@@ -126,5 +126,5 @@ Parsing MAP file
 Checking RAM usage
 Used 1151 bytes of 2560 (45.0 % full)
 Checking Flash usage
-Used 26902 bytes of 28672 (93.8 % full)
+Used 26904 bytes of 28672 (93.8 % full)
 Updating config source
