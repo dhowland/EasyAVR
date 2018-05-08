@@ -53,7 +53,7 @@
 
 #define NKRO_INTERFACE (0x02)
 #define NKRO_IN_EPADDR            (ENDPOINT_DIR_IN | 3)
-#define HID_EPSIZE_NKRO (NKRO_ARRAY_LENGTH)
+#define HID_EPSIZE_NKRO (NKRO_ARRAY_LENGTH + 1)
 
 #define MOUSE_INTERFACE (0x03)
 #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 4)
@@ -88,6 +88,7 @@ typedef struct
 
 typedef struct
 {
+	uint8_t Modifier;
 	uint8_t KeyCode[NKRO_ARRAY_LENGTH];
 } ATTR_PACKED USB_NkroReport_Data_t;
 		
