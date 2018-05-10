@@ -35,21 +35,22 @@ volatile uint8_t g_reset_requested;
 console_state_t g_console_state;
 
 #ifdef ENABLE_DEBUG_CONSOLE
-const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) Debug menu\n4) Reset\n9) Quit\n> ";
+const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n4) Debug menu\n5) Reset\n9) Quit\n> ";
 const char PROGMEM g_debug_menu[] = "\nDebug Menu:\n1) Print events\n2) Clear events\n3) Examine memory\n"
 									"4) Print/clear clock-ins\n9) Back\n> ";
 #else /* ENABLE_DEBUG_CONSOLE */
-const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n4) Reset\n9) Quit\n> ";
+const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n5) Reset\n9) Quit\n> ";
 #endif /* ENABLE_DEBUG_CONSOLE */
 const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\n2) Toggle win lock on scroll lock\n"
-									 "3) Set default layer\n4) Toggle keyboard features\n"
-									 "5) Toggle unlink num lock\n6) Set default dimmer level\n"
-									 "7) Set default backlight enable\n8) Toggle debounce style\n9) Back\n> ";
+                                     "3) Set default layer\n4) Toggle keyboard features\n"
+                                     "5) Toggle unlink num lock\n6) Toggle debounce style\n9) Back\n> ";
 const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
-									 "3) Set max delay time for double tap\n4) Set base mouse movement\n"
-									 "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
-									 "7) Set repeat period\n8) Set matrix setup wait\n9) Back\n> ";
-const char PROGMEM g_not_rec[] = "Input not recognized.\n";
+                                     "3) Set max delay time for double tap\n4) Set base mouse movement\n"
+                                     "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
+                                     "7) Set repeat period\n8) Set matrix setup wait\n9) Back\n> ";
+const char PROGMEM g_led_menu[] = "\nLED Menu:\n1) Set default dimmer level\n2) Set default backlight enable\n"
+                                  "3) Set default backlight mode\n9) Back\n> ";
+const char PROGMEM g_not_rec[] = "Invalid input.\n";
 const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys when num lock is enabled.\n";
 const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
 const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll lock is enabled.\n";
@@ -75,6 +76,7 @@ const char PROGMEM g_mouse_mult_prompt[] = "Enter new mouse movement multiplier 
 const char PROGMEM g_hold_prompt[] = "Enter new hold time in ms (1-999)> ";
 const char PROGMEM g_repeat_prompt[] = "Enter new repeat time in ms (1-99)> ";
 const char PROGMEM g_setup_prompt[] = "Enter new matrix setup wait in cycles (1-255)> ";
+const char PROGMEM g_defmode_prompt[] = "Enter new default backlight mode (1-4)> ";
 const char PROGMEM g_defbl_prompt[] = "Enter new default backlight enable (1-" STR_MAX_BACKLIGHT_ENABLES ")> ";
 const char PROGMEM g_defdim_prompt[] = "Enter new default dimmer level (1-16)> ";
 const char PROGMEM g_out_of_range[] = "Out of range.\n";
@@ -117,7 +119,7 @@ void console_main(void)
 			{
 				g_console_state = CONSOLE_IDLE;
 			}
-			else if (code == 4)
+			else if (code == 5)
 			{
 				g_reset_requested = RESET_REQUESTED;
 			}
@@ -129,8 +131,12 @@ void console_main(void)
 			{
 				g_console_state = CONSOLE_MENU_TIMING;
 			}
-#ifdef ENABLE_DEBUG_CONSOLE
 			else if (code == 3)
+			{
+				g_console_state = CONSOLE_MENU_LED;
+			}
+#ifdef ENABLE_DEBUG_CONSOLE
+			else if (code == 4)
 			{
 				g_console_state = CONSOLE_MENU_DEBUG;
 			}
@@ -199,26 +205,6 @@ void console_main(void)
 					queue_autotext(g_vnumlock_no);
 			}
 			else if (code == 6)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_dimmer_level, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_defdim_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEFAULTDIMMER;
-			}
-			else if (code == 7)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_backlight_mode+1, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_defbl_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEAFAULTBACKLIGHT;
-			}
-			else if (code == 8)
 			{
 				g_debounce_style ^= 1;
 				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
@@ -331,6 +317,53 @@ void console_main(void)
 				queue_autotext(g_setup_prompt);
 				begin_read();
 				g_console_state = CONSOLE_SETUP;
+			}
+			break;
+		case CONSOLE_MENU_LED:
+			queue_autotext(g_led_menu);
+			begin_read();
+			g_console_state = CONSOLE_PROCESS_LED;
+			break;
+		case CONSOLE_PROCESS_LED:
+			g_console_state = CONSOLE_MENU_LED;
+			code = sc_to_int(g_read_buffer[0]);
+			if (code == 9)
+			{
+				g_console_state = CONSOLE_MENU_MAIN;
+			}
+			else if (code == 1)
+			{
+				queue_autotext(g_set_print);
+				dec_to_string(g_init_dimmer_level, word_print);
+				word_print[2] = '\n';
+				queue_ram_autotext(word_print, 3);
+				queue_autotext(g_defdim_prompt);
+				begin_read();
+				g_console_state = CONSOLE_DEFAULTDIMMER;
+			}
+			else if (code == 2)
+			{
+				queue_autotext(g_set_print);
+				dec_to_string(g_init_backlight_enable+1, word_print);
+				word_print[2] = '\n';
+				queue_ram_autotext(word_print, 3);
+				queue_autotext(g_defbl_prompt);
+				begin_read();
+				g_console_state = CONSOLE_DEFAULTBACKLIGHT;
+			}
+			else if (code == 3)
+			{
+				queue_autotext(g_set_print);
+				dec_to_string(g_init_backlight_mode+1, word_print);
+				word_print[2] = '\n';
+				queue_ram_autotext(word_print, 3);
+				queue_autotext(g_defmode_prompt);
+				begin_read();
+				g_console_state = CONSOLE_DEFAULTBLMODE;
+			}
+			else
+			{
+				queue_autotext(g_not_rec);
 			}
 			break;
 #ifdef ENABLE_DEBUG_CONSOLE
@@ -617,11 +650,29 @@ void console_main(void)
 			{
 				queue_autotext(g_out_of_range);
 			}
-			g_console_state = CONSOLE_MENU_CONFIG;
+			g_console_state = CONSOLE_MENU_LED;
 			break;
-		case CONSOLE_DEAFAULTBACKLIGHT:
+		case CONSOLE_DEFAULTBACKLIGHT:
 			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((word <= MAX_BACKLIGHT_ENABLES) && (word > 0))
+			{
+				i = (int8_t)(word & 0x00FF);
+				g_init_backlight_enable = i - 1;
+				nvm_update_param(NVM_ID_INIT_BACKLIGHT_ENABLE);
+				queue_autotext(g_set_print);
+				dec_to_string(g_init_backlight_enable+1, word_print);
+				word_print[2] = '\n';
+				queue_ram_autotext(word_print, 3);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_LED;
+			break;
+		case CONSOLE_DEFAULTBLMODE:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((word <= NUMBER_OF_BACKLIGHT_MODES) && (word > 0))
 			{
 				i = (int8_t)(word & 0x00FF);
 				g_init_backlight_mode = i - 1;
@@ -635,7 +686,7 @@ void console_main(void)
 			{
 				queue_autotext(g_out_of_range);
 			}
-			g_console_state = CONSOLE_MENU_CONFIG;
+			g_console_state = CONSOLE_MENU_LED;
 			break;
 		default:
 			g_console_state = CONSOLE_IDLE;

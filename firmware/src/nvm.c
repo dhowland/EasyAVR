@@ -37,7 +37,7 @@ uint8_t g_init_dimmer_level;
 uint8_t g_boot_keyboard_only;
 uint8_t g_debounce_ms;
 uint8_t g_virtual_numlock;
-uint8_t g_init_backlight_mode;
+uint8_t g_init_backlight_enable;
 int16_t g_max_tap_ms;
 int16_t g_doubletap_delay_ms;
 uint8_t g_mouse_min_delta;
@@ -46,6 +46,7 @@ int16_t g_hold_key_ms;
 uint8_t g_repeat_ms;
 uint8_t g_matrix_setup_wait;
 uint8_t g_debounce_style;
+uint8_t g_init_backlight_mode;
 
 #ifndef SIMPLE_DEVICE
 
@@ -60,7 +61,7 @@ const nvm_map_t PROGMEM NVM_MAP[NUMBER_OF_NVM_PARAMETERS] = {
 	{&g_boot_keyboard_only, 5, 1},
 	{&g_debounce_ms, 6, 1},
 	{&g_virtual_numlock, 7, 1},
-	{&g_init_backlight_mode, 8, 1},
+	{&g_init_backlight_enable, 8, 1},
 	{&g_max_tap_ms, 9, 2},
 	{&g_doubletap_delay_ms, 11, 2},
 	{&g_mouse_min_delta, 13, 1},
@@ -69,6 +70,7 @@ const nvm_map_t PROGMEM NVM_MAP[NUMBER_OF_NVM_PARAMETERS] = {
 	{&g_repeat_ms, 17, 1},
 	{&g_matrix_setup_wait, 18, 1},
 	{&g_debounce_style, 19, 1},
+	{&g_init_backlight_mode, 20, 1},
 };
 
 
@@ -114,7 +116,7 @@ void nvm_init_eeprom(void)
 	g_boot_keyboard_only = 0;
 	g_debounce_ms = DEFAULT_DEBOUNCE_MS;
 	g_virtual_numlock = 0;
-	g_init_backlight_mode = 0;
+	g_init_backlight_enable = 0;
 	g_max_tap_ms = DEFAULT_TAP_MAX_MS;
 	g_doubletap_delay_ms = DEFAULT_DOUBLETAP_DELAY_MS;
 	g_mouse_min_delta = DEFAULT_MOUSE_MIN_DELTA;
@@ -123,6 +125,7 @@ void nvm_init_eeprom(void)
 	g_repeat_ms = DEFAULT_REPEAT_MS;
 	g_matrix_setup_wait = DEFAULT_MATRIX_SETUP_WAIT;
 	g_debounce_style = 0;
+	g_init_backlight_mode = 0;
 	
 	update_array[0] = g_eeprom_rev;
 	update_array[1] = g_winlock_on_scrolllock;
@@ -132,7 +135,7 @@ void nvm_init_eeprom(void)
 	update_array[5] = g_boot_keyboard_only;
 	update_array[6] = g_debounce_ms;
 	update_array[7] = g_virtual_numlock;
-	update_array[8] = g_init_backlight_mode;
+	update_array[8] = g_init_backlight_enable;
 	trans.word = g_max_tap_ms;
 	update_array[9] = trans.bytes[0];
 	update_array[10] = trans.bytes[1];
@@ -147,6 +150,7 @@ void nvm_init_eeprom(void)
 	update_array[17] = g_repeat_ms;
 	update_array[18] = g_matrix_setup_wait;
 	update_array[19] = g_debounce_style;
+	update_array[20] = g_init_backlight_mode;
 	
 	eeprom_write_block(update_array, NVM_EEPROM, sizeof(update_array));
 }
@@ -183,7 +187,7 @@ void init_nvm(void)
 	g_boot_keyboard_only = 0;
 	g_debounce_ms = DEFAULT_DEBOUNCE_MS;
 	g_virtual_numlock = 0;
-	g_init_backlight_mode = 0;
+	g_init_backlight_enable = 0;
 	g_max_tap_ms = DEFAULT_TAP_MAX_MS;
 	g_doubletap_delay_ms = DEFAULT_DOUBLETAP_DELAY_MS;
 	g_mouse_min_delta = DEFAULT_MOUSE_MIN_DELTA;
@@ -192,6 +196,7 @@ void init_nvm(void)
 	g_repeat_ms = DEFAULT_REPEAT_MS;
 	g_matrix_setup_wait = DEFAULT_MATRIX_SETUP_WAIT;
 	g_debounce_style = 0;
+	g_init_backlight_mode = 0;
 }
 
 #endif /* SIMPLE_DEVICE */

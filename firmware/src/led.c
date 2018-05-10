@@ -60,7 +60,8 @@ void init_led(void)
 	g_led_dimmer = g_init_dimmer_level;
 #ifdef MAX_NUMBER_OF_BACKLIGHTS
 	g_bl_dimmer = g_init_dimmer_level;
-	g_bl_enable_index = g_init_backlight_mode;
+	g_bl_mode = g_init_backlight_mode;
+	g_bl_enable_index = g_init_backlight_enable;
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
 }
 
