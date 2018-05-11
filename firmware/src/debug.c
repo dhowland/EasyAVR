@@ -41,9 +41,9 @@ const char PROGMEM g_debug_menu[] = "\nDebug Menu:\n1) Print events\n2) Clear ev
 #else /* ENABLE_DEBUG_CONSOLE */
 const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n5) Reset\n9) Quit\n> ";
 #endif /* ENABLE_DEBUG_CONSOLE */
-const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\n2) Toggle win lock on scroll lock\n"
-                                     "3) Set default layer\n4) Toggle keyboard features\n"
-                                     "5) Toggle unlink num lock\n6) Toggle debounce style\n9) Back\n> ";
+const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Set virtual num pad\n2) Set win lock on scroll lock\n"
+                                     "3) Set default layer\n4) Set boot keyboard\n"
+                                     "5) Set unlink num lock\n6) Set alternate debounce style\n9) Back\n> ";
 const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
                                      "3) Set max delay time for double tap\n4) Set base mouse movement\n"
                                      "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
@@ -51,21 +51,14 @@ const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) S
 const char PROGMEM g_led_menu[] = "\nLED Menu:\n1) Set default dimmer level\n2) Set default backlight enable\n"
                                   "3) Set default backlight mode\n9) Back\n> ";
 const char PROGMEM g_not_rec[] = "Invalid input.\n";
-const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys when num lock is enabled.\n";
-const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
-const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll lock is enabled.\n";
-const char PROGMEM g_vwinlock_no[] = "Scroll lock will not affect win lock.\n";
-const char PROGMEM g_bootkeyboard_yes[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard only.\n";
-const char PROGMEM g_bootkeyboard_no[] = "Keyboard will use NKRO interface if it is enabled.\n";
-const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
-const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
-const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm and resetting debounce time.\n";
-const char PROGMEM g_dbstyle_no[] = "Using default \"hair trigger\" debounce algorithm and resetting debounce time.\n";
 const char PROGMEM g_event_print_1[] = "\n[";
 const char PROGMEM g_event_print_2[] = "] C-0x";
 const char PROGMEM g_event_print_3[] = " S-0x";
 const char PROGMEM g_exam_prompt1[] = "Address (hex)> ";
 const char PROGMEM g_exam_prompt2[] = "Bytes (hex)> ";
+const char PROGMEM g_on_print[] = "ON\n";
+const char PROGMEM g_off_print[] = "OFF\n";
+const char PROGMEM g_bool_prompt[] = "Select (0=OFF, 1=ON)> ";
 const char PROGMEM g_deflayer_prompt[] = "Enter new default layer (0-9)> ";
 const char PROGMEM g_set_print[] = "Set:";
 const char PROGMEM g_debounce_prompt[] = "Enter new debounce time in ms (1-99)> ";
@@ -160,21 +153,25 @@ void console_main(void)
 			}
 			else if (code == 1)
 			{
-				g_swap_num_row_on_numlock ^= 1;
-				nvm_update_param(NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK);
+				queue_autotext(g_set_print);
 				if (g_swap_num_row_on_numlock)
-					queue_autotext(g_vnumpad_yes);
+					queue_autotext(g_on_print);
 				else
-					queue_autotext(g_vnumpad_no);
+					queue_autotext(g_off_print);
+				queue_autotext(g_bool_prompt);
+				begin_read();
+				g_console_state = CONSOLE_VNUMPAD;
 			}
 			else if (code == 2)
 			{
-				g_winlock_on_scrolllock ^= 1;
-				nvm_update_param(NVM_ID_WINLOCK_ON_SCROLLLOCK);
+				queue_autotext(g_set_print);
 				if (g_winlock_on_scrolllock)
-					queue_autotext(g_vwinlock_yes);
+					queue_autotext(g_on_print);
 				else
-					queue_autotext(g_vwinlock_no);
+					queue_autotext(g_off_print);
+				queue_autotext(g_bool_prompt);
+				begin_read();
+				g_console_state = CONSOLE_VWINLOCK;
 			}
 			else if (code == 3)
 			{
@@ -188,38 +185,36 @@ void console_main(void)
 			}
 			else if (code == 4)
 			{
-				g_boot_keyboard_only ^= 1;
-				nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+				queue_autotext(g_set_print);
 				if (g_boot_keyboard_only)
-					queue_autotext(g_bootkeyboard_yes);
+					queue_autotext(g_on_print);
 				else
-					queue_autotext(g_bootkeyboard_no);
+					queue_autotext(g_off_print);
+				queue_autotext(g_bool_prompt);
+				begin_read();
+				g_console_state = CONSOLE_BOOTKEYBOARD;
 			}
 			else if (code == 5)
 			{
-				g_virtual_numlock ^= 1;
-				nvm_update_param(NVM_ID_VIRTUAL_NUMLOCK);
+				queue_autotext(g_set_print);
 				if (g_virtual_numlock)
-					queue_autotext(g_vnumlock_yes);
+					queue_autotext(g_on_print);
 				else
-					queue_autotext(g_vnumlock_no);
+					queue_autotext(g_off_print);
+				queue_autotext(g_bool_prompt);
+				begin_read();
+				g_console_state = CONSOLE_VNUMLOCK;	
 			}
 			else if (code == 6)
 			{
-				g_debounce_style ^= 1;
-				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
+				queue_autotext(g_set_print);
 				if (g_debounce_style)
-				{
-					g_debounce_ms = DEFAULT_ALT_DEBOUNCE_MS;
-					nvm_update_param(NVM_ID_DEBOUNCE_MS);
-					queue_autotext(g_dbstyle_yes);
-				}
+					queue_autotext(g_on_print);
 				else
-				{
-					g_debounce_ms = DEFAULT_DEBOUNCE_MS;
-					nvm_update_param(NVM_ID_DEBOUNCE_MS);
-					queue_autotext(g_dbstyle_no);
-				}
+					queue_autotext(g_off_print);
+				queue_autotext(g_bool_prompt);
+				begin_read();
+				g_console_state = CONSOLE_DBSTYLE;
 			}
 			else
 			{
@@ -482,6 +477,42 @@ void console_main(void)
 			}
 			break;
 #endif /* ENABLE_DEBUG_CONSOLE */
+		case CONSOLE_VNUMPAD:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if (word <= 1)
+			{
+				g_swap_num_row_on_numlock = (uint8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK);
+				queue_autotext(g_set_print);
+				if (g_swap_num_row_on_numlock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_VWINLOCK:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if (word <= 1)
+			{
+				g_winlock_on_scrolllock = (uint8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_WINLOCK_ON_SCROLLLOCK);
+				queue_autotext(g_set_print);
+				if (g_winlock_on_scrolllock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
 		case CONSOLE_DEFAULTLAYER:
 			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if (word < NUMBER_OF_LAYERS)
@@ -492,6 +523,68 @@ void console_main(void)
 				byte_to_str(g_default_layer, word_print);
 				word_print[2] = '\n';
 				queue_ram_autotext(word_print, 3);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_BOOTKEYBOARD:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if (word <= 1)
+			{
+				g_boot_keyboard_only = (uint8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+				queue_autotext(g_set_print);
+				if (g_boot_keyboard_only)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_VNUMLOCK:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if (word <= 1)
+			{
+				g_virtual_numlock = (uint8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_VIRTUAL_NUMLOCK);
+				queue_autotext(g_set_print);
+				if (g_virtual_numlock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_DBSTYLE:
+			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if (word <= 1)
+			{
+				g_debounce_style = (uint8_t)(word & 0x00FF);
+				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
+				queue_autotext(g_set_print);
+				if (g_debounce_style)
+				{
+					g_debounce_ms = DEFAULT_ALT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
+					queue_autotext(g_on_print);
+				}
+				else
+				{
+					g_debounce_ms = DEFAULT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
+					queue_autotext(g_off_print);
+				}
 			}
 			else
 			{
