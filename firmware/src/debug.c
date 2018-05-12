@@ -33,54 +33,69 @@
 volatile uint8_t g_reset_requested;
 
 console_state_t g_console_state;
+int8_t g_console_index;
 
 #ifdef ENABLE_DEBUG_CONSOLE
-const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) Debug menu\n4) Reset\n9) Quit\n> ";
+const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n4) Debug menu\n5) Reset\n9) Quit\n> ";
 const char PROGMEM g_debug_menu[] = "\nDebug Menu:\n1) Print events\n2) Clear events\n3) Examine memory\n"
 									"4) Print/clear clock-ins\n9) Back\n> ";
 #else /* ENABLE_DEBUG_CONSOLE */
-const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n4) Reset\n9) Quit\n> ";
+const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n5) Reset\n9) Quit\n> ";
 #endif /* ENABLE_DEBUG_CONSOLE */
-const char PROGMEM g_config_menu[] = "\nConfig Menu:\n1) Toggle virtual num pad\n2) Toggle win lock on scroll lock\n"
-									 "3) Set default layer\n4) Toggle keyboard features\n"
-									 "5) Toggle unlink num lock\n6) Set default dimmer level\n"
-									 "7) Set default backlight enable\n8) Toggle debounce style\n9) Back\n> ";
-const char PROGMEM g_timing_menu[] = "\nTiming Menu:\n1) Set debounce time\n2) Set max hold time for tap\n"
-									 "3) Set max delay time for double tap\n4) Set base mouse movement\n"
-									 "5) Set mouse movement multiplier\n6) Set min hold time for repeat\n"
-									 "7) Set repeat period\n8) Set matrix setup wait\n9) Back\n> ";
-const char PROGMEM g_not_rec[] = "Input not recognized.\n";
-const char PROGMEM g_vnumpad_yes[] = "Number row will be swapped for numpad keys when num lock is enabled.\n";
-const char PROGMEM g_vnumpad_no[] = "Num lock will not affect number row.\n";
-const char PROGMEM g_vwinlock_yes[] = "Windows key will be disabled when scroll lock is enabled.\n";
-const char PROGMEM g_vwinlock_no[] = "Scroll lock will not affect win lock.\n";
-const char PROGMEM g_bootkeyboard_yes[] = "Keyboard is limited to standard 6KRO boot-compatible keyboard only.\n";
-const char PROGMEM g_bootkeyboard_no[] = "Keyboard will use NKRO interface if it is enabled.\n";
-const char PROGMEM g_vnumlock_yes[] = "Num lock will function independently of the system num lock.\n";
-const char PROGMEM g_vnumlock_no[] = "Num lock is linked to the system num lock.\n";
-const char PROGMEM g_dbstyle_yes[] = "Using alternate \"confirm\" debounce algorithm and resetting debounce time.\n";
-const char PROGMEM g_dbstyle_no[] = "Using default \"hair trigger\" debounce algorithm and resetting debounce time.\n";
+const char PROGMEM g_config_menu_begin[] = "\nConfig Menu:";
+const char PROGMEM g_timing_menu_begin[] = "\nTiming Menu:";
+const char PROGMEM g_led_menu_begin[] = "\nLED Menu:";
+const char PROGMEM g_menu_1[] = "\n1) ";
+const char PROGMEM g_menu_2[] = "\n2) ";
+const char PROGMEM g_menu_3[] = "\n3) ";
+const char PROGMEM g_menu_4[] = "\n4) ";
+const char PROGMEM g_menu_5[] = "\n5) ";
+const char PROGMEM g_menu_6[] = "\n6) ";
+const char PROGMEM g_menu_7[] = "\n7) ";
+const char PROGMEM g_menu_8[] = "\n8) ";
+const char PROGMEM g_menu_end[] = "\n9) Back\n> ";
+
+const char PROGMEM g_vnumpad_desc[] = "Virtual Num Pad";
+const char PROGMEM g_vwinlock_desc[] = "Win Lock on Scroll Lock";
+const char PROGMEM g_deflayer_desc[] = "Default Layer";
+const char PROGMEM g_bootkb_desc[] = "Boot Keyboard";
+const char PROGMEM g_vnumlock_desc[] = "Unlinked Num Lock";
+const char PROGMEM g_dbstyle_desc[] = "Alternate Debounce Style";
+const char PROGMEM g_debounce_desc[] = "Debounce Time (ms)";
+const char PROGMEM g_tap_desc[] = "Max Hold Time for Tap (ms)";
+const char PROGMEM g_doubletap_desc[] = "Max Delay Time for Double Tap (ms)";
+const char PROGMEM g_mousebase_desc[] = "Base Mouse Movement";
+const char PROGMEM g_mousemult_desc[] = "Mouse Movement Multiplier";
+const char PROGMEM g_hold_desc[] = "Min Hold Time for Repeat (ms)";
+const char PROGMEM g_repeat_desc[] = "Repeat Period (ms)";
+const char PROGMEM g_setup_desc[] = "Matrix Setup Wait (cycles)";
+const char PROGMEM g_defdim_desc[] = "Default Dimmer Level";
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+const char PROGMEM g_defblen_desc[] = "Default Backlight Enable";
+const char PROGMEM g_defblmode_desc[] = "Default Backlight Mode";
+const char PROGMEM g_range_1_4[] = " [1-4]> ";
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
+
+const char PROGMEM g_range_bool[] = " [0=OFF, 1=ON]> ";
+const char PROGMEM g_range_0_9[] = " [0-9]> ";
+const char PROGMEM g_range_1_99[] = " [1-99]> ";
+const char PROGMEM g_range_1_999[] = " [1-999]> ";
+const char PROGMEM g_range_1_255[] = " [1-255]> ";
+const char PROGMEM g_range_1_16[] = " [1-16]> ";
+
+const char PROGMEM g_on_print[] = ": ON";
+const char PROGMEM g_off_print[] = ": OFF";
+
+const char PROGMEM g_invalid_selection[] = "Invalid selection.\n";
+const char PROGMEM g_out_of_range[] = "Out of range.\n";
+
 const char PROGMEM g_event_print_1[] = "\n[";
 const char PROGMEM g_event_print_2[] = "] C-0x";
 const char PROGMEM g_event_print_3[] = " S-0x";
 const char PROGMEM g_exam_prompt1[] = "Address (hex)> ";
 const char PROGMEM g_exam_prompt2[] = "Bytes (hex)> ";
-const char PROGMEM g_deflayer_prompt[] = "Enter new default layer (0-9)> ";
-const char PROGMEM g_set_print[] = "Set:";
-const char PROGMEM g_debounce_prompt[] = "Enter new debounce time in ms (1-99)> ";
-const char PROGMEM g_tap_prompt[] = "Enter new tap time in ms (1-999)> ";
-const char PROGMEM g_doubletap_prompt[] = "Enter new doubletap delay time in ms (1-999)> ";
-const char PROGMEM g_mouse_base_prompt[] = "Enter new base mouse movement (1-99)> ";
-const char PROGMEM g_mouse_mult_prompt[] = "Enter new mouse movement multiplier (1-99)> ";
-const char PROGMEM g_hold_prompt[] = "Enter new hold time in ms (1-999)> ";
-const char PROGMEM g_repeat_prompt[] = "Enter new repeat time in ms (1-99)> ";
-const char PROGMEM g_setup_prompt[] = "Enter new matrix setup wait in cycles (1-255)> ";
-const char PROGMEM g_defbl_prompt[] = "Enter new default backlight enable (1-" STR_MAX_BACKLIGHT_ENABLES ")> ";
-const char PROGMEM g_defdim_prompt[] = "Enter new default dimmer level (1-16)> ";
-const char PROGMEM g_out_of_range[] = "Out of range.\n";
 
 #ifdef ENABLE_DEBUG_CONSOLE
-uint8_t g_event_index;
 event_buffer_t g_event_buffer[EVENT_BUFFER_SIZE];
 uint8_t g_event_buffer_count;
 uint8_t* g_ex_ptr;
@@ -94,17 +109,21 @@ void init_debug(void)
 
 void console_main(void)
 {
-	int8_t i;
-	uint16_t word;
-	uint8_t code;
+	uint16_t read_word;
+	uint8_t read_byte;
 	char word_print[4];
 	
 	if (g_autokey_status == AUTOKEY_IDLE)
 	{
 		switch (g_console_state)
 		{
+		default:
+			g_console_state = CONSOLE_IDLE;
 		case CONSOLE_IDLE:
 			break;
+/*
+ *  MAIN MENU
+ */
 		case CONSOLE_MENU_MAIN:
 			queue_autotext(g_main_menu);
 			begin_read();
@@ -112,227 +131,42 @@ void console_main(void)
 			break;
 		case CONSOLE_PROCESS_MAIN:
 			g_console_state = CONSOLE_MENU_MAIN;
-			code = sc_to_int(g_read_buffer[0]);
-			if (code == 9)
+			g_console_index = 0;
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte == 9)
 			{
 				g_console_state = CONSOLE_IDLE;
 			}
-			else if (code == 4)
+			else if (read_byte == 5)
 			{
 				g_reset_requested = RESET_REQUESTED;
 			}
-			else if (code == 1)
+			else if (read_byte == 1)
 			{
 				g_console_state = CONSOLE_MENU_CONFIG;
 			}
-			else if (code == 2)
+			else if (read_byte == 2)
 			{
 				g_console_state = CONSOLE_MENU_TIMING;
 			}
+			else if (read_byte == 3)
+			{
+				g_console_state = CONSOLE_MENU_LED;
+			}
 #ifdef ENABLE_DEBUG_CONSOLE
-			else if (code == 3)
+			else if (read_byte == 4)
 			{
 				g_console_state = CONSOLE_MENU_DEBUG;
 			}
 #endif /* ENABLE_DEBUG_CONSOLE */
 			else
 			{
-				queue_autotext(g_not_rec);
+				queue_autotext(g_invalid_selection);
 			}
 			break;
-		case CONSOLE_MENU_CONFIG:
-			queue_autotext(g_config_menu);
-			begin_read();
-			g_console_state = CONSOLE_PROCESS_CONFIG;
-			break;
-		case CONSOLE_PROCESS_CONFIG:
-			g_console_state = CONSOLE_MENU_CONFIG;
-			code = sc_to_int(g_read_buffer[0]);
-			if (code == 9)
-			{
-				g_console_state = CONSOLE_MENU_MAIN;
-			}
-			else if (code == 1)
-			{
-				g_swap_num_row_on_numlock ^= 1;
-				nvm_update_param(NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK);
-				if (g_swap_num_row_on_numlock)
-					queue_autotext(g_vnumpad_yes);
-				else
-					queue_autotext(g_vnumpad_no);
-			}
-			else if (code == 2)
-			{
-				g_winlock_on_scrolllock ^= 1;
-				nvm_update_param(NVM_ID_WINLOCK_ON_SCROLLLOCK);
-				if (g_winlock_on_scrolllock)
-					queue_autotext(g_vwinlock_yes);
-				else
-					queue_autotext(g_vwinlock_no);
-			}
-			else if (code == 3)
-			{
-				queue_autotext(g_set_print);
-				byte_to_str(g_default_layer, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_deflayer_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEFAULTLAYER;
-			}
-			else if (code == 4)
-			{
-				g_boot_keyboard_only ^= 1;
-				nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
-				if (g_boot_keyboard_only)
-					queue_autotext(g_bootkeyboard_yes);
-				else
-					queue_autotext(g_bootkeyboard_no);
-			}
-			else if (code == 5)
-			{
-				g_virtual_numlock ^= 1;
-				nvm_update_param(NVM_ID_VIRTUAL_NUMLOCK);
-				if (g_virtual_numlock)
-					queue_autotext(g_vnumlock_yes);
-				else
-					queue_autotext(g_vnumlock_no);
-			}
-			else if (code == 6)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_dimmer_level, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_defdim_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEFAULTDIMMER;
-			}
-			else if (code == 7)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_backlight_mode+1, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_defbl_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEAFAULTBACKLIGHT;
-			}
-			else if (code == 8)
-			{
-				g_debounce_style ^= 1;
-				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
-				if (g_debounce_style)
-				{
-					g_debounce_ms = DEFAULT_ALT_DEBOUNCE_MS;
-					nvm_update_param(NVM_ID_DEBOUNCE_MS);
-					queue_autotext(g_dbstyle_yes);
-				}
-				else
-				{
-					g_debounce_ms = DEFAULT_DEBOUNCE_MS;
-					nvm_update_param(NVM_ID_DEBOUNCE_MS);
-					queue_autotext(g_dbstyle_no);
-				}
-			}
-			else
-			{
-				queue_autotext(g_not_rec);
-			}
-			break;
-		case CONSOLE_MENU_TIMING:
-			queue_autotext(g_timing_menu);
-			begin_read();
-			g_console_state = CONSOLE_PROCESS_TIMING;
-			break;
-		case CONSOLE_PROCESS_TIMING:
-			g_console_state = CONSOLE_MENU_TIMING;
-			code = sc_to_int(g_read_buffer[0]);
-			if (code == 9)
-			{
-				g_console_state = CONSOLE_MENU_MAIN;
-			}
-			else if (code == 1)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_debounce_ms, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_debounce_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DEBOUNCE;
-			}
-			else if (code == 2)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_max_tap_ms, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
-				queue_autotext(g_tap_prompt);
-				begin_read();
-				g_console_state = CONSOLE_TAP;
-			}
-			else if (code == 3)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_doubletap_delay_ms*(-1), word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
-				queue_autotext(g_doubletap_prompt);
-				begin_read();
-				g_console_state = CONSOLE_DOUBLETAP;
-			}
-			else if (code == 4)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_mouse_min_delta, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_mouse_base_prompt);
-				begin_read();
-				g_console_state = CONSOLE_MOUSEBASE;
-			}
-			else if (code == 5)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_mouse_delta_mult, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_mouse_mult_prompt);
-				begin_read();
-				g_console_state = CONSOLE_MOUSEMULT;
-			}
-			else if (code == 6)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_hold_key_ms, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
-				queue_autotext(g_hold_prompt);
-				begin_read();
-				g_console_state = CONSOLE_HOLD;
-			}
-			else if (code == 7)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_repeat_ms, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
-				queue_autotext(g_repeat_prompt);
-				begin_read();
-				g_console_state = CONSOLE_REPEAT;
-			}
-			else if (code == 8)
-			{
-				queue_autotext(g_set_print);
-				dec_to_string(g_matrix_setup_wait, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
-				queue_autotext(g_setup_prompt);
-				begin_read();
-				g_console_state = CONSOLE_SETUP;
-			}
-			break;
+/*
+ *  DEBUG MENU
+ */
 #ifdef ENABLE_DEBUG_CONSOLE
 		case CONSOLE_MENU_DEBUG:
 			queue_autotext(g_debug_menu);
@@ -341,65 +175,65 @@ void console_main(void)
 			break;
 		case CONSOLE_PROCESS_DEBUG:
 			g_console_state = CONSOLE_MENU_DEBUG;
-			code = sc_to_int(g_read_buffer[0]);
-			if (code == 9)
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte == 9)
 			{
 				g_console_state = CONSOLE_MENU_MAIN;
 			}
-			else if (code == 1)
+			else if (read_byte == 1)
 			{
 				g_console_state = CONSOLE_EVENTS1;
 			}
-			else if (code == 2)
+			else if (read_byte == 2)
 			{
-				for (i=0; i<EVENT_BUFFER_SIZE; i++)
+				for (int8_t i=0; i<EVENT_BUFFER_SIZE; i++)
 				{
 					g_event_buffer[i].code = 0;
 					g_event_buffer[i].status = 0;
 				}
 				g_event_buffer_count = 0;
 			}
-			else if (code == 3)
+			else if (read_byte == 3)
 			{
 				queue_autotext(g_exam_prompt1);
 				begin_read();
 				g_console_state = CONSOLE_EXAMINE1;
 			}
-			else if (code == 4)
+			else if (read_byte == 4)
 			{
 				g_console_state = CONSOLE_CLOCKS;
 			}
 			else
 			{
-				queue_autotext(g_not_rec);
+				queue_autotext(g_invalid_selection);
 			}
 			break;
 		case CONSOLE_EVENTS1:
-			if (g_event_index >= EVENT_BUFFER_SIZE)
+			if (g_console_index >= EVENT_BUFFER_SIZE)
 			{
-				g_event_index = 0;
+				g_console_index = 0;
 				word_print[0] = '\n';
 				queue_ram_autotext(word_print, 1);
 				g_console_state = CONSOLE_MENU_DEBUG;
 			} else {
 				queue_autotext(g_event_print_1);
-				byte_to_str(g_event_index, word_print);
+				byte_to_str(g_console_index, word_print);
 				queue_ram_autotext(word_print, 2);
 				queue_autotext(g_event_print_2);
 				g_console_state = CONSOLE_EVENTS2;
 			}
 			break;
 		case CONSOLE_EVENTS2:
-			byte_to_str(g_event_buffer[g_event_index].code, word_print);
+			byte_to_str(g_event_buffer[g_console_index].code, word_print);
 			queue_ram_autotext(word_print, 2);
 			queue_autotext(g_event_print_3);
 			g_console_state = CONSOLE_EVENTS3;
 			break;
 		case CONSOLE_EVENTS3:
-			word_to_str(g_event_buffer[g_event_index].status, word_print);
+			word_to_str(g_event_buffer[g_console_index].status, word_print);
 			queue_ram_autotext(word_print, sizeof(word_print));
 			g_console_state = CONSOLE_EVENTS1;
-			g_event_index++;
+			g_console_index++;
 			break;
 		case CONSOLE_EXAMINE1:
 			g_ex_ptr = (uint8_t *)sc_to_word(g_read_buffer, g_read_buffer_length, 16);
@@ -427,55 +261,425 @@ void console_main(void)
 				g_console_state = CONSOLE_MENU_DEBUG;
 			break;
 		case CONSOLE_CLOCKS:
-			/* lots of variable name reuse here (g_event_index and code) */
-			if (g_event_index >= (NUMBER_OF_SCHEDULE_SLOTS*NUMBER_OF_ITEMS_PER_SLOT))
+			if (g_console_index >= (NUMBER_OF_SCHEDULE_SLOTS * NUMBER_OF_ITEMS_PER_SLOT))
 			{
-				g_event_index = 0;
+				g_console_index = 0;
 				word_print[0] = '\n';
 				queue_ram_autotext(word_print, 1);
 				g_console_state = CONSOLE_MENU_DEBUG;
 				reset_max_clocks();
 			} else {
-				i = g_event_index % NUMBER_OF_SCHEDULE_SLOTS;
-				code = g_event_index / NUMBER_OF_SCHEDULE_SLOTS;
+				const int8_t i = g_console_index % NUMBER_OF_SCHEDULE_SLOTS;
+				const int8_t j = g_console_index / NUMBER_OF_SCHEDULE_SLOTS;
 				if (i == 0)
 					word_print[0] = '\n';
 				else
 					word_print[0] = ' ';
 				queue_ram_autotext(word_print, 1);
-				word_to_str(g_schedule_clocks[i][code], word_print);
+				word_to_str(g_schedule_clocks[i][j], word_print);
 				queue_ram_autotext(word_print, sizeof(word_print));
-				g_event_index++;
+				g_console_index++;
 			}
 			break;
 #endif /* ENABLE_DEBUG_CONSOLE */
-		case CONSOLE_DEFAULTLAYER:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if (word < NUMBER_OF_LAYERS)
+/*
+ *  CONFIG MENU
+ */
+		case CONSOLE_MENU_CONFIG:
+			switch (g_console_index)
 			{
-				g_default_layer = (uint8_t)(word & 0x00FF);
-				nvm_update_param(NVM_ID_DEFAULT_LAYER);
-				queue_autotext(g_set_print);
-				byte_to_str(g_default_layer, word_print);
-				word_print[2] = '\n';
+			case 0:
+				queue_autotext(g_config_menu_begin);
+				break;
+			case 1:
+				queue_autotext(g_menu_1);
+				queue_autotext(g_vnumpad_desc);
+				break;
+			case 2:
+				if (g_virtual_numlock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+				break;
+			case 3:
+				queue_autotext(g_menu_2);
+				queue_autotext(g_vwinlock_desc);
+				break;
+			case 4:
+				if (g_winlock_on_scrolllock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+				break;
+			case 5:
+				queue_autotext(g_menu_3);
+				queue_autotext(g_deflayer_desc);
+				break;
+			case 6:
+				word_print[0] = ':';
+				word_print[1] = ' ';
+				dec_to_string(g_default_layer, word_print+2);
 				queue_ram_autotext(word_print, 3);
+				break;
+			case 7:
+				queue_autotext(g_menu_4);
+				queue_autotext(g_bootkb_desc);
+				break;
+			case 8:
+				if (g_boot_keyboard_only)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+				break;
+			case 9:
+				queue_autotext(g_menu_5);
+				queue_autotext(g_vnumlock_desc);
+				break;
+			case 10:
+				if (g_virtual_numlock)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+				break;
+			case 11:
+				queue_autotext(g_menu_6);
+				queue_autotext(g_dbstyle_desc);
+				break;
+			case 12:
+				if (g_debounce_style)
+					queue_autotext(g_on_print);
+				else
+					queue_autotext(g_off_print);
+				break;
+			default:
+				queue_autotext(g_menu_end);
+				begin_read();
+				g_console_state = CONSOLE_PROCESS_CONFIG;
+			}
+			g_console_index++;
+			break;
+		case CONSOLE_PROCESS_CONFIG:
+			g_console_state = CONSOLE_PROMPT_CONFIG;
+			read_byte = sc_to_int(g_read_buffer[0]);
+			g_console_index = read_byte;
+			if (read_byte == 9)
+			{
+				g_console_state = CONSOLE_MENU_MAIN;
+			}
+			else if (read_byte == 1)
+			{
+				queue_autotext(g_vnumpad_desc);
+			}
+			else if (read_byte == 2)
+			{
+				queue_autotext(g_vwinlock_desc);
+			}
+			else if (read_byte == 3)
+			{
+				queue_autotext(g_deflayer_desc);
+			}
+			else if (read_byte == 4)
+			{
+				queue_autotext(g_bootkb_desc);
+			}
+			else if (read_byte == 5)
+			{
+				queue_autotext(g_vnumlock_desc);
+			}
+			else if (read_byte == 6)
+			{
+				queue_autotext(g_dbstyle_desc);
 			}
 			else
 			{
+				queue_autotext(g_invalid_selection);
+				g_console_state = CONSOLE_MENU_CONFIG;
+				g_console_index = 0;
+			}
+			break;
+		case CONSOLE_PROMPT_CONFIG:
+			switch (g_console_index)
+			{
+			case 1:
+				queue_autotext(g_range_bool);
+				g_console_state = CONSOLE_VNUMPAD;
+				break;
+			case 2:
+				queue_autotext(g_range_bool);
+				g_console_state = CONSOLE_VWINLOCK;
+				break;
+			case 3:
+				queue_autotext(g_range_0_9);
+				g_console_state = CONSOLE_DEFAULTLAYER;
+				break;
+			case 4:
+				queue_autotext(g_range_bool);
+				g_console_state = CONSOLE_BOOTKEYBOARD;
+				break;
+			case 5:
+				queue_autotext(g_range_bool);
+				g_console_state = CONSOLE_VNUMLOCK;
+				break;
+			case 6:
+				queue_autotext(g_range_bool);
+				g_console_state = CONSOLE_DBSTYLE;
+				break;
+			default:
+				g_console_state = CONSOLE_MENU_CONFIG;
+			}
+			begin_read();
+			g_console_index = 0;
+			break;
+		case CONSOLE_VNUMPAD:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte <= 1)
+			{
+				g_swap_num_row_on_numlock = read_byte;
+				nvm_update_param(NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK);
+			} else {
 				queue_autotext(g_out_of_range);
 			}
 			g_console_state = CONSOLE_MENU_CONFIG;
 			break;
-		case CONSOLE_DEBOUNCE:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 100) && (word > 0))
+		case CONSOLE_VWINLOCK:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte <= 1)
 			{
-				g_debounce_ms = (int8_t)(word & 0x00FF);
+				g_winlock_on_scrolllock = read_byte;
+				nvm_update_param(NVM_ID_WINLOCK_ON_SCROLLLOCK);
+			} else {
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_DEFAULTLAYER:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte < NUMBER_OF_LAYERS)
+			{
+				g_default_layer = read_byte;
+				nvm_update_param(NVM_ID_DEFAULT_LAYER);
+			} else {
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_BOOTKEYBOARD:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte <= 1)
+			{
+				g_boot_keyboard_only = read_byte;
+				nvm_update_param(NVM_ID_BOOT_KEYBOARD_ONLY);
+			} else {
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_VNUMLOCK:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte <= 1)
+			{
+				g_virtual_numlock = read_byte;
+				nvm_update_param(NVM_ID_VIRTUAL_NUMLOCK);
+			} else {
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+		case CONSOLE_DBSTYLE:
+			read_byte = sc_to_int(g_read_buffer[0]);
+			if (read_byte <= 1)
+			{
+				g_debounce_style = read_byte;
+				nvm_update_param(NVM_ID_DEBOUNCE_STYLE);
+				if (g_debounce_style)
+				{
+					g_debounce_ms = DEFAULT_ALT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
+				} else {
+					g_debounce_ms = DEFAULT_DEBOUNCE_MS;
+					nvm_update_param(NVM_ID_DEBOUNCE_MS);
+				}
+			} else {
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_CONFIG;
+			break;
+/*
+ *  TIMING MENU
+ */
+		case CONSOLE_MENU_TIMING:
+			word_print[0] = ':';
+			word_print[1] = ' ';
+			switch (g_console_index)
+			{
+			case 0:
+				queue_autotext(g_timing_menu_begin);
+				break;
+			case 1:
+				queue_autotext(g_menu_1);
+				queue_autotext(g_debounce_desc);
+				break;
+			case 2:
+				dec_to_string(g_debounce_ms, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+			case 3:
+				queue_autotext(g_menu_2);
+				queue_autotext(g_tap_desc);
+				break;
+			case 4:
+				dec_to_string(g_max_tap_ms, word_print+2);
+				queue_ram_autotext(word_print, 5);
+				break;
+			case 5:
+				queue_autotext(g_menu_3);
+				queue_autotext(g_doubletap_desc);
+				break;
+			case 6:
+				dec_to_string(g_doubletap_delay_ms*(-1), word_print+2);
+				queue_ram_autotext(word_print, 5);
+				break;
+			case 7:
+				queue_autotext(g_menu_4);
+				queue_autotext(g_mousebase_desc);
+				break;
+			case 8:
+				dec_to_string(g_mouse_min_delta, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+			case 9:
+				queue_autotext(g_menu_5);
+				queue_autotext(g_mousemult_desc);
+				break;
+			case 10:
+				dec_to_string(g_mouse_delta_mult, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+			case 11:
+				queue_autotext(g_menu_6);
+				queue_autotext(g_hold_desc);
+				break;
+			case 12:
+				dec_to_string(g_hold_key_ms, word_print+2);
+				queue_ram_autotext(word_print, 5);
+				break;
+			case 13:
+				queue_autotext(g_menu_7);
+				queue_autotext(g_repeat_desc);
+				break;
+			case 14:
+				dec_to_string(g_repeat_ms, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+			case 15:
+				queue_autotext(g_menu_8);
+				queue_autotext(g_setup_desc);
+				break;
+			case 16:
+				dec_to_string(g_matrix_setup_wait, word_print+2);
+				queue_ram_autotext(word_print, 5);
+				break;
+			default:
+				queue_autotext(g_menu_end);
+				begin_read();
+				g_console_state = CONSOLE_PROCESS_TIMING;
+			}
+			g_console_index++;
+			break;
+		case CONSOLE_PROCESS_TIMING:
+			g_console_state = CONSOLE_PROMPT_TIMING;
+			read_byte = sc_to_int(g_read_buffer[0]);
+			g_console_index = read_byte;
+			if (read_byte == 9)
+			{
+				g_console_state = CONSOLE_MENU_MAIN;
+			}
+			else if (read_byte == 1)
+			{
+				queue_autotext(g_debounce_desc);
+			}
+			else if (read_byte == 2)
+			{
+				queue_autotext(g_tap_desc);
+			}
+			else if (read_byte == 3)
+			{
+				queue_autotext(g_doubletap_desc);
+			}
+			else if (read_byte == 4)
+			{
+				queue_autotext(g_mousebase_desc);
+			}
+			else if (read_byte == 5)
+			{
+				queue_autotext(g_mousemult_desc);
+			}
+			else if (read_byte == 6)
+			{
+				queue_autotext(g_hold_desc);
+			}
+			else if (read_byte == 7)
+			{
+				queue_autotext(g_repeat_desc);
+			}
+			else if (read_byte == 8)
+			{
+				queue_autotext(g_setup_desc);
+			}
+			else
+			{
+				queue_autotext(g_invalid_selection);
+				g_console_state = CONSOLE_MENU_TIMING;
+				g_console_index = 0;
+			}
+			break;
+		case CONSOLE_PROMPT_TIMING:
+			switch (g_console_index)
+			{
+			case 1:
+				queue_autotext(g_range_1_99);
+				g_console_state = CONSOLE_DEBOUNCE;
+				break;
+			case 2:
+				queue_autotext(g_range_1_999);
+				g_console_state = CONSOLE_TAP;
+				break;
+			case 3:
+				queue_autotext(g_range_1_999);
+				g_console_state = CONSOLE_DOUBLETAP;
+				break;
+			case 4:
+				queue_autotext(g_range_1_99);
+				g_console_state = CONSOLE_MOUSEBASE;
+				break;
+			case 5:
+				queue_autotext(g_range_1_99);
+				g_console_state = CONSOLE_MOUSEMULT;
+				break;
+			case 6:
+				queue_autotext(g_range_1_999);
+				g_console_state = CONSOLE_HOLD;
+				break;
+			case 7:
+				queue_autotext(g_range_1_99);
+				g_console_state = CONSOLE_REPEAT;
+				break;
+			case 8:
+				queue_autotext(g_range_1_255);
+				g_console_state = CONSOLE_SETUP;
+				break;
+			default:
+				g_console_state = CONSOLE_MENU_TIMING;
+			}
+			begin_read();
+			g_console_index = 0;
+			break;
+		case CONSOLE_DEBOUNCE:
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 100) && (read_word > 0))
+			{
+				g_debounce_ms = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_DEBOUNCE_MS);
-				queue_autotext(g_set_print);
-				dec_to_string(g_debounce_ms, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
@@ -484,15 +688,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_TAP:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 1000) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 1000) && (read_word > 0))
 			{
-				g_max_tap_ms = word;
+				g_max_tap_ms = read_word;
 				nvm_update_param(NVM_ID_MAX_TAP_MS);
-				queue_autotext(g_set_print);
-				dec_to_string(g_max_tap_ms, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -501,15 +701,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_DOUBLETAP:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 1000) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 1000) && (read_word > 0))
 			{
-				g_doubletap_delay_ms = word*(-1);
+				g_doubletap_delay_ms = read_word*(-1);
 				nvm_update_param(NVM_ID_DOUBLETAP_DELAY_MS);
-				queue_autotext(g_set_print);
-				dec_to_string(g_doubletap_delay_ms*(-1), word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -518,15 +714,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_MOUSEBASE:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 100) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 100) && (read_word > 0))
 			{
-				g_mouse_min_delta = (int8_t)(word & 0x00FF);
+				g_mouse_min_delta = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MOUSE_MIN_DELTA);
-				queue_autotext(g_set_print);
-				dec_to_string(g_mouse_min_delta, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
@@ -535,15 +727,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_MOUSEMULT:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 100) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 100) && (read_word > 0))
 			{
-				g_mouse_delta_mult = (int8_t)(word & 0x00FF);
+				g_mouse_delta_mult = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MOUSE_DELTA_MULT);
-				queue_autotext(g_set_print);
-				dec_to_string(g_mouse_delta_mult, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
@@ -552,15 +740,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_HOLD:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 1000) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 1000) && (read_word > 0))
 			{
-				g_hold_key_ms = word;
+				g_hold_key_ms = read_word;
 				nvm_update_param(NVM_ID_HOLD_KEY_MS);
-				queue_autotext(g_set_print);
-				dec_to_string(g_hold_key_ms, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -569,15 +753,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_REPEAT:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word < 100) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word < 100) && (read_word > 0))
 			{
-				g_repeat_ms = (int8_t)(word & 0x00FF);
+				g_repeat_ms = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_REPEAT_MS);
-				queue_autotext(g_set_print);
-				dec_to_string(g_repeat_ms, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
@@ -586,15 +766,11 @@ void console_main(void)
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
 		case CONSOLE_SETUP:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word <= 255) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word <= 255) && (read_word > 0))
 			{
-				g_matrix_setup_wait = (int8_t)(word & 0x00FF);
+				g_matrix_setup_wait = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MATRIX_SETUP_WAIT);
-				queue_autotext(g_set_print);
-				dec_to_string(g_matrix_setup_wait, word_print);
-				word_print[3] = '\n';
-				queue_ram_autotext(word_print, 4);
 			}
 			else
 			{
@@ -602,43 +778,143 @@ void console_main(void)
 			}
 			g_console_state = CONSOLE_MENU_TIMING;
 			break;
+/*
+ *  LED MENU
+ */
+		case CONSOLE_MENU_LED:
+			word_print[0] = ':';
+			word_print[1] = ' ';
+			switch (g_console_index)
+			{
+			case 0:
+				queue_autotext(g_led_menu_begin);
+				break;
+			case 1:
+				queue_autotext(g_menu_1);
+				queue_autotext(g_defdim_desc);
+				break;
+			case 2:
+				dec_to_string(g_init_dimmer_level, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			case 3:
+				queue_autotext(g_menu_2);
+				queue_autotext(g_defblen_desc);
+				break;
+			case 4:
+				dec_to_string(g_init_backlight_enable+1, word_print+2);
+				queue_ram_autotext(word_print, 4);
+				break;
+			case 5:
+				queue_autotext(g_menu_3);
+				queue_autotext(g_defblmode_desc);
+				break;
+			case 6:
+				dec_to_string(g_init_backlight_mode+1, word_print+2);
+				queue_ram_autotext(word_print, 3);
+				break;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
+			default:
+				queue_autotext(g_menu_end);
+				begin_read();
+				g_console_state = CONSOLE_PROCESS_LED;
+			}
+			g_console_index++;
+			break;
+		case CONSOLE_PROCESS_LED:
+			g_console_state = CONSOLE_PROMPT_LED;
+			read_byte = sc_to_int(g_read_buffer[0]);
+			g_console_index = read_byte;
+			if (read_byte == 9)
+			{
+				g_console_state = CONSOLE_MENU_MAIN;
+			}
+			else if (read_byte == 1)
+			{
+				queue_autotext(g_defdim_desc);
+			}
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			else if (read_byte == 2)
+			{
+				queue_autotext(g_defblen_desc);
+			}
+			else if (read_byte == 3)
+			{
+				queue_autotext(g_defblmode_desc);
+			}
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
+			else
+			{
+				queue_autotext(g_invalid_selection);
+				g_console_state = CONSOLE_MENU_LED;
+				g_console_index = 0;
+			}
+			break;
+		case CONSOLE_PROMPT_LED:
+			switch (g_console_index)
+			{
+			case 1:
+				queue_autotext(g_range_1_16);
+				g_console_state = CONSOLE_DEFAULTDIMMER;
+				break;
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+			case 2:
+				queue_autotext(g_range_1_16);
+				g_console_state = CONSOLE_DEFAULTBACKLIGHT;
+				break;
+			case 3:
+				queue_autotext(g_range_1_4);
+				g_console_state = CONSOLE_DEFAULTBLMODE;
+				break;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
+			default:
+				g_console_state = CONSOLE_MENU_LED;
+			}
+			begin_read();
+			g_console_index = 0;
+			break;
 		case CONSOLE_DEFAULTDIMMER:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word <= NUMBER_OF_BACKLIGHT_LEVELS) && (word > 0))
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word <= NUMBER_OF_BACKLIGHT_LEVELS) && (read_word > 0))
 			{
-				g_init_dimmer_level = (int8_t)(word & 0x00FF);
+				g_init_dimmer_level = (int8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_INIT_DIMMER_LEVEL);
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_dimmer_level, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
 				queue_autotext(g_out_of_range);
 			}
-			g_console_state = CONSOLE_MENU_CONFIG;
+			g_console_state = CONSOLE_MENU_LED;
 			break;
-		case CONSOLE_DEAFAULTBACKLIGHT:
-			word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
-			if ((word <= MAX_BACKLIGHT_ENABLES) && (word > 0))
+#ifdef MAX_NUMBER_OF_BACKLIGHTS
+		case CONSOLE_DEFAULTBACKLIGHT:
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word <= MAX_BACKLIGHT_ENABLES) && (read_word > 0))
 			{
-				i = (int8_t)(word & 0x00FF);
-				g_init_backlight_mode = i - 1;
+				g_init_backlight_enable = ((int8_t)(read_word & 0x00FF)) - 1;
+				nvm_update_param(NVM_ID_INIT_BACKLIGHT_ENABLE);
+			}
+			else
+			{
+				queue_autotext(g_out_of_range);
+			}
+			g_console_state = CONSOLE_MENU_LED;
+			break;
+		case CONSOLE_DEFAULTBLMODE:
+			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
+			if ((read_word <= NUMBER_OF_BACKLIGHT_MODES) && (read_word > 0))
+			{
+				g_init_backlight_mode = ((int8_t)(read_word & 0x00FF)) - 1;
 				nvm_update_param(NVM_ID_INIT_BACKLIGHT_MODE);
-				queue_autotext(g_set_print);
-				dec_to_string(g_init_backlight_mode+1, word_print);
-				word_print[2] = '\n';
-				queue_ram_autotext(word_print, 3);
 			}
 			else
 			{
 				queue_autotext(g_out_of_range);
 			}
-			g_console_state = CONSOLE_MENU_CONFIG;
+			g_console_state = CONSOLE_MENU_LED;
 			break;
-		default:
-			g_console_state = CONSOLE_IDLE;
+#endif /* MAX_NUMBER_OF_BACKLIGHTS */
 		}
 	}
 }

@@ -29,10 +29,10 @@
 #define EEPROM_SIZE 1024
 #endif
 
-#define EEPROM_REV (0x20)
+#define EEPROM_REV (0x21)
 
-#define NUMBER_OF_NVM_PARAMETERS (17)
-#define LENGTH_OF_NVM_PARAMETERS (20)
+#define NUMBER_OF_NVM_PARAMETERS (18)
+#define LENGTH_OF_NVM_PARAMETERS (21)
 
 #define NVM_ID_WINLOCK_ON_SCROLLLOCK (1)
 #define NVM_ID_SWAP_NUM_ROW_ON_NUMLOCK (2)
@@ -41,7 +41,7 @@
 #define NVM_ID_BOOT_KEYBOARD_ONLY (5)
 #define NVM_ID_DEBOUNCE_MS (6)
 #define NVM_ID_VIRTUAL_NUMLOCK (7)
-#define NVM_ID_INIT_BACKLIGHT_MODE (8)
+#define NVM_ID_INIT_BACKLIGHT_ENABLE (8)
 #define NVM_ID_MAX_TAP_MS (9)
 #define NVM_ID_DOUBLETAP_DELAY_MS (10)
 #define NVM_ID_MOUSE_MIN_DELTA (11)
@@ -50,6 +50,7 @@
 #define NVM_ID_REPEAT_MS (14)
 #define NVM_ID_MATRIX_SETUP_WAIT (15)
 #define NVM_ID_DEBOUNCE_STYLE (16)
+#define NVM_ID_INIT_BACKLIGHT_MODE (17)
 
 typedef struct {
 	const void * var;
@@ -69,7 +70,7 @@ extern uint8_t g_init_dimmer_level;
 extern uint8_t g_boot_keyboard_only;
 extern uint8_t g_debounce_ms;
 extern uint8_t g_virtual_numlock;
-extern uint8_t g_init_backlight_mode;
+extern uint8_t g_init_backlight_enable;
 extern int16_t g_max_tap_ms;
 extern int16_t g_doubletap_delay_ms;
 extern uint8_t g_mouse_min_delta;
@@ -78,6 +79,7 @@ extern int16_t g_hold_key_ms;
 extern uint8_t g_repeat_ms;
 extern uint8_t g_matrix_setup_wait;
 extern uint8_t g_debounce_style;
+extern uint8_t g_init_backlight_mode;
 
 void init_nvm(void);
 void nvm_init_eeprom(void);

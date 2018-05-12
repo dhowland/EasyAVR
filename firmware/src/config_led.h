@@ -81,15 +81,9 @@ extern const uint8_t PROGMEM NUMBER_OF_INDICATORS;
 #if (defined(__AVR_ATmega32U4__) && !defined(BOARD_SIZE_COSTAR)) || defined(__AVR_AT90USB1286__)
 #define MAX_NUMBER_OF_BACKLIGHTS (8)
 #define MAX_BACKLIGHT_ENABLES (16)
-#define STR_MAX_BACKLIGHT_ENABLES "16"
 extern const uint8_t PROGMEM NUMBER_OF_BACKLIGHTS;
 extern const uint8_t PROGMEM NUMBER_OF_BACKLIGHT_ENABLES;
 #endif /* Bigger devices and smaller matrices */
-
-#ifndef MAX_BACKLIGHT_ENABLES
-#define MAX_BACKLIGHT_ENABLES (1)
-#define STR_MAX_BACKLIGHT_ENABLES "1"
-#endif /* MAX_BACKLIGHT_ENABLES */
 
 typedef enum {
 	LED_DRIVER_PULLUP,
