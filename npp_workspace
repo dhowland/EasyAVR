@@ -249,6 +249,7 @@
                     <File name="keymapper\easykeymap\boards\epsilon.py" />
                     <File name="keymapper\easykeymap\boards\filco.py" />
                     <File name="keymapper\easykeymap\boards\filco104.py" />
+                    <File name="keymapper\easykeymap\boards\filco104v2.py" />
                     <File name="keymapper\easykeymap\boards\filco87.py" />
                     <File name="keymapper\easykeymap\boards\filco87v2.py" />
                     <File name="keymapper\easykeymap\boards\gh122.py" />
@@ -276,6 +277,7 @@
                     <File name="keymapper\easykeymap\boards\qfrv2.py" />
                     <File name="keymapper\easykeymap\boards\qfxt.py" />
                     <File name="keymapper\easykeymap\boards\rosewill.py" />
+                    <File name="keymapper\easykeymap\boards\rosewillv2.py" />
                     <File name="keymapper\easykeymap\boards\sentraq.py" />
                     <File name="keymapper\easykeymap\boards\sigma.py" />
                     <File name="keymapper\easykeymap\boards\sixkeyboard.py" />
