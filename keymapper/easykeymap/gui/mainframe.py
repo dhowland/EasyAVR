@@ -294,6 +294,11 @@ class MainFrame(wx.Frame):
             if file_dialog.ShowModal() == wx.ID_CANCEL:
                 return
             path = file_dialog.GetPath()
+        if path.endswith(".dat"):
+            path = path + ".json"
+            msg = "Saving with new file format, renamed to {0}.".format(os.path.basename(path))
+            wx.MessageBox(msg, caption="Save file rename",
+                          style=wx.OK|wx.CENTRE, parent=self)
         try:
             self.user_data.save(path)
         except OSError as err:
@@ -438,6 +443,9 @@ class MainFrame(wx.Frame):
             if reprogram:
                 with ProgramDialog(self, user_data=self.user_data, path=self.build_path) as dlg:
                     dlg.ShowModal()
+            else:
+                wx.MessageBox("Firmware saved successfully.", caption="Build complete",
+                              style=wx.OK|wx.CENTRE, parent=self)
 
     #
     # Help methods
