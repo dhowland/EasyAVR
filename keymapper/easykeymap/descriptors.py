@@ -145,12 +145,12 @@ class ConfigurationDescriptor:
                 self.HID3_Device.tolist() + self.HID4_Device.tolist())
 
 
-def update_descriptor(bytes, opts):
-    """Takes a bytes-like object `bytes` and remove any HID endpoints that are False in the
-    corresponding Opts namedtuple `opts`.  The `bytes` array must be of length
+def update_descriptor(byte_array, opts):
+    """Takes a bytes-like object `byte_array` and remove any HID endpoints that are False in the
+    corresponding Opts namedtuple `opts`.  The `byte_array` array must be of length
     USB_Descriptor_Configuration_t.  Returns a bytes object.
     """
-    cd = ConfigurationDescriptor(unpack(confdesc_format, bytes))
+    cd = ConfigurationDescriptor(unpack(confdesc_format, byte_array))
     blank_device = Device([0] * 22)
     # HID1 (boot keyboard) never changes
     if opts.media is False:

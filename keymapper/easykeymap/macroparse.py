@@ -94,7 +94,11 @@ def hintparse(input_string, external_data):
     except Exception:
         raise MacroException("The HINT function requires an integer between "
                              "0 and 9.")
-    layermap = external_data['hints'][n]
+    try:
+        layermap = external_data['hints'][n]
+    except Exception:
+        raise MacroException("The HINT function requires a list of strings in "
+                             "the external_data map.")
     return parse(layermap.replace('$', '$$'))
 
 
@@ -104,7 +108,7 @@ funcs = {
 }
 
 
-def parse(macro_string, modval=0, external_data={}):
+def parse(macro_string, modval=0, external_data=None):
     """Take the string from `macro_string` and convert it to a sequence of scancodes.  The string
     is interpreted using the macro mini-language.  This is a recursive function, so macro
     functions that contain substrings will cause another call to this function with the bit

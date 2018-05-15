@@ -117,7 +117,7 @@ def unexpected_media(user_data):
     return search_scancodes(user_data, low, high)
 
 
-def build_firmware(user_data, path, external_data={}):
+def build_firmware(user_data, path, external_data):
     """Uses the layout and other settings from `user_data` to modify a firmware build,
     and saves the result to `path`.  The output will be in Intel Hex format unless the
     path ends with .bin, in which case it will be binary.  `external_data` contains
@@ -130,14 +130,14 @@ def build_firmware(user_data, path, external_data={}):
     if path.lower().endswith('.bin'):
         with open(path, 'wb') as fdout:
             # shouldn't get more than one chunk per file
-            start, bytes = hex_data[0]
-            bytes.tofile(fdout)
+            start, byte_array = hex_data[0]
+            byte_array.tofile(fdout)
     else:
         with open(path, 'w') as fdout:
             intelhex.write(fdout, hex_data)
 
 
-def overlay(user_data, hex_data, external_data={}):
+def overlay(user_data, hex_data, external_data):
     overlay_keymap(user_data, hex_data)
     overlay_matrix(user_data, hex_data)
     overlay_macros(user_data, hex_data, external_data)
@@ -150,7 +150,7 @@ def overlay(user_data, hex_data, external_data={}):
 
 def overlay_keymap(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for key maps
     fw_rows, fw_cols = matrix_dims[config.firmware.size]
     col_diff = fw_cols - config.num_cols
@@ -161,9 +161,9 @@ def overlay_keymap(user_data, hex_data):
     for layer in user_data.keymap:
         for row in layer:
             for key in row:
-                bytes[l_offset] = scancodes[key.code].value
-                bytes[a_offset] = (key.mode | key.wmods)
-                bytes[t_offset] = scancodes[key.tap].value
+                byte_array[l_offset] = scancodes[key.code].value
+                byte_array[a_offset] = (key.mode | key.wmods)
+                byte_array[t_offset] = scancodes[key.tap].value
                 l_offset += 1
                 a_offset += 1
                 t_offset += 1
@@ -177,14 +177,14 @@ def overlay_keymap(user_data, hex_data):
 
 def overlay_matrix(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for matrix style
     if config.strobe_cols:
         offset = config.firmware.strobe_cols_map - start
-        bytes[offset] = 1
+        byte_array[offset] = 1
     if config.strobe_low:
         offset = config.firmware.strobe_low_map - start
-        bytes[offset] = 1
+        byte_array[offset] = 1
     # overwrite data for matrix size
     if config.strobe_cols:
         num_strobe = config.num_cols
@@ -193,38 +193,38 @@ def overlay_matrix(user_data, hex_data):
         num_strobe = config.num_rows
         num_sense = config.num_cols
     offset = config.firmware.num_strobe_map - start
-    bytes[offset] = num_strobe
+    byte_array[offset] = num_strobe
     offset = config.firmware.num_sense_map - start
-    bytes[offset] = num_sense
+    byte_array[offset] = num_sense
     # overwrite data for matrix definition
     offset = config.firmware.matrix_init_map - start
     for port_def in config.matrix_hardware:
         for mask in port_def:
-            bytes[offset] = mask
+            byte_array[offset] = mask
             offset += 1
     # overwrite data for matrix strobe list
     offset = config.firmware.matrix_strobe_map - start
     for strobe in config.matrix_strobe:
         for mask in strobe:
-            bytes[offset] = mask
+            byte_array[offset] = mask
             offset += 1
     # overwrite data for matrix sense list
     offset = config.firmware.matrix_sense_map - start
     for sense in config.matrix_sense:
         for mask in sense:
-            bytes[offset] = mask
+            byte_array[offset] = mask
             offset += 1
     # overwrite row/col for the weird "KMAC" key
     if config.KMAC_key is not None:
         offset = config.firmware.kmac_key_map - start
         for b in config.KMAC_key:
-            bytes[offset] = b
+            byte_array[offset] = b
             offset += 1
 
 
-def overlay_macros(user_data, hex_data, external_data={}):
+def overlay_macros(user_data, hex_data, external_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     macro_length = macro_lengths[config.firmware.device]
     # convert all the macros to byte arrays and get the length of each
     macro_data = [parse(m, external_data=external_data) for m in user_data.macros]
@@ -247,115 +247,115 @@ def overlay_macros(user_data, hex_data, external_data={}):
     for index in index_list:
         short_array = array('H', [index])
         byte_array = array('B', short_array.tostring())
-        bytes[offset:offset+2] = byte_array[:]
+        byte_array[offset:offset+2] = byte_array[:]
         offset += 2
     # map the non-empty macros into the byte array
     for i in range(NUM_MACROS):
         if mlens[i] > 0:
             end = offset + mlens[i]
-            bytes[offset:end] = macro_data[i][:]
-            bytes[end:end+2] = array('B', [0, 0])[:]
+            byte_array[offset:end] = macro_data[i][:]
+            byte_array[end:end+2] = array('B', [0, 0])[:]
             offset += (mlens[i] + 2)
     # make sure the last spot of the byte array has a zero (terminator)
     last_spot = ((config.firmware.macro_map - start) + ((macro_length - 1) * 2))
-    bytes[last_spot:last_spot+2] = array('B', [0, 0])[:]
+    byte_array[last_spot:last_spot+2] = array('B', [0, 0])[:]
 
 
 def overlay_leds(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for LED counts
     offset = config.firmware.num_leds_map - start
-    bytes[offset] = config.num_leds
+    byte_array[offset] = config.num_leds
     offset = config.firmware.num_ind_map - start
-    bytes[offset] = config.num_ind
+    byte_array[offset] = config.num_ind
     # overwrite data for LED IO list
     offset = config.firmware.led_hw_map - start
     for port, pin, direction in config.led_hardware:
-        bytes[offset] = port
+        byte_array[offset] = port
         offset += 1
-        bytes[offset] = pin
+        byte_array[offset] = pin
         offset += 1
-        bytes[offset] = direction
+        byte_array[offset] = direction
         offset += 1
     # overwrite data for LED functions
     offset = config.firmware.led_map - start
     for tup in user_data.led_funcs:
-        bytes[offset] = tup[0]
+        byte_array[offset] = tup[0]
         offset += 1
-        bytes[offset] = tup[1]
+        byte_array[offset] = tup[1]
         offset += 1
 
 
 def overlay_backlight(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     if config.firmware.num_bl_enab_map is not None:
         # overwrite data for backlight enables count
         offset = config.firmware.num_bl_enab_map - start
-        bytes[offset] = config.num_bl_enab
+        byte_array[offset] = config.num_bl_enab
         # overwrite data for backlight mask
         offset = config.firmware.bl_mask_map - start
         for mode in user_data.led_modes:
             if mode == led_modes.index('Backlight'):
-                bytes[offset] = 1
+                byte_array[offset] = 1
             else:
-                bytes[offset] = 0
+                byte_array[offset] = 0
             offset += 1
         for i in range(config.num_leds - config.num_ind):
-            bytes[offset] = 1
+            byte_array[offset] = 1
             offset += 1
         # overwrite data for backlight enables
         led_diff = max_leds - config.num_leds
         offset = config.firmware.bl_mode_map - start
         for mode in config.bl_modes:
             for led in mode:
-                bytes[offset] = led
+                byte_array[offset] = led
                 offset += 1
             offset += led_diff
 
 
 def overlay_led_layers(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for led layers
     offset = config.firmware.led_layers_map - start
     for layer in user_data.led_layers:
         if layer:
-            bytes[offset] = FIRST_FN_CODE + layer
+            byte_array[offset] = FIRST_FN_CODE + layer
         else:
-            bytes[offset] = 0
+            byte_array[offset] = 0
         offset += 1
 
 
 def overlay_descriptor(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for USB endpoint enables
     offset = config.firmware.endpoint_opt_map - start
     opts = sum([(int(x) * (2**i)) for i, x in enumerate(user_data.usb_opts)])
-    bytes[offset] = opts
+    byte_array[offset] = opts
     # overwrite data for USB HID config descriptor
     offset = config.firmware.conf_desc_map - start
-    input = bytes[offset:(offset+confdesc_size)]
-    output = update_descriptor(input, user_data.usb_opts)
-    bytes[offset:(offset+confdesc_size)] = array('B', output)[:]
+    default_desc = byte_array[offset:(offset+confdesc_size)]
+    updated_desc = update_descriptor(default_desc, user_data.usb_opts)
+    byte_array[offset:(offset+confdesc_size)] = array('B', updated_desc)[:]
 
 
 def overlay_misc(user_data, hex_data):
     config = user_data.config
-    start, bytes = hex_data[0]
+    start, byte_array = hex_data[0]
     # overwrite data for teensy bootloader pointer
     if config.teensy:
         offset = config.firmware.boot_ptr_map - start + 1
         if config.firmware.device == "AT90USB1286":
-            bytes[offset] = TEENSY2PP_BOOT_PTR_HIGH_BYTE
+            byte_array[offset] = TEENSY2PP_BOOT_PTR_HIGH_BYTE
         else:
-            bytes[offset] = TEENSY2_BOOT_PTR_HIGH_BYTE
+            byte_array[offset] = TEENSY2_BOOT_PTR_HIGH_BYTE
     # overwrite data for version number
     offset = config.firmware.prod_str_map - start
-    while bytes[offset] != ord('#'):
+    while byte_array[offset] != ord('#'):
         offset += 1
     for c in version_string:
-        bytes[offset] = ord(c)
+        byte_array[offset] = ord(c)
         offset += 2

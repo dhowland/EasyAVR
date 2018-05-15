@@ -39,6 +39,8 @@ class ProgrammingTask(object):
     well as override the `run()` method.
     """
 
+    loader_tools = []
+
     def __init__(self, logger, fwpath, device):
         self.logger = logger
         self.fwpath = fwpath
@@ -76,7 +78,8 @@ class ProgrammingTask(object):
         th.join()
         return p.wait()
 
-    def findpath(self, name):
+    @staticmethod
+    def findpath(name):
         # check for absolute path
         path = os.path.expandvars(os.path.expanduser(name))
         if os.path.isabs(path):
@@ -105,7 +108,8 @@ class ProgrammingTask(object):
                 return path
         return None
 
-    def bootmsg(self, logger):
+    @staticmethod
+    def bootmsg(logger):
         msg = ("The keyboard should be in bootloader mode prior to programming.\n"
                "If the bootloader has not been activated then the programmer will\n"
                "not be able to connect and the process will fail.  Activate the\n"

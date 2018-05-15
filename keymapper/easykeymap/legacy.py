@@ -72,10 +72,10 @@ def open_legacy(datfile):
         else:
             ledlayers = [0, 0, 0, 0, 0]
     # fixes for older versions (renamed layers)
-    for map in (maps, actions, modes, wmods):
-        if 'Fn' in map:
-            map['Layer 1'] = map['Fn']
-            del map['Fn']
+    for kmap in (maps, actions, modes, wmods):
+        if 'Fn' in kmap:
+            kmap['Layer 1'] = kmap['Fn']
+            del kmap['Fn']
     # fixes for older versions (renamed/removed scancodes)
     for layer in maps:
         for row in maps[layer]:

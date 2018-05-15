@@ -240,7 +240,7 @@ class KeyButton(wx.Button):
         del kwargs['matrix']
         self.geom = kwargs['geom']
         del kwargs['geom']
-        wx.Panel.__init__(self, *args, **kwargs)
+        wx.Button.__init__(self, *args, **kwargs)
 
         h, w = self.geom
         h = h/4

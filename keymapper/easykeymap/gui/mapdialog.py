@@ -138,7 +138,7 @@ class PickerDialogAdapter(wxpg.PGEditorDialogAdapter):
         wxpg.PGEditorDialogAdapter.__init__(self)
         self.with_specials = with_specials
 
-    def DoShowDialog(self, propGrid, property):
+    def DoShowDialog(self, propGrid, prop):
         # propGrid -> MapDialog -> KeyPanel -> picker_dialog
         picker_dialog = propGrid.GetParent().GetParent().picker_dialog
         picker_dialog.enable_special(self.with_specials)

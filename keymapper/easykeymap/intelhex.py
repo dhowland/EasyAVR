@@ -65,15 +65,15 @@ def read(hex_file):
         address = int(line[3:7], 16)
         if line[7:9] == '00':
             div_data = line[9:(9+num_chars)]
-            bytes = array('B', parse(div_data))
+            byte_array = array('B', parse(div_data))
             if address != prev_addr:
                 block = array('B')
                 data.append((address, block))
-                block.extend(bytes)
-                prev_addr = address + len(bytes)
+                block.extend(byte_array)
+                prev_addr = address + len(byte_array)
             else:
-                block.extend(bytes)
-                prev_addr += len(bytes)
+                block.extend(byte_array)
+                prev_addr += len(byte_array)
         elif line[7:9] == '01':
             pass
         else:
@@ -87,8 +87,8 @@ def write(hex_file, data):
     """
     if not (hasattr(hex_file, 'write')):
         raise Exception("Not a valid file-like object")
-    for address, bytes in data:
-        for chunk in [bytes[x:x+16] for x in range(0, len(bytes), 16)]:
+    for address, byte_array in data:
+        for chunk in [byte_array[x:x+16] for x in range(0, len(byte_array), 16)]:
             bstr = ''.join([("%02X" % x) for x in chunk])
             line = "%02X%04X00%s" % (len(chunk), address, bstr)
             chks = antichecksum(parse(line))

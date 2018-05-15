@@ -35,7 +35,7 @@ class SaveFileException(Exception):
     pass
 
 
-class UserData():
+class UserData:
     """UserData objects contain all the information that can be captured from the user
     in the keymapper GUI.  The open() and save() methods can be used to load/store the
     data to disk as JSON.
@@ -97,8 +97,7 @@ class UserData():
                             defaults = [defaults]
                         for layer, scancode in enumerate(defaults):
                             row, col = matrix
-                            map = Map(scancode, 0, NULL_SYMBOL, 0)
-                            self.keymap[layer][row][col] = map
+                            self.keymap[layer][row][col] = Map(scancode, 0, NULL_SYMBOL, 0)
         # default led map
         for i, led_def in enumerate(self.config.led_definition):
             _, assignment = led_def
@@ -141,8 +140,8 @@ class UserData():
         """Save keymap data to a JSON file.  If `path` is specified, it overrides the
         internal path, and the internal path is updated.
         """
-        if (path is None):
-            if (self.path is None):
+        if path is None:
+            if self.path is None:
                 raise SaveFileException("No filename specified")
         else:
             self.path = path
@@ -257,11 +256,11 @@ class UserData():
         """check length and values for led_funcs and convert from list to tuple"""
         if isinstance(data, list) and (len(data) <= len(led_assignments)):
             fixed = []
-            for map in data:
-                if isinstance(map, list) and (len(map) == 2):
-                    if (map[0] > 255) or (map[1] > 10):
+            for kmap in data:
+                if isinstance(kmap, list) and (len(kmap) == 2):
+                    if (kmap[0] > 255) or (kmap[1] > 10):
                         raise SaveFileException("Invalid save file: incorrect leds value")
-                    fixed.append(tuple(map))
+                    fixed.append(tuple(kmap))
                 else:
                     raise SaveFileException("Invalid save file: incorrect leds value")
             while len(fixed) < len(led_assignments):
