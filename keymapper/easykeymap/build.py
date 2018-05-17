@@ -246,19 +246,18 @@ def overlay_macros(user_data, hex_data, external_data):
     offset = config.firmware.macro_map - start
     for index in index_list:
         short_array = array('H', [index])
-        byte_array = array('B', short_array.tostring())
-        byte_array[offset:offset+2] = byte_array[:]
+        byte_array[offset:offset+2] = array('B', short_array.tostring())
         offset += 2
     # map the non-empty macros into the byte array
     for i in range(NUM_MACROS):
         if mlens[i] > 0:
             end = offset + mlens[i]
-            byte_array[offset:end] = macro_data[i][:]
-            byte_array[end:end+2] = array('B', [0, 0])[:]
+            byte_array[offset:end] = macro_data[i]
+            byte_array[end:end+2] = array('B', [0, 0])
             offset += (mlens[i] + 2)
     # make sure the last spot of the byte array has a zero (terminator)
     last_spot = ((config.firmware.macro_map - start) + ((macro_length - 1) * 2))
-    byte_array[last_spot:last_spot+2] = array('B', [0, 0])[:]
+    byte_array[last_spot:last_spot+2] = array('B', [0, 0])
 
 
 def overlay_leds(user_data, hex_data):
@@ -339,7 +338,7 @@ def overlay_descriptor(user_data, hex_data):
     offset = config.firmware.conf_desc_map - start
     default_desc = byte_array[offset:(offset+confdesc_size)]
     updated_desc = update_descriptor(default_desc, user_data.usb_opts)
-    byte_array[offset:(offset+confdesc_size)] = array('B', updated_desc)[:]
+    byte_array[offset:(offset+confdesc_size)] = array('B', updated_desc)
 
 
 def overlay_misc(user_data, hex_data):
