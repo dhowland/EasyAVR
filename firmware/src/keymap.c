@@ -346,12 +346,14 @@ void inline set_mousebutton(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_MOUSE1);
 	g_mousebutton_state |= pgm_read_byte(&MOUSEBUTTON_MAP[i].mask);
+	g_mouse_service = 1;
 }
 
 void inline unset_mousebutton(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_MOUSE1);
 	g_mousebutton_state &= ~(pgm_read_byte(&MOUSEBUTTON_MAP[i].mask));
+	g_mouse_service = 1;
 }
 
 void init_keymap(void)
