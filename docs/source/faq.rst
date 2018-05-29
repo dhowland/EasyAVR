@@ -2,6 +2,12 @@
 Frequently Asked Questions
 ==========================
 
+I recently upgraded to a newer version and now the keyboard doesn't work in Windows.
+    Sometimes Windows gets confused when the USB endpoints are changed around.
+    You can either remove the keyboard in the "devices" control panel and
+    reconnect it, or you can simply move it to a different usb port.  If
+    neither is an option, you can work around the problem by disabling NKRO.
+
 I get a runtime error, "The program can't start because MSVCP100.dll is missing from your computer."
     Install the Visual Studio 2010 redistributable package for x86 from Microsoft_.
 
