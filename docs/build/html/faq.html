@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frequently Asked Questions &mdash; EasyAVR 3.01.03 documentation</title>
+  <title>Frequently Asked Questions &mdash; EasyAVR 3.01.07 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                3.01.03
+                3.01.07
               </div>
             
           
@@ -168,6 +168,11 @@
   <div class="section" id="frequently-asked-questions">
 <h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
 <dl class="docutils">
+<dt>I recently upgraded to a newer version and now the keyboard doesn’t work in Windows.</dt>
+<dd>Sometimes Windows gets confused when the USB endpoints are changed around.
+You can either remove the keyboard in the “devices” control panel and
+reconnect it, or you can simply move it to a different usb port.  If
+neither is an option, you can work around the problem by disabling NKRO.</dd>
 <dt>I get a runtime error, “The program can’t start because MSVCP100.dll is missing from your computer.”</dt>
 <dd>Install the Visual Studio 2010 redistributable package for x86 from <a class="reference external" href="http://www.microsoft.com/en-in/download/details.aspx?id=5555">Microsoft</a>.</dd>
 </dl>
@@ -266,7 +271,7 @@ memory that is not reserved by the EasyAVR firmware.</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.01.03',
+            VERSION:'3.01.07',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
