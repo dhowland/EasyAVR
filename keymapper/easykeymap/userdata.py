@@ -115,6 +115,9 @@ class UserData:
         """Load keymap data from a JSON file located at `path`."""
         with open(path, 'r') as fdin:
             data = json.load(fdin)
+        # first make sure this looks like a save file
+        if not isinstance(data, dict):
+            raise SaveFileException("Invalid save file: unexpected JSON data")
         # get unique_id and layout_mod, which are absolutely required
         try:
             self.unique_id = self.check_unique_id(data['unique_id'])
