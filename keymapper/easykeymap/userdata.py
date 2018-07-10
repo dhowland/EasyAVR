@@ -64,7 +64,10 @@ class UserData:
 
     def new(self, unique_id, layout_mod):
         """Create a new set of keymap data with default values."""
-        self.config = self.configurations[unique_id]
+        try:
+            self.config = self.configurations[unique_id]
+        except KeyError:
+            raise SaveFileException("Invalid save file: unsupported unique_id " + unique_id) from None
         self.path = None
         self.unique_id = unique_id
         self.layout_mod = layout_mod
@@ -181,7 +184,7 @@ class UserData:
     def check_unique_id(self, data):
         """make sure unique_id exists"""
         if data not in self.configurations:
-            raise SaveFileException("Invalid save file: unknown unique_id " + data)
+            raise SaveFileException("Invalid save file: unsupported unique_id " + data)
         return data
 
     def check_layout_mod(self, data):
