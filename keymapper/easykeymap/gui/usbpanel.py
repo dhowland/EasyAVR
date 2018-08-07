@@ -33,7 +33,7 @@ class UsbPanel(wx.Panel):
 
         self.user_data = None
 
-        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
 
         usb_sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "USB Endpoint Enables")
         label = "Standard USB HID keyboard, Boot compatible, 6KRO"
@@ -56,6 +56,13 @@ class UsbPanel(wx.Panel):
         usb_sizer.Add(self.mouse_cb, flag=wx.ALL, border=MARGIN)
 
         main_sizer.Add(usb_sizer, flag=wx.ALL, border=MARGIN)
+
+        win_warn = wx.StaticText(self, label="Note for Windows users:\n\nWindows is known to become "
+                                             "confused when the USB endpoints are changed.\nIf your "
+                                             "keyboard stops working, try uninstalling the keyboard "
+                                             "from the Devices\ncontrol panel or simply moving it "
+                                             "to a different USB port.")
+        main_sizer.Add(win_warn, flag=wx.ALL, border=MARGIN*2)
 
         self.SetSizer(main_sizer)
         main_sizer.Fit(self)
