@@ -132,6 +132,9 @@ Alternate Debounce Style
     confirmation time.  The alternate setting limits Debounce Time to 32ms or
     less.  This setting will not take effect until the keyboard is unplugged.
     Changing this setting resets the debounce time to default (see below).
+    More info here_.
+
+.. _here: https://medium.com/@dhowland/debounce-algorithms-in-easy-avr-usb-keyboard-firmware-2288a15a96c8
 
 Timing Menu Options
 -------------------
