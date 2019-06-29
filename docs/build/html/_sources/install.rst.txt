@@ -8,7 +8,7 @@ https://github.com/dhowland/EasyAVR/releases
 Windows
 -------
 
-Windows uses may use the compiled executable version of the EasyAVR 
+Windows users may use the compiled executable version of the EasyAVR
 keymapper.  This option requires much less effort to install.
 
 Prerequisites:
