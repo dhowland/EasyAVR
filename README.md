@@ -20,5 +20,3 @@ https://geekhack.org/index.php?topic=51252
 
 Additional info at the DT Wiki:  
 https://deskthority.net/wiki/Easy_AVR_USB_Keyboard_Firmware
-
-Developed with generous support from [JetBrains](https://www.jetbrains.com/pycharm/)
