@@ -43,5 +43,6 @@ extern uint8_t saved_stack[];
 void init_lowlevel(void);
 void powersave(void);
 void reset_to_bootloader(void);
+void set_wdt_for_reset(void);
 
 #endif /* LOWLEVEL_H_ */

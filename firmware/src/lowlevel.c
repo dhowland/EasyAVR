@@ -63,6 +63,7 @@ void get_mcusr(void)
 	uint8_t mcusr_bkup = MCUSR;
 	MCUSR = 0;
 	wdt_disable();
+	cli();
 	/* Also check for bootloader request */
 	if ((mcusr_bkup & (1 << WDRF)) && (boot_key == MAGIC_BOOT_KEY))
 	{
@@ -174,4 +175,15 @@ void reset_to_bootloader(void)
 {
 	// Set the bootloader key to the magic value
 	boot_key = MAGIC_BOOT_KEY;
+}
+
+void set_wdt_for_reset(void)
+{
+	/* will be timed twice because the interrupt routine doesn't stop the WDT,
+	   so this is a half second to allow for everything to settle */
+	wdt_enable(WDTO_250MS);
+	/* enable watchdog interrupts */
+	WDTCSR |= _BV(WDIE);
+	/* enable all interrupts */
+	sei();
 }

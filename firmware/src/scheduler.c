@@ -63,15 +63,13 @@ void schedule_start(void)
     /* USB can take up to 30ms anyway, so give it time to do its thing */
 	wdt_enable(WDTO_60MS);
 	/* enable watchdog interrupts (see lowlevel.c) */
-	WDTCSR |= (_BV(WDIF) | _BV(WDIE));
+	WDTCSR |= _BV(WDIE);
 }
 
 void schedule_stop(void)
 {
-	/* enable the watchdog timer */
+	/* disable the watchdog timer */
 	wdt_disable();
-	/* disable watchdog interrupts */
-	WDTCSR &= (uint8_t)~(_BV(WDIE));
 	
 	/* Stop the timer */
 	TIMSK = 0;	// disable output compare A interrupt

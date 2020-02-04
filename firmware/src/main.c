@@ -19,7 +19,6 @@
 // compiler includes
 #include <stddef.h>
 #include <stdint.h>
-#include <avr/wdt.h>
 #include <util/delay.h>
 
 // library includes
@@ -37,14 +36,12 @@
 #include "nvm.h"
 #include "USB.h"
 
-/* Foward declarations to avoid warnings */
-void application_init(void);
-void application_loop(void);
-void application_cleanup(void);
 
-/* This function launches all initialization tasks. */
-void application_init(void)
-{	
+int main(void)
+{
+	/* Run anything required by ASF */
+	board_init();
+	
 	/* Initialize modules */
 	init_lowlevel();
 	init_debug();
@@ -65,63 +62,31 @@ void application_init(void)
 	
 	/* Enable global interrupts */
 	sei();
-}
-
-/* This function executes the main program */
-void application_loop(void)
-{
+	
 	/* USB enumeration takes a long time, so let that finish first */
 	while (USB_DeviceState < DEVICE_STATE_Configured)
 		USB_service();
 	
+	/* Operate the keyboard until the user requests a reset */
 	schedule_start();
-	while(1)
-	{
-		if (g_reset_requested != NO_RESET)
-			break;
+	while (g_reset_requested == NO_RESET)
 		USB_service();
-	}
 	schedule_stop();
-}
-
-/* Called only in the event of an unrecoverable system failure.  This function
-   collects debugging information and finally halts the system to wait for a
-   breakpoint. */
-void application_cleanup(void)
-{
-	// If USB is used, detach from the bus and reset it
+	
+	/* Detach from the USB bus and reset it */
 	USB_Disable();
-	// Disable all interrupts
+	
+	/* Disable all interrupts */
 	cli();
-	// Wait two seconds for the USB detachment to register on the host
+	
+	/* Wait two seconds for the USB detachment to register on the host */
 	Delay_MS(2000);
+	
+	/* If requested, go to bootloader after reset */
 	if (g_reset_requested == RESET_TO_BOOT)
-	{
-		// enable bootloader then force a reset
 		reset_to_bootloader();
-	}
-	if (g_reset_requested != NO_RESET)
-	{
-		wdt_enable(WDTO_250MS);
-		for (;;);
-	}
-}
-
-int main(void)
-{
-	/* Run anything required by ASF */
-	board_init();
 	
-	/* This is the top level progression of the embedded software.  First, the init
-	   code is used to setup the hardware and initialize data structures in RAM */
-	application_init();
-	
-	/* The main application loop implements the embedded functions.  This should be
-	   the final function call at this level */
-	application_loop();
-	
-	/* In the event of an unexpected issue, the main application loop will return
-	   and the cleanup function will execute to collect debugging information and
-	   halt the system. */
-	application_cleanup();
+	/* Force a reset */
+	set_wdt_for_reset();
+	for (;;);
 }
