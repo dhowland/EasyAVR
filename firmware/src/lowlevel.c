@@ -173,6 +173,17 @@ void powersave(void)
 
 void reset_to_bootloader(void)
 {
+#if defined(__AVR_AT90USB1286__) && (F_CPU == 16000000UL)      
+	// Teensy++ 2.0 hack
+	if (BOOTLOADER == 0xFE00)
+	{
+		EIMSK = 0; PCICR = 0; SPCR = 0; ACSR = 0; EECR = 0; ADCSRA = 0;
+		TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0; TIMSK3 = 0; UCSR1B = 0; TWCR = 0;
+		DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
+		PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
+		asm volatile("jmp 0x1FC00");
+	}
+#endif
 	// Set the bootloader key to the magic value
 	boot_key = MAGIC_BOOT_KEY;
 }
