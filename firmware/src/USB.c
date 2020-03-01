@@ -532,6 +532,8 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
+	(void)ReportType;
+	
 	/* Outputs are ReportData and ReportSize.  ReportData is zeroed out before calling.
 	   ReportSize must be set because this could be a control request. */
 	
@@ -652,6 +654,9 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
                                           const void* ReportData,
                                           const uint16_t ReportSize)
 {
+	(void)ReportID;
+	(void)ReportType;
+	(void)ReportSize;
 	static uint8_t hid_lock_flags_lpv;
 	uint8_t hid_lock_flags_new;
 	

@@ -76,7 +76,7 @@ const nvm_map_t PROGMEM NVM_MAP[NUMBER_OF_NVM_PARAMETERS] = {
 
 void init_nvm(void)
 {
-	int8_t i;
+	uint8_t i;
 	uint8_t * byte_ptr;
 	int16_t * word_ptr;
 	uint8_t nvm_index;

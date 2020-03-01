@@ -86,9 +86,6 @@ typedef struct {
 } matrix_init_t;
 
 typedef struct {
-} matrix_strobe_t;
-
-typedef struct {
 	const uint8_t port_ref;
 	const uint8_t mask;
 } matrix_sense_t;

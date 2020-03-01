@@ -40,7 +40,7 @@ void (*debounce_logic)(const uint8_t, const uint8_t, const uint8_t);
 
 void init_matrix(void)
 {
-	int8_t i;
+	uint8_t i;
 	uint8_t port_mask;
 	uint8_t port_dir;
 	uint8_t in_pins;
@@ -95,7 +95,7 @@ void init_matrix(void)
 void initial_scan(void)
 {
 #ifndef SIMPLE_DEVICE
-	int8_t i,j,n;
+	uint8_t i,j,n;
 	uint8_t status;
 	
 	/* This function should track the matrix_subscan() logic.
@@ -134,9 +134,9 @@ void initial_scan(void)
 #endif /* SIMPLE_DEVICE */
 }
 
-void matrix_subscan(const int8_t start, const int8_t finish)
+void matrix_subscan(const uint8_t start, const uint8_t finish)
 {
-	int8_t i,j,n;
+	uint8_t i,j,n;
 	uint8_t status;
 	
 	for (i=start; i<finish; i++)
@@ -321,7 +321,7 @@ void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uin
 	/* Switch is holding steady open */
 	{
 		uint16_t hold_count = matrixptr->packed_state.hold_count;
-		if (hold_count < g_doubletap_delay_ms)
+		if (hold_count < (uint16_t)(g_doubletap_delay_ms*-1))
 		{
 			hold_count += MATRIX_REPEAT_MS;
 		}
@@ -332,7 +332,7 @@ void debounce_logic_slow(const uint8_t read_status, const uint8_t row, const uin
 	/* Switch is holding steady closed */
 	{
 		uint16_t hold_count = matrixptr->packed_state.hold_count;
-		if (hold_count >= g_hold_key_ms)
+		if (hold_count >= (uint16_t)g_hold_key_ms)
 		{
 			keymap_interrupt(row,col);
 			hold_count -= g_repeat_ms;

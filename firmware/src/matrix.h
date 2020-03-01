@@ -41,7 +41,7 @@ typedef union {
 
 void init_matrix(void);
 void initial_scan(void);
-void matrix_subscan(const int8_t start, const int8_t finish);
+void matrix_subscan(const uint8_t start, const uint8_t finish);
 void matrix_scan(void);
 void matrix_scan_first_half(void);
 void matrix_scan_second_half(void);

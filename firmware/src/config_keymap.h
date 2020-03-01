@@ -162,19 +162,19 @@
 
 #define NUMBER_OF_LAYERS (10)
 
-#ifdef __AVR_ATmega16U2__
+#if defined(__AVR_ATmega16U2__)
 #define MACRO_BUFFER_SIZE (512)
-#elif __AVR_AT90USB1286__
+#elif defined(__AVR_AT90USB1286__)
 #define MACRO_BUFFER_SIZE (1024 * 4)
 #else
 #define MACRO_BUFFER_SIZE (1024 * 2)
 #endif
 
-#ifdef __AVR_ATmega32U2__
+#if defined(__AVR_ATmega32U2__)
 #define MACRO_RAM_SIZE (40)
-#elif __AVR_ATmega32U4__
+#elif defined(__AVR_ATmega32U4__)
 #define MACRO_RAM_SIZE (80)
-#elif __AVR_AT90USB1286__
+#elif defined(__AVR_AT90USB1286__)
 #define MACRO_RAM_SIZE (160)
 #endif /* Larger ATmega Devices */
 

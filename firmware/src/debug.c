@@ -33,7 +33,7 @@
 volatile uint8_t g_reset_requested;
 
 console_state_t g_console_state;
-int8_t g_console_index;
+uint8_t g_console_index;
 
 #ifdef ENABLE_DEBUG_CONSOLE
 const char PROGMEM g_main_menu[] = "\nMain Menu:\n1) Config menu\n2) Timing menu\n3) LED menu\n4) Debug menu\n5) Reset\n9) Quit\n> ";
@@ -186,7 +186,7 @@ void console_main(void)
 			}
 			else if (read_byte == 2)
 			{
-				for (int8_t i=0; i<EVENT_BUFFER_SIZE; i++)
+				for (register uint8_t i=0; i<EVENT_BUFFER_SIZE; i++)
 				{
 					g_event_buffer[i].code = 0;
 					g_event_buffer[i].status = 0;
@@ -269,8 +269,8 @@ void console_main(void)
 				g_console_state = CONSOLE_MENU_DEBUG;
 				reset_max_clocks();
 			} else {
-				const int8_t i = g_console_index % NUMBER_OF_SCHEDULE_SLOTS;
-				const int8_t j = g_console_index / NUMBER_OF_SCHEDULE_SLOTS;
+				register const uint8_t i = g_console_index % NUMBER_OF_SCHEDULE_SLOTS;
+				register const uint8_t j = g_console_index / NUMBER_OF_SCHEDULE_SLOTS;
 				if (i == 0)
 					word_print[0] = '\n';
 				else
@@ -678,7 +678,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word < 100) && (read_word > 0))
 			{
-				g_debounce_ms = (int8_t)(read_word & 0x00FF);
+				g_debounce_ms = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_DEBOUNCE_MS);
 			}
 			else
@@ -717,7 +717,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word < 100) && (read_word > 0))
 			{
-				g_mouse_min_delta = (int8_t)(read_word & 0x00FF);
+				g_mouse_min_delta = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MOUSE_MIN_DELTA);
 			}
 			else
@@ -730,7 +730,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word < 100) && (read_word > 0))
 			{
-				g_mouse_delta_mult = (int8_t)(read_word & 0x00FF);
+				g_mouse_delta_mult = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MOUSE_DELTA_MULT);
 			}
 			else
@@ -756,7 +756,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word < 100) && (read_word > 0))
 			{
-				g_repeat_ms = (int8_t)(read_word & 0x00FF);
+				g_repeat_ms = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_REPEAT_MS);
 			}
 			else
@@ -769,7 +769,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word <= 255) && (read_word > 0))
 			{
-				g_matrix_setup_wait = (int8_t)(read_word & 0x00FF);
+				g_matrix_setup_wait = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_MATRIX_SETUP_WAIT);
 			}
 			else
@@ -878,7 +878,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word <= NUMBER_OF_BACKLIGHT_LEVELS) && (read_word > 0))
 			{
-				g_init_dimmer_level = (int8_t)(read_word & 0x00FF);
+				g_init_dimmer_level = (uint8_t)(read_word & 0x00FF);
 				nvm_update_param(NVM_ID_INIT_DIMMER_LEVEL);
 			}
 			else
@@ -892,7 +892,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word <= MAX_BACKLIGHT_ENABLES) && (read_word > 0))
 			{
-				g_init_backlight_enable = ((int8_t)(read_word & 0x00FF)) - 1;
+				g_init_backlight_enable = ((uint8_t)(read_word & 0x00FF)) - 1;
 				nvm_update_param(NVM_ID_INIT_BACKLIGHT_ENABLE);
 			}
 			else
@@ -905,7 +905,7 @@ void console_main(void)
 			read_word = sc_to_word(g_read_buffer, g_read_buffer_length, 10);
 			if ((read_word <= NUMBER_OF_BACKLIGHT_MODES) && (read_word > 0))
 			{
-				g_init_backlight_mode = ((int8_t)(read_word & 0x00FF)) - 1;
+				g_init_backlight_mode = ((uint8_t)(read_word & 0x00FF)) - 1;
 				nvm_update_param(NVM_ID_INIT_BACKLIGHT_MODE);
 			}
 			else
@@ -922,7 +922,7 @@ void console_main(void)
 void report_event(uint8_t code, uint16_t status, uint8_t mode)
 {
 #ifdef ENABLE_DEBUG_CONSOLE
-	int8_t i;
+	uint8_t i;
 	
 	if (mode == MODE_UPDATE)
 	{
@@ -974,7 +974,7 @@ char nibble_to_char(uint8_t c)
 /* Left-aligns, always fills in 3 characters, max input is 999 */
 void dec_to_string(uint16_t w, char* dst)
 {
-	int8_t i = 0;
+	uint8_t i = 0;
 	uint8_t d = 100;
 	
 	dst[0] = '0';
@@ -1018,7 +1018,7 @@ uint8_t sc_to_int(uint8_t sc)
 
 uint16_t sc_to_word(uint8_t * buf, const size_t length, const uint8_t base)
 {
-	int8_t i;
+	uint8_t i;
 	uint16_t val=0;
 	
 	for (i=0; i<length; i++)

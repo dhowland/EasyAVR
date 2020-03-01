@@ -23,8 +23,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define SEND_BUFFER_SIZE (8)
-#define READ_BUFFER_SIZE (6)
+#define SEND_BUFFER_SIZE (8u)
+#define READ_BUFFER_SIZE (6u)
 
 #define AUTOKEY_IDLE (0)
 #define AUTOKEY_BUSY (1)

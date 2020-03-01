@@ -110,10 +110,10 @@ uint8_t g_matrixcode[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 uint8_t g_matrixaction[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 uint8_t g_matrixtapkey[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #endif /* KEYMAP_MEMORY_SAVE */
-int8_t g_buffer_length;
+uint8_t g_buffer_length;
 uint8_t g_rollover_error;
 uint8_t g_fn_buffer[FN_BUFFER_SIZE+1];
-int8_t g_fn_buffer_length;
+uint8_t g_fn_buffer_length;
 uint8_t g_mousebutton_state;
 int8_t g_mouse_req_X;
 int8_t g_mouse_req_Y;
@@ -127,8 +127,8 @@ uint8_t g_double_tap_repeat;
 #if MACRO_RAM_SIZE
 uint8_t g_recording_macro;
 uint16_t g_ram_macro[MACRO_RAM_SIZE];
-int8_t g_ram_macro_ptr;
-int8_t g_ram_macro_length;
+uint8_t g_ram_macro_ptr;
+uint8_t g_ram_macro_length;
 #endif /* MACRO_RAM_SIZE */
 
 /* Functions for working with the keypress queue
@@ -139,7 +139,7 @@ int8_t g_ram_macro_length;
  */
 void enqueue_key(const uint8_t code)
 {
-	int8_t i;
+	uint8_t i;
 	const uint8_t pos = (code / 8);
 	const uint8_t off = (code % 8);
 	
@@ -167,7 +167,7 @@ void enqueue_key(const uint8_t code)
 
 void delete_key(const uint8_t code)
 {
-	int8_t i;
+	uint8_t i;
 	const uint8_t pos = (code / 8);
 	const uint8_t off = (code % 8);
 	
@@ -195,7 +195,7 @@ found:
 
 void toggle_key(const uint8_t code)
 {
-	int8_t i;
+	uint8_t i;
 	const uint8_t pos = (code / 8);
 	const uint8_t off = (code % 8);
 	
@@ -242,7 +242,7 @@ void enqueue_fn(const uint8_t code)
 
 void delete_fn(const uint8_t code)
 {
-	int8_t i;
+	uint8_t i;
 	
 	for (i=0; i<g_fn_buffer_length; i++)
 	{
@@ -264,27 +264,27 @@ void delete_fn(const uint8_t code)
 }
 /* End keypress queue functions */
 
-uint8_t inline getmap(const uint8_t row, const uint8_t col)
+inline uint8_t getmap(const uint8_t row, const uint8_t col)
 {
 	return pgm_read_byte(&LAYERS[g_layer_select][row][col]);
 }
 
-uint8_t inline getaction(const uint8_t row, const uint8_t col)
+inline uint8_t getaction(const uint8_t row, const uint8_t col)
 {
 	return pgm_read_byte(&ACTIONS[g_layer_select][row][col]);
 }
 
-uint8_t inline gettapkey(const uint8_t row, const uint8_t col)
+inline uint8_t gettapkey(const uint8_t row, const uint8_t col)
 {
 	return pgm_read_byte(&TAPKEYS[g_layer_select][row][col]);
 }
 
-uint8_t inline get_modfier_mask(const uint8_t code)
+inline uint8_t get_modfier_mask(const uint8_t code)
 {
 	return pgm_read_byte(&MODIFIER_MAP[(code-HID_KEYBOARD_SC_LEFT_CONTROL)].mask);
 }
 
-void inline set_modifier(const uint8_t code)
+inline void set_modifier(const uint8_t code)
 {
 	g_modifier_state |= get_modfier_mask(code);
 	if (g_winlock_flag)
@@ -292,13 +292,13 @@ void inline set_modifier(const uint8_t code)
 	g_modifier_service = 1;
 }
 
-void inline unset_modifier(const uint8_t code)
+inline void unset_modifier(const uint8_t code)
 {
 	g_modifier_state &= ~(get_modfier_mask(code));
 	g_modifier_service = 1;
 }
 
-void inline toggle_modifier(const uint8_t code)
+inline void toggle_modifier(const uint8_t code)
 {
 	g_modifier_state ^= get_modfier_mask(code);
 	if (g_winlock_flag)
@@ -306,7 +306,7 @@ void inline toggle_modifier(const uint8_t code)
 	g_modifier_service = 1;
 }
 
-uint8_t inline is_mod_set(const uint8_t code)
+inline uint8_t is_mod_set(const uint8_t code)
 {
 	return ((g_modifier_state & get_modfier_mask(code)) != 0);
 }
@@ -335,21 +335,21 @@ void set_power(const uint8_t code)
 	g_power_service = 1;
 }
 
-void unset_power(const uint8_t code)
+void unset_power(void)
 {
 	/* Assume power keys never coincide */
 	g_powermgmt_field = 0;
 	g_power_service = 1;
 }
 
-void inline set_mousebutton(const uint8_t code)
+inline void set_mousebutton(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_MOUSE1);
 	g_mousebutton_state |= pgm_read_byte(&MOUSEBUTTON_MAP[i].mask);
 	g_mouse_service = 1;
 }
 
-void inline unset_mousebutton(const uint8_t code)
+inline void unset_mousebutton(const uint8_t code)
 {
 	const uint8_t i = (code - SCANCODE_MOUSE1);
 	g_mousebutton_state &= ~(pgm_read_byte(&MOUSEBUTTON_MAP[i].mask));
@@ -404,7 +404,7 @@ void record_stroke(const uint8_t code)
 	}
 }
 
-void inline toggle_macro_record(void)
+inline void toggle_macro_record(void)
 {
 	g_recording_macro ^= 1;
 	if (g_recording_macro)
@@ -438,7 +438,7 @@ void play_macro(const uint8_t code)
 	}
 }
 
-void inline send_tapkey(const uint8_t code)
+inline void send_tapkey(const uint8_t code)
 {
 	if ((code > 0) && (code <= MAX_NKRO_CODE))
 	{
@@ -595,7 +595,7 @@ void alpha_down(const uint8_t code, const uint8_t action)
 	}
 }
 
-void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
+void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tap)
 {
 	switch(action & KEY_ACTION_MASK)
 	{
@@ -613,7 +613,7 @@ void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, co
 	}
 }
 
-void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t tapkey)
+void handle_code_actuate(const uint8_t code, const uint8_t action)
 {
 	const uint8_t modaction = (action & MOD_ACTION_MASK);
 	
@@ -1029,7 +1029,7 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case HID_KEYBOARD_SC_F22:
 	case HID_KEYBOARD_SC_F23:
 	case HID_KEYBOARD_SC_F24:
-		alpha_up(code, action, tapkey, tap);
+		alpha_up(code, action, tap);
 		break;
 	case HID_KEYBOARD_SC_LOCKING_CAPS_LOCK:
 		if (g_hid_lock_flags & HID_KEYBOARD_LED_CAPSLOCK)
@@ -1052,14 +1052,14 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 	case SCANCODE_ESCGRAVE:
 #ifdef KEYMAP_MEMORY_SAVE
 		/* If using keymap memory save, we don't know which was pressed. Just pull 'em both. */
-		alpha_up(HID_KEYBOARD_SC_ESCAPE, action, tapkey, tap);
-		alpha_up(HID_KEYBOARD_SC_GRAVE_ACCENT_AND_TILDE, action, tapkey, tap);
+		alpha_up(HID_KEYBOARD_SC_ESCAPE, action, tap);
+		alpha_up(HID_KEYBOARD_SC_GRAVE_ACCENT_AND_TILDE, action, tap);
 #endif /* KEYMAP_MEMORY_SAVE */
 		break;
 	case SCANCODE_POWER:
 	case SCANCODE_SLEEP:
 	case SCANCODE_WAKE:
-		unset_power(code);
+		unset_power();
 		break;
 	case SCANCODE_BOOT:
 	case SCANCODE_CONFIG:
@@ -1229,7 +1229,7 @@ void keymap_actuate(const uint8_t row, const uint8_t col, const int16_t idle_tim
 	
 	doubletap_down(row,col,idle_time);
 	
-	handle_code_actuate(code, action, tapkey);
+	handle_code_actuate(code, action);
 
 #ifdef MAX_NUMBER_OF_BACKLIGHTS
 	backlight_react();

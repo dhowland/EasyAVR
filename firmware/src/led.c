@@ -199,7 +199,7 @@ void led_host_off(const led_function_t led_fn)
 
 void show_led_host_setting(void)
 {
-	int8_t i;
+	uint8_t i;
 	const uint8_t n = pgm_read_byte(&NUMBER_OF_INDICATORS);
 	
 	for (i=0; i<n; i++)
@@ -391,7 +391,7 @@ void backlighting_pwm(void)
 
 void set_backlighting(void)
 {
-	int8_t i;
+	uint8_t i;
 	uint8_t setting;
 	const uint8_t n = pgm_read_byte(&NUMBER_OF_LEDS);
 	

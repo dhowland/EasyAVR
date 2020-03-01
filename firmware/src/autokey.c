@@ -111,7 +111,7 @@ void autokey_send(void)
 					}
 					else if ((g_autokey_buffer >= SCANCODE_POWER) && (g_autokey_buffer <= SCANCODE_WAKE))
 					{
-						unset_power(g_autokey_buffer);
+						unset_power();
 					}
 					g_autokey_buffer = 0;
 				}
@@ -200,7 +200,7 @@ void autokey_cycle(void)
 
 uint8_t queue_autotext(char const * const str)
 {
-	int8_t i;
+	uint8_t i;
 	char c;
 	
 	for (i=0; ; i++)
@@ -226,7 +226,7 @@ uint8_t queue_autotext(char const * const str)
 
 uint8_t queue_ram_autotext(char * const str, size_t const len)
 {
-	int8_t i;
+	uint8_t i;
 	
 	if (len > (SEND_BUFFER_SIZE - g_send_buffer_length))
 		return 0;
@@ -256,7 +256,7 @@ uint8_t queue_autokeys(uint8_t const key, uint8_t const mod)
 
 uint8_t queue_macro(uint16_t const * const macro)
 {
-	int8_t i;
+	uint8_t i;
 	uint16_t w;
 	
 	if (g_send_buffer_length != 0)
@@ -285,7 +285,7 @@ uint8_t queue_macro(uint16_t const * const macro)
 #ifdef MACRO_RAM_SIZE
 uint8_t queue_ram_macro(uint16_t * const macro, size_t const len)
 {
-	int8_t i;
+	uint8_t i;
 	
 	if (g_send_buffer_length != 0)
 		return 0;
@@ -314,7 +314,7 @@ uint8_t queue_ram_macro(uint16_t * const macro, size_t const len)
 
 void begin_read(void)
 {
-	int8_t i;
+	uint8_t i;
 	
 	for (i=0; i<READ_BUFFER_SIZE; i++)
 		g_read_buffer[i] = 0;

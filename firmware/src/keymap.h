@@ -68,8 +68,8 @@ extern uint8_t g_hid_lock_flags;
 extern uint8_t g_winlock_flag;
 #if MACRO_RAM_SIZE
 extern uint16_t g_ram_macro[MACRO_RAM_SIZE];
-int8_t g_ram_macro_ptr;
-int8_t g_ram_macro_length;
+uint8_t g_ram_macro_ptr;
+uint8_t g_ram_macro_length;
 #endif /* MACRO_RAM_SIZE */
 
 void enqueue_key(const uint8_t code);
@@ -80,7 +80,7 @@ void delete_fn(const uint8_t code);
 void set_media(const uint8_t code);
 void unset_media(const uint8_t code);
 void set_power(const uint8_t code);
-void unset_power(const uint8_t code);
+void unset_power(void);
 void init_keymap(void);
 void doubletap_down(const uint8_t row, const uint8_t col, const int16_t idle_time);
 void doubletap_up(const uint8_t row, const uint8_t col, const int16_t hold_time, uint8_t * const tap);
@@ -93,8 +93,8 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 void mod_down(const uint8_t code, const uint8_t action);
 void mod_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap);
 void alpha_down(const uint8_t code, const uint8_t action);
-void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap);
-void handle_code_actuate(const uint8_t code, const uint8_t action, const uint8_t tapkey);
+void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tap);
+void handle_code_actuate(const uint8_t code, const uint8_t action);
 void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap);
 uint8_t translate_code(uint8_t code);
 void keymap_actuate(const uint8_t row, const uint8_t col, const int16_t hold_time);

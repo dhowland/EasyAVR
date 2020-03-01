@@ -122,7 +122,7 @@ inline void clock_in(void)
 
 void reset_max_clocks(void)
 {
-	int8_t i,j;
+	uint8_t i,j;
 	
 	for (i=0; i<NUMBER_OF_SCHEDULE_SLOTS; i++)
 		for (j=0; j<NUMBER_OF_ITEMS_PER_SLOT; j++)
