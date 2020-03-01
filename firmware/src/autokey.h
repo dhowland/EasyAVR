@@ -26,10 +26,10 @@
 #define SEND_BUFFER_SIZE (8u)
 #define READ_BUFFER_SIZE (6u)
 
-#define AUTOKEY_IDLE (0)
-#define AUTOKEY_BUSY (1)
-#define AUTOKEY_SENDING (2)
-#define AUTOKEY_READING (4)
+#define AUTOKEY_IDLE (0x0)
+#define AUTOKEY_BUSY (0x1)
+#define AUTOKEY_SENDING (0x2)
+#define AUTOKEY_READING (0x4)
 
 #define AUTOKEY_SETSEND (g_autokey_status | 0x03)
 #define AUTOKEY_ENDSEND (g_autokey_status & 0xFD)
