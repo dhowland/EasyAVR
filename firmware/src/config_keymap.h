@@ -181,28 +181,29 @@
 #define NUMBER_OF_MACROS (16)
 
 /* Action word definition
-Gui
-| Alt
-| | Shift
-| | | Ctrl
-| | | | Rapidfire (alpha only)
-| | | | | Tapkey (mod only)
-| | | | | | Lockable
-| | | | | | | Toggle
+Tapkey (mod only)
+|
+|
+|
+|       Rapidfire (alpha only)
+|       | Sticky (mod only)
+|       | | Lockable
+|       | | | Toggle
 0 0 0 0 0 0 0 0
+  |  tap code |
 */
 #define ACTION_NORMAL (0x00)
 #define ACTION_TOGGLE (0x01)
 #define ACTION_LOCKABLE (0x02)
-#define ACTION_TAPKEY (0x04)
+#define ACTION_STICKY (0x04)
 #define ACTION_RAPIDFIRE (0x08)
-#define KEY_ACTION_MASK (0x0F)
-#define MOD_ACTION_MASK (0xF0)
+#define ACTION_TAPKEY (0x80)
+#define TAPKEY_MASK (0x7F)
 
 extern const uint16_t PROGMEM MACRO_BUFFER[MACRO_BUFFER_SIZE];
 extern const uint8_t PROGMEM LAYERS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
 extern const uint8_t PROGMEM ACTIONS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
-extern const uint8_t PROGMEM TAPKEYS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
+extern const uint8_t PROGMEM WMODS[NUMBER_OF_LAYERS][NUMBER_OF_ROWS][NUMBER_OF_COLS];
 extern const uint8_t PROGMEM LED_LAYERS[LED_LAYERS_SIZE];
 
 #endif /* CONFIG_KEYMAP_H_ */

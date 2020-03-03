@@ -97,6 +97,8 @@ uint8_t g_last_keypress;
 uint8_t g_locked_layer;
 uint8_t g_layer_select;
 uint8_t g_modifier_state;
+uint8_t g_sticky_fncode;
+uint8_t g_sticky_mod;
 uint8_t g_report_buffer[HID_ROLLOVER_SIZE+1];
 uint8_t g_nkro_field[NKRO_ARRAY_LENGTH];
 uint8_t g_modifier_service;
@@ -108,7 +110,7 @@ uint8_t g_matrixlayer[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #else
 uint8_t g_matrixcode[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 uint8_t g_matrixaction[NUMBER_OF_ROWS][NUMBER_OF_COLS];
-uint8_t g_matrixtapkey[NUMBER_OF_ROWS][NUMBER_OF_COLS];
+uint8_t g_matrixwmods[NUMBER_OF_ROWS][NUMBER_OF_COLS];
 #endif /* KEYMAP_MEMORY_SAVE */
 uint8_t g_buffer_length;
 uint8_t g_rollover_error;
@@ -124,7 +126,7 @@ uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
 uint8_t g_double_tap_key;
 uint8_t g_double_tap_repeat;
-#if MACRO_RAM_SIZE
+#ifdef MACRO_RAM_SIZE
 uint8_t g_recording_macro;
 uint16_t g_ram_macro[MACRO_RAM_SIZE];
 uint8_t g_ram_macro_ptr;
@@ -274,9 +276,9 @@ inline uint8_t getaction(const uint8_t row, const uint8_t col)
 	return pgm_read_byte(&ACTIONS[g_layer_select][row][col]);
 }
 
-inline uint8_t gettapkey(const uint8_t row, const uint8_t col)
+inline uint8_t getwmod(const uint8_t row, const uint8_t col)
 {
-	return pgm_read_byte(&TAPKEYS[g_layer_select][row][col]);
+	return pgm_read_byte(&WMODS[g_layer_select][row][col]);
 }
 
 inline uint8_t get_modfier_mask(const uint8_t code)
@@ -309,6 +311,28 @@ inline void toggle_modifier(const uint8_t code)
 inline uint8_t is_mod_set(const uint8_t code)
 {
 	return ((g_modifier_state & get_modfier_mask(code)) != 0);
+}
+
+inline void toggle_sticky_mod(const uint8_t code)
+{
+	uint8_t mod_mask = get_modfier_mask(code);
+	
+	g_sticky_mod ^= mod_mask;
+	if ((g_sticky_mod & mod_mask) == 0)
+	{
+		g_modifier_state &= ~(mod_mask);
+		g_modifier_service = 1;
+	}
+}
+
+inline void clear_sticky_mod(void)
+{
+	if (g_sticky_mod)
+	{
+		g_modifier_state &= ~(g_sticky_mod);
+		g_sticky_mod = 0;
+		g_modifier_service = 1;
+	}
 }
 
 void set_media(const uint8_t code)
@@ -391,7 +415,7 @@ void doubletap_up(const uint8_t row, const uint8_t col, const int16_t hold_time,
 	}
 }
 
-#if MACRO_RAM_SIZE
+#ifdef MACRO_RAM_SIZE
 void record_stroke(const uint8_t code)
 {
 	g_ram_macro[g_ram_macro_ptr] = (((uint16_t)g_modifier_state << 8) | (uint16_t)code);
@@ -469,25 +493,34 @@ void led_fn_deactivate(const uint8_t bit)
 
 void fn_down(const uint8_t code, const uint8_t action)
 {
+	/* if this key is currently stuck, there's no need to do anything */
+	if (g_sticky_fncode == code)
+		return;
+	/* clear the existing Fn LED, if there is one */
 	if (g_layer_select != 0)
 	{
 		led_host_off((g_layer_select + (LED_FN1_ACTIVE-1)));
 	}
+	/* select the new layer */
 	g_layer_select = (code - SCANCODE_FN0);
 	enqueue_fn(g_layer_select);
+	/* set the Fn LED if needed */
 	if (g_layer_select != 0)
 	{
 		led_host_on((g_layer_select + (LED_FN1_ACTIVE-1)));
 	}
+	/* set the Any-Fn LED if needed */
 	if (g_layer_select != g_default_layer)
 	{
 		led_host_on(LED_ANY_ACTIVE);
 	}
+	/* if this key is toggle mode and it's not already on, lock the new layer */
 	if ((action & ACTION_TOGGLE) && (g_locked_layer != g_layer_select))
 	{
 		g_locked_layer = g_layer_select;
 		return;
 	}
+	/* otherwise, if the new layer is locked, unlock this layer, unless we are double tapping */
 	if ((g_locked_layer == g_layer_select) && (!g_double_tap_repeat))
 	{
 		g_locked_layer = g_default_layer;
@@ -498,21 +531,41 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 {
 	const uint8_t layerid = (code - SCANCODE_FN0);
 	
+	/* if this key was pressed by itself, handle sticky saves */
+	if ((g_last_keypress == code))
+	{
+		/* if this key is already stuck, unstick it */
+		if (g_sticky_fncode == code)
+		{
+			g_sticky_fncode = 0;
+		}
+		/* if this key is sticky mode, save it for later and leave it active */
+		else if (action & ACTION_STICKY)
+		{
+			g_sticky_fncode = code;
+			return;
+		}
+	}
+	/* clear the Fn LED, if there is one */
 	if (g_layer_select != 0)
 	{
 		led_host_off((g_layer_select + (LED_FN1_ACTIVE-1)));
 	}
+	/* if this key was tapped and no other Fn was pressed in the mean time */
 	if (tap && (g_layer_select == layerid))
 	{
+		/* if this key is lockable mode and was double tapped, lock the current layer */
 		if ((g_double_tap_repeat) && (action & ACTION_LOCKABLE))
 		{
 			g_locked_layer = g_layer_select;
 		}
+		/* if this key is tapkey mode and was pressed by itself, send the tapkey */
 		if ((g_last_keypress == code) && (action & ACTION_TAPKEY))
 		{
 			send_tapkey(tapkey);
 		}
 	}
+	/* deselect the layer and return to the previous layer, if there is one */
 	delete_fn(layerid);
 	if (g_fn_buffer_length == 0)
 	{
@@ -522,38 +575,48 @@ void fn_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const
 	{
 		g_layer_select = g_fn_buffer[g_fn_buffer_length-1];
 	}
+	/* set the new Fn LED, if there is one */
 	if (g_layer_select != 0)
 	{
 		led_host_on((g_layer_select + (LED_FN1_ACTIVE-1)));
 	}
+	/* clear the Any-Fn LED if we are back to default */
 	if (g_layer_select == g_default_layer)
 	{
 		led_host_off(LED_ANY_ACTIVE);
 	}
 }
 
+inline void fn_unstick(const uint8_t code)
+{
+	/* if a Fn key is stuck and any other key was pressed, unstick the key */
+	if ((g_sticky_fncode) && (g_sticky_fncode != code))
+	{
+		fn_up(g_sticky_fncode, 0, 0, 0);
+		g_sticky_fncode = 0;
+	}
+}
+
 void mod_down(const uint8_t code, const uint8_t action)
 {
-	switch(action & KEY_ACTION_MASK)
+	switch(action)
 	{
-	case ACTION_RAPIDFIRE:
-	case ACTION_TAPKEY:
-	case ACTION_LOCKABLE:
-	case ACTION_NORMAL:
+	default:
 		set_modifier(code);
 		break;
 	case ACTION_TOGGLE:
 		toggle_modifier(code);
-		break;
-	default:
 		break;
 	}
 }
 
 void mod_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
 {
-	switch(action & KEY_ACTION_MASK)
+	switch(action)
 	{
+	default:
+		unset_modifier(code);
+		break;
 	case ACTION_TAPKEY:
 		unset_modifier(code);
 		if ((tap) && (g_last_keypress == code))
@@ -561,66 +624,62 @@ void mod_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, cons
 			send_tapkey(tapkey);
 		}
 		break;
-	case ACTION_RAPIDFIRE:
-	case ACTION_NORMAL:
-		unset_modifier(code);
-		break;
 	case ACTION_LOCKABLE:
 		if ((tap) && (g_double_tap_repeat))
 			set_modifier(code);
 		else
 			unset_modifier(code);
 		break;
+	case ACTION_STICKY:
+		if (g_last_keypress == code)
+			toggle_sticky_mod(code);
+		else
+			unset_modifier(code);
+		break;
 	case ACTION_TOGGLE:
-	default:
 		break;
 	}
 }
 
 void alpha_down(const uint8_t code, const uint8_t action)
 {
-	switch(action & KEY_ACTION_MASK)
+	switch(action)
 	{
-	case ACTION_NORMAL:
-	case ACTION_LOCKABLE:
-	case ACTION_TAPKEY:
-	case ACTION_RAPIDFIRE:
+	default:
 		enqueue_key(code);
 		break;
 	case ACTION_TOGGLE:
 		toggle_key(code);
-		break;
-	default:
 		break;
 	}
 }
 
 void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tap)
 {
-	switch(action & KEY_ACTION_MASK)
+	switch(action)
 	{
+	default:
+		delete_key(code);
+		break;
 	case ACTION_LOCKABLE:
 		if ((tap) && (g_double_tap_repeat))
 			break;
-	case ACTION_NORMAL:
-	case ACTION_TAPKEY:
-	case ACTION_RAPIDFIRE:
-		delete_key(code);
-		break;
 	case ACTION_TOGGLE:
-	default:
 		break;
 	}
+	clear_sticky_mod();
 }
 
-void handle_code_actuate(const uint8_t code, const uint8_t action)
+void handle_code_actuate(const uint8_t code, uint8_t action, const uint8_t wmods)
 {
-	const uint8_t modaction = (action & MOD_ACTION_MASK);
+	/* clear out the tapkey (if present) from the action word */
+	if (action & ACTION_TAPKEY)
+		action = ACTION_TAPKEY;
 	
-	if (modaction)
+	if (wmods)
 	{
 		// Autokey macros are assumed to be mutually exclusive with keypresses
-		g_autokey_modifier = modaction;
+		g_autokey_modifier = wmods;
 		g_modifier_service = 1;
 	}
 	
@@ -905,11 +964,15 @@ void handle_code_actuate(const uint8_t code, const uint8_t action)
 	g_last_keypress = code;
 }
 
-void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap)
+void handle_code_deactuate(const uint8_t code, uint8_t action, const uint8_t wmods, const uint8_t tap)
 {
-	const uint8_t modaction = (action & MOD_ACTION_MASK);
-		
-	if (modaction)
+	uint8_t tapkey = (action & TAPKEY_MASK);
+	
+	/* clear out the tapkey (if present) from the action word */
+	if (action & ACTION_TAPKEY)
+		action = ACTION_TAPKEY;
+	
+	if (wmods)
 	{
 		g_autokey_modifier = 0;
 		g_modifier_service = 1;
@@ -1159,6 +1222,8 @@ void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8
 		report_event(EVENT_CODE_KEYMAP_LOST_CODE, code, MODE_UPDATE);
 		break;
 	}
+	
+	fn_unstick(code);
 }
 
 #ifndef SIMPLE_DEVICE
@@ -1217,19 +1282,19 @@ void keymap_actuate(const uint8_t row, const uint8_t col, const int16_t idle_tim
 	const uint8_t code = translate_code(getmap(row,col));
 #endif /* SIMPLE_DEVICE */
 	const uint8_t action = getaction(row,col);
-	const uint8_t tapkey = gettapkey(row,col);
+	const uint8_t wmods = getwmod(row,col);
 	
 #ifdef KEYMAP_MEMORY_SAVE
 	g_matrixlayer[row][col] = g_layer_select;
 #else
 	g_matrixcode[row][col] = code;
 	g_matrixaction[row][col] = action;
-	g_matrixtapkey[row][col] = tapkey;
+	g_matrixwmods[row][col] = wmods;
 #endif /* KEYMAP_MEMORY_SAVE */
 	
 	doubletap_down(row,col,idle_time);
 	
-	handle_code_actuate(code, action);
+	handle_code_actuate(code, action, wmods);
 
 #ifdef MAX_NUMBER_OF_BACKLIGHTS
 	backlight_react();
@@ -1244,24 +1309,24 @@ void keymap_deactuate(const uint8_t row, const uint8_t col, const int16_t hold_t
 	const uint8_t layer = g_matrixlayer[row][col];
 	const uint8_t code = pgm_read_byte(&LAYERS[layer][row][col]);
 	const uint8_t action = pgm_read_byte(&ACTIONS[layer][row][col]);
-	const uint8_t tapkey = pgm_read_byte(&TAPKEYS[layer][row][col]);
+	const uint8_t wmods = pgm_read_byte(&WMODS[layer][row][col]);
 #else
 	const uint8_t code = g_matrixcode[row][col];
 	const uint8_t action = g_matrixaction[row][col];
-	const uint8_t tapkey = g_matrixtapkey[row][col];
+	const uint8_t wmods = g_matrixwmods[row][col];
 #endif /* KEYMAP_MEMORY_SAVE */
 	uint8_t tap;
 	
 	doubletap_up(row,col,hold_time, &tap);
 	
-	handle_code_deactuate(code, action, tapkey, tap);
+	handle_code_deactuate(code, action, wmods, tap);
 
 #ifdef KEYMAP_MEMORY_SAVE
 	g_matrixlayer[row][col] = 0;
 #else
 	g_matrixcode[row][col] = 0;
 	g_matrixaction[row][col] = 0;
-	g_matrixtapkey[row][col] = 0;
+	g_matrixwmods[row][col] = 0;
 #endif /* KEYMAP_MEMORY_SAVE */
 }
 
@@ -1276,7 +1341,7 @@ void keymap_interrupt(const uint8_t row, const uint8_t col)
 	const uint8_t action = g_matrixaction[row][col];
 #endif /* KEYMAP_MEMORY_SAVE */
 	
-	if (action & ACTION_RAPIDFIRE)
+	if ((action & (ACTION_TAPKEY|ACTION_RAPIDFIRE)) == ACTION_RAPIDFIRE)
 	{
 		send_tapkey(code);
 	}
@@ -1340,5 +1405,8 @@ void initial_actuate(const uint8_t row, const uint8_t col)
 		report_event(EVENT_CODE_NVM_ERASE_SETTINGS, 0, MODE_REOCCUR);
 		nvm_init_eeprom();
 	}
+#else
+	(void)row;
+	(void)col;
 #endif /* SIMPLE_DEVICE */
 }

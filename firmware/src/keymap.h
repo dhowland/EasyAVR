@@ -66,7 +66,7 @@ extern uint16_t g_media_key;
 extern uint8_t g_powermgmt_field;
 extern uint8_t g_hid_lock_flags;
 extern uint8_t g_winlock_flag;
-#if MACRO_RAM_SIZE
+#ifdef MACRO_RAM_SIZE
 extern uint16_t g_ram_macro[MACRO_RAM_SIZE];
 uint8_t g_ram_macro_ptr;
 uint8_t g_ram_macro_length;
@@ -94,8 +94,8 @@ void mod_down(const uint8_t code, const uint8_t action);
 void mod_up(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap);
 void alpha_down(const uint8_t code, const uint8_t action);
 void alpha_up(const uint8_t code, const uint8_t action, const uint8_t tap);
-void handle_code_actuate(const uint8_t code, const uint8_t action);
-void handle_code_deactuate(const uint8_t code, const uint8_t action, const uint8_t tapkey, const uint8_t tap);
+void handle_code_actuate(const uint8_t code, uint8_t action, const uint8_t wmods);
+void handle_code_deactuate(const uint8_t code, uint8_t action, const uint8_t wmods, const uint8_t tap);
 uint8_t translate_code(uint8_t code);
 void keymap_actuate(const uint8_t row, const uint8_t col, const int16_t hold_time);
 void keymap_deactuate(const uint8_t row, const uint8_t col, const int16_t hold_time);
