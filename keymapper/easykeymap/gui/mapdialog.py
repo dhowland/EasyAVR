@@ -75,7 +75,7 @@ class MapDialog(wx.Dialog):
 
         pg.ExpandAll()
         minHeight = (13 * pg.GetRowHeight()) + 4
-        minWidth = int(minHeight * 1.25)
+        minWidth = int(minHeight * 1.5)
         pg.SetMinSize((minWidth, minHeight))
         pg.FitColumns()
 

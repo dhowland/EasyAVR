@@ -41,12 +41,13 @@ TEENSY2PP_BOOT_PTR_HIGH_BYTE = 0xFE
 
 FIRST_FN_CODE = 0xF0
 
-key_modes = ['Normal', 'Toggle', 'Tap Key', 'Lockable', 'Rapid Fire']
-key_mode_map = {'Normal': 0x00, 'Toggle': 0x01, 'Tap Key': 0x04,
-                'Lockable': 0x02, 'Rapid Fire': 0x08}
+key_modes = ['Normal', 'Toggle', 'Sticky', 'Tap Key', 'Lockable', 'Rapid Fire']
+key_mode_map = {'Normal': 0x00, 'Toggle': 0x01, 'Sticky': 0x04,
+                'Lockable': 0x02, 'Rapid Fire': 0x08, 'Tap Key': 0x80}
 
-with_mods = ['R_Shift', 'R_Ctrl', 'R_Alt', 'R_GUI']
-with_mods_map = {'R_Shift': 0x20, 'R_Ctrl': 0x10, 'R_Alt': 0x40, 'R_GUI': 0x80}
+with_mods = ['R_Shift', 'R_Ctrl', 'R_Alt', 'R_GUI', 'L_Shift', 'L_Ctrl', 'L_Alt', 'L_GUI']
+with_mods_map = {'R_Shift': 0x20, 'R_Ctrl': 0x10, 'R_Alt': 0x40, 'R_GUI': 0x80,
+                 'L_Shift': 0x02, 'L_Ctrl': 0x01, 'L_Alt': 0x04, 'L_GUI': 0x08}
 
 # Poor man's bi-directional Enumerations
 # string from int: list[int]
@@ -157,22 +158,25 @@ def overlay_keymap(user_data, hex_data):
     row_diff = (fw_rows - config.num_rows) * fw_cols
     l_offset = config.firmware.layers_map - start
     a_offset = config.firmware.actions_map - start
-    t_offset = config.firmware.tapkeys_map - start
+    w_offset = config.firmware.wmods_map - start
     for layer in user_data.keymap:
         for row in layer:
             for key in row:
                 byte_array[l_offset] = scancodes[key.code].value
-                byte_array[a_offset] = (key.mode | key.wmods)
-                byte_array[t_offset] = scancodes[key.tap].value
+                if key.mode == key_mode_map['Tap Key']:
+                    byte_array[a_offset] = (key.mode | scancodes[key.tap].value)
+                else:
+                    byte_array[a_offset] = key.mode
+                byte_array[w_offset] = key.wmods
                 l_offset += 1
                 a_offset += 1
-                t_offset += 1
+                w_offset += 1
             l_offset += col_diff
             a_offset += col_diff
-            t_offset += col_diff
+            w_offset += col_diff
         l_offset += row_diff
         a_offset += row_diff
-        t_offset += row_diff
+        w_offset += row_diff
 
 
 def overlay_matrix(user_data, hex_data):

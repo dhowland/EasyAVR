@@ -26,6 +26,9 @@ import json
 from .build import NUM_LAYERS, NUM_MACROS, NULL_SYMBOL, led_modes, led_assignments, num_led_layers
 
 
+DEFAULT_VERSION = 1
+CURRENT_VERSION = 2
+
 Map = namedtuple('Map', ['code', 'mode', 'tap', 'wmods'])
 Opts = namedtuple('Opts', ['keyboard', 'media', 'nkro', 'mouse'])
 
@@ -69,6 +72,7 @@ class UserData:
         except KeyError:
             raise SaveFileException("Invalid save file: unsupported unique_id " + unique_id) from None
         self.path = None
+        self.save_fmt_ver = CURRENT_VERSION
         self.unique_id = unique_id
         self.layout_mod = layout_mod
         unassigned = Map(NULL_SYMBOL, 0, NULL_SYMBOL, 0)
@@ -118,6 +122,12 @@ class UserData:
         # first make sure this looks like a save file
         if not isinstance(data, dict):
             raise SaveFileException("Invalid save file: unexpected JSON data")
+        # load file format version first
+        if 'save_fmt_ver' in data:
+            self.save_fmt_ver = data['save_fmt_ver']
+        else:
+            # the first version was never embedded, so assume no data is the first version
+            self.save_fmt_ver = DEFAULT_VERSION
         # get unique_id and layout_mod, which are absolutely required
         try:
             self.unique_id = self.check_unique_id(data['unique_id'])
@@ -129,6 +139,8 @@ class UserData:
         # replace default settings with data from the save file
         if 'keymap' in data:
             self.keymap = self.check_keymap(data['keymap'])
+            if self.save_fmt_ver == 1:
+                self.keymap = self.adapt_rev1_keymap(self.keymap)
         if 'macros' in data:
             self.macros = self.check_macros(data['macros'])
         if 'led_modes' in data:
@@ -152,6 +164,7 @@ class UserData:
         else:
             self.path = path
         data = {
+            'save_fmt_ver': self.save_fmt_ver,
             'unique_id': self.unique_id,
             'layout_mod': self.layout_mod,
             'keymap': self.keymap,
@@ -291,6 +304,20 @@ class UserData:
             return Opts._make([bool(x) for x in data])
         else:
             raise SaveFileException("Invalid save file: incorrect usb_opts")
+
+    def adapt_rev1_keymap(self, keymap):
+        """From Rev 1 -> 2, the mapping of actions changed.
+        
+        old = {'Normal': 0x00, 'Toggle': 0x01, 'Tap Key': 0x04,
+               'Lockable': 0x02, 'Rapid Fire': 0x08}
+        new = {'Normal': 0x00, 'Toggle': 0x01, 'Sticky': 0x04,
+               'Lockable': 0x02, 'Rapid Fire': 0x08, 'Tap Key': 0x80}
+        """
+        for layer in keymap:
+            for row in layer:
+                for i, key in enumerate(row):
+                    if key.mode == 0x4:
+                        row[i] = Map(key.code, 0x80, key.tap, key.wmods)
 
     def __str__(self):
         return pformat(self.__dict__)
