@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Special Functions and Modes &mdash; EasyAVR 3.01.10 documentation</title>
+  <title>Special Functions and Modes &mdash; EasyAVR 3.02.01 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                3.01.10
+                3.02.01
               </div>
             
           
@@ -440,6 +440,12 @@ is two taps in quick succession. Think of mouse clicks.</p>
 <dt>Toggle</dt>
 <dd>Toggle switch.  Press to change the state of the key.  If the key is
 deactivated, pressing will activate it and vice-versa.</dd>
+<dt>Sticky</dt>
+<dd>A single-use modifier toggle.  This is a common accessibility mode known
+as “sticky keys” in Windows.  It makes it possible to build modified
+keystrokes with individual button presses.  Pressing a modifier toggles
+it on.  Pressing any alphanumeric key (or the same modifier again) toggles
+it back off.  This is only available on modifiers and Fn keys.</dd>
 <dt>Tap Key</dt>
 <dd>Also known as a ‘dual use’ key.  When a key is assigned to this mode, it
 acts the same as normal but, if tapped, will send a normal scancode of
@@ -522,7 +528,7 @@ normal scancodes are supported in the RAM macro at this time.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.01.10',
+            VERSION:'3.02.01',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
