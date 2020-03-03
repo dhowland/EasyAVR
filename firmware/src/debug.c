@@ -951,6 +951,10 @@ void append_event(uint8_t code, uint16_t status)
 		g_event_buffer[g_event_buffer_count].status = status;
 		g_event_buffer_count++;
 	}
+#else
+	(void)code;
+	(void)status;
+	(void)mode;
 #endif /* ENABLE_DEBUG_CONSOLE */
 }
 
