@@ -133,6 +133,13 @@ Toggle
     Toggle switch.  Press to change the state of the key.  If the key is
     deactivated, pressing will activate it and vice-versa.
 
+Sticky
+    A single-use modifier toggle.  This is a common accessibility mode known
+    as "sticky keys" in Windows.  It makes it possible to build modified
+    keystrokes with individual button presses.  Pressing a modifier toggles
+    it on.  Pressing any alphanumeric key (or the same modifier again) toggles
+    it back off.  This is only available on modifiers and Fn keys.
+
 Tap Key
     Also known as a 'dual use' key.  When a key is assigned to this mode, it
     acts the same as normal but, if tapped, will send a normal scancode of 
