@@ -8,7 +8,7 @@ simple = False
 
 layers_map = 0x00000845
 actions_map = 0x00000557
-tapkeys_map = 0x00000269
+wmods_map = 0x00000269
 macro_map = 0x00000b33
 led_layers_map = 0x00000264
 num_leds_map = 0x00001ca1
