@@ -73,7 +73,11 @@ def import_pkg_boards(configurations, errors):
     `configurations` dict.
     """
     for _, modpath, _ in pkgutil.iter_modules(boards.__path__):
-        mod = importlib.import_module('.boards.' + modpath, 'easykeymap')
+        try:
+            mod = importlib.import_module('.boards.' + modpath, 'easykeymap')
+        except ImportError:
+            errors.append(err)
+            continue
         try:
             verify_board_config(mod)
         except BoardConfigException as err:
@@ -91,7 +95,11 @@ def import_user_boards(configurations, errors):
     sys.path.append(userboards)
     for path in glob(os.path.join(userboards, '*.py')):
         board = os.path.splitext(os.path.basename(path))[0]
-        mod = importlib.import_module(board)
+        try:
+            mod = importlib.import_module(board)
+        except ImportError:
+            errors.append(err)
+            continue
         try:
             verify_board_config(mod)
         except BoardConfigException as err:
