@@ -464,14 +464,13 @@ void play_macro(const uint8_t code)
 
 inline void send_tapkey(const uint8_t code)
 {
-	if ((code > 0) && (code <= MAX_NKRO_CODE))
+	if (code <= MAX_NKRO_CODE)
 	{
 		queue_autokeys(code, g_modifier_state);
 	}
-	else if ((code & 0xE0) == 0xE0)
+	else if ((code & 0x70) == 0x70)
 	{
-		unset_modifier(code);
-		queue_autokeys(0, get_modfier_mask(code));
+		play_macro(code + 0x60);
 	}
 }
 
