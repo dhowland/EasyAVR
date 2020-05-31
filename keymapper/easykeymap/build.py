@@ -39,6 +39,9 @@ NULL_SYMBOL = '0'
 TEENSY2_BOOT_PTR_HIGH_BYTE = 0x3F
 TEENSY2PP_BOOT_PTR_HIGH_BYTE = 0xFE
 
+TAPKEY_SQUEEZE_RANGE = 0x70
+TAPKEY_SQUEEZE_MASK = 0x0F
+
 FIRST_FN_CODE = 0xF0
 
 key_modes = ['Normal', 'Toggle', 'Sticky', 'Tap Key', 'Lockable', 'Rapid Fire']
@@ -164,7 +167,11 @@ def overlay_keymap(user_data, hex_data):
             for key in row:
                 byte_array[l_offset] = scancodes[key.code].value
                 if key.mode == key_mode_map['Tap Key']:
-                    byte_array[a_offset] = (key.mode | scancodes[key.tap].value)
+                    # intended to allow Macro (0xD0-0xDF) to be used as tapkey (0x70-0x7F)
+                    tap_code = scancodes[key.tap].value
+                    if tap_code > TAPKEY_SQUEEZE_RANGE:
+                        tap_code = (TAPKEY_SQUEEZE_RANGE | (tap_code & TAPKEY_SQUEEZE_MASK))
+                    byte_array[a_offset] = (key.mode | tap_code)
                 else:
                     byte_array[a_offset] = key.mode
                 byte_array[w_offset] = key.wmods

@@ -29,6 +29,8 @@ from .scale import GRID_SIZE
 
 # Anything above HID_KEYBOARD_SC_APPLICATION (mods and special functions)
 SPECIAL_BOUNDARY = 0x65
+# but not the macros
+SPECIAL_MACRO_RANGE = 0xD0
 
 Loc = namedtuple('Loc', ['row', 'col'])
 Dim = namedtuple('Dim', ['height', 'width'])
@@ -108,7 +110,8 @@ class PickerKey:
         self.btn = wx.Button(self.parent, wx.ID_ANY, label, size=size)
         self.btn.SetToolTip(scancode)
         self.btn.Bind(wx.EVT_BUTTON, self.OnClicked)
-        self.special = scancodes[scancode].value > SPECIAL_BOUNDARY
+        self.special = ((scancodes[scancode].value > SPECIAL_BOUNDARY) and not
+                        ((scancodes[scancode].value & 0xF0) == SPECIAL_MACRO_RANGE))
 
     def add(self):
         self.parent.main_sizer.Add(self.btn, tuple(self.loc), tuple(self.dim), wx.EXPAND|wx.ALL, 0)
