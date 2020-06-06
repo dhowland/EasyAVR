@@ -78,12 +78,12 @@ class ProgramDialog(wx.Dialog):
 
         self.task_ch = wx.Choice(self, choices=[t.description for t in self.tasks])
         self.Bind(wx.EVT_CHOICE, self.OnChoice, self.task_ch)
-        task_sizer.Add(self.task_ch, proportion=1, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
+        task_sizer.Add(self.task_ch, proportion=1, flag=wx.EXPAND)
         self.run_btn = wx.Button(self, label="Run", style=wx.BORDER_NONE)
         self.Bind(wx.EVT_BUTTON, self.OnButton, self.run_btn)
         task_sizer.Add(self.run_btn, flag=wx.ALIGN_CENTER_VERTICAL)
 
-        grid_sizer.Add(task_sizer, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
+        grid_sizer.Add(task_sizer, flag=wx.EXPAND)
 
         main_sizer.Add(grid_sizer, flag=wx.EXPAND|wx.ALL, border=MARGIN)
 

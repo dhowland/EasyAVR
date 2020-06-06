@@ -240,7 +240,7 @@ class BaseInputPkg:
         st = wx.StaticText(self.parent, label=self.label)
         grid_sizer.Add(st, flag=wx.ALIGN_CENTER_VERTICAL)
         widget = self._create_input()
-        grid_sizer.Add(widget, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
+        grid_sizer.Add(widget, flag=wx.EXPAND)
 
     def _create_input(self):
         pass  # override
