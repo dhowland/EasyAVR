@@ -116,7 +116,17 @@ class MapDialog(wx.Dialog):
         self.key_btn.update_map(prop, event.GetPropertyValue())
 
     def _enable_tap(self):
-        if self.pg.GetPropertyValue('mode') == key_mode_map['Tap Key']:
+        # work around problem in wxPython 4.1.0
+        #   .GetPropertyValue() should work, but it doesn't handle the long long type
+        try:
+            val = self.pg.GetPropertyValue('mode')
+        except TypeError:
+            try:
+                val = self.pg.GetPropertyValueAsLongLong('mode')
+            except TypeError:
+                val = self.pg.GetPropertyValueAsLong('mode')
+        # end work around
+        if val == key_mode_map['Tap Key']:
             self.pg.EnableProperty("tap", enable=True)
         else:
             self.pg.EnableProperty("tap", enable=False)
