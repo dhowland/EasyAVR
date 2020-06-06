@@ -62,6 +62,7 @@ setup(
     options = {
         "build_exe": {
             'packages': ['easykeymap', 'easykeymap.boards', 'easykeymap.gui', 'easykeymap.templates'],
+            "excludes": ["tkinter"],
             'include_files': data_files,
             # 'include_msvcr': True,
             'bin_path_excludes': [TortoiseSVN_prefix],
