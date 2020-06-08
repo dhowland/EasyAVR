@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LED Functions &mdash; EasyAVR 3.02.01 documentation</title>
+  <title>LED Functions &mdash; EasyAVR 3.03.02 documentation</title>
   
 
   
@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="USB Options" href="usb.html" />
     <link rel="prev" title="Writing Macros" href="macros.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                3.02.01
+                3.03.02
               </div>
             
           
@@ -213,24 +214,24 @@ which would simply turn the LED on (Solid).</p>
 Blink modes override eachother, so overloading an LED should only be done
 with mutually exclusive functions.</p>
 <p>Here is an explanation of all LED functions:</p>
-<dl class="docutils">
-<dt>‘Num Lock’, ‘Caps Lock’, ‘Scroll Lock’, ‘Compose’, ‘Kana’</dt>
-<dd>These are the standard USB HID host status indicators.  The last two are
-only used on non-US keyboards.</dd>
-<dt>‘Win Lock’</dt>
-<dd>Lights up when the Windows Key is disabled.</dd>
-<dt>‘KB Lock’</dt>
-<dd>Lights up when the keyboard is locked.</dd>
-<dt>‘Fn1 Active’, ‘Fn2 Active’, …, ‘Fn9 Active’</dt>
-<dd>Lights up when the corresponding layer is selected.  Locked layers will
+<dl class="simple">
+<dt>‘Num Lock’, ‘Caps Lock’, ‘Scroll Lock’, ‘Compose’, ‘Kana’</dt><dd><p>These are the standard USB HID host status indicators.  The last two are
+only used on non-US keyboards.</p>
+</dd>
+<dt>‘Win Lock’</dt><dd><p>Lights up when the Windows Key is disabled.</p>
+</dd>
+<dt>‘KB Lock’</dt><dd><p>Lights up when the keyboard is locked.</p>
+</dd>
+<dt>‘Fn1 Active’, ‘Fn2 Active’, …, ‘Fn9 Active’</dt><dd><p>Lights up when the corresponding layer is selected.  Locked layers will
 continue to indicate that the layer is active after the Fn key is lifted.
-The default layer does not set any LED indicator.</dd>
-<dt>‘Any Fn Active’</dt>
-<dd>Similar to above but lights up when any non-default layer is selected.</dd>
-<dt>‘Recording’</dt>
-<dd>Lights up when the keyboard is recording keystrokes.</dd>
-<dt>‘USB Init’, ‘USB Error’, ‘USB Suspend’, ‘USB Normal’</dt>
-<dd>Indicates the status of the USB connection to the host.</dd>
+The default layer does not set any LED indicator.</p>
+</dd>
+<dt>‘Any Fn Active’</dt><dd><p>Similar to above but lights up when any non-default layer is selected.</p>
+</dd>
+<dt>‘Recording’</dt><dd><p>Lights up when the keyboard is recording keystrokes.</p>
+</dd>
+<dt>‘USB Init’, ‘USB Error’, ‘USB Suspend’, ‘USB Normal’</dt><dd><p>Indicates the status of the USB connection to the host.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="led-auto-layer-select">
@@ -253,19 +254,19 @@ modes.  These modes are not configured in the keymapper utility, they are
 selectable at run time.  Pressing the BL_MODE key will cycle through the four
 options.  No backlight effects will be observed if the user did not enable
 any lighting zones with the BL_ENABLE key.</p>
-<dl class="docutils">
-<dt>‘Static’</dt>
-<dd>Backlights are turned on and steady, with a brightness determined by the
-user-controlled dimmer (BL_DIMMER key).</dd>
-<dt>‘Breathing’</dt>
-<dd>Backlight brightness will continuously wax and wane in a smooth motion.</dd>
-<dt>‘Reactive’</dt>
-<dd>Backlights will glow at max brightness when the user presses a key, then
-dim to a low brightness in a smooth motion.</dd>
-<dt>‘Erosion’</dt>
-<dd>Backlights will be dimmed slightly on every key press, but continuously
+<dl class="simple">
+<dt>‘Static’</dt><dd><p>Backlights are turned on and steady, with a brightness determined by the
+user-controlled dimmer (BL_DIMMER key).</p>
+</dd>
+<dt>‘Breathing’</dt><dd><p>Backlight brightness will continuously wax and wane in a smooth motion.</p>
+</dd>
+<dt>‘Reactive’</dt><dd><p>Backlights will glow at max brightness when the user presses a key, then
+dim to a low brightness in a smooth motion.</p>
+</dd>
+<dt>‘Erosion’</dt><dd><p>Backlights will be dimmed slightly on every key press, but continuously
 grow brighter in a smooth motion.  Fast typists will be able to extinguish
-the light.</dd>
+the light.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -281,7 +282,7 @@ the light.</dd>
         <a href="usb.html" class="btn btn-neutral float-right" title="USB Options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="macros.html" class="btn btn-neutral" title="Writing Macros" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="macros.html" class="btn btn-neutral float-left" title="Writing Macros" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -290,7 +291,7 @@ the light.</dd>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Howland.
+        &copy; Copyright 2018-2020, David Howland
 
     </p>
   </div>
@@ -307,35 +308,16 @@ the light.</dd>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'3.02.01',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

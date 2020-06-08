@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Special Functions and Modes &mdash; EasyAVR 3.02.01 documentation</title>
+  <title>Special Functions and Modes &mdash; EasyAVR 3.03.02 documentation</title>
   
 
   
@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Writing Macros" href="macros.html" />
     <link rel="prev" title="Getting Started" href="getstarted.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                3.02.01
+                3.03.02
               </div>
             
           
@@ -178,232 +179,232 @@
 <h2>Special Functions<a class="headerlink" href="#special-functions" title="Permalink to this headline">¶</a></h2>
 <p>In addition to the standard USB keyboard scancodes, EasyAVR supports several
 special functions, many of which are not available on regular keyboards.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="27%" />
-<col width="73%" />
+<col style="width: 27%" />
+<col style="width: 73%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Scancode</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Scancode</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>SCANCODE_FN0</td>
-<td>Activate the “Default” layer</td>
+<tbody>
+<tr class="row-even"><td><p>SCANCODE_FN0</p></td>
+<td><p>Activate the “Default” layer</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FN1</td>
-<td>Activate the 1st function layer (or deactivate, depending on mode)</td>
+<tr class="row-odd"><td><p>SCANCODE_FN1</p></td>
+<td><p>Activate the 1st function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_FN2</td>
-<td>Activate the 2nd function layer (or deactivate, depending on mode)</td>
+<tr class="row-even"><td><p>SCANCODE_FN2</p></td>
+<td><p>Activate the 2nd function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FN3</td>
-<td>Activate the 3rd function layer (or deactivate, depending on mode)</td>
+<tr class="row-odd"><td><p>SCANCODE_FN3</p></td>
+<td><p>Activate the 3rd function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_FN4</td>
-<td>Activate the 4th function layer (or deactivate, depending on mode)</td>
+<tr class="row-even"><td><p>SCANCODE_FN4</p></td>
+<td><p>Activate the 4th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FN5</td>
-<td>Activate the 5th function layer (or deactivate, depending on mode)</td>
+<tr class="row-odd"><td><p>SCANCODE_FN5</p></td>
+<td><p>Activate the 5th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_FN6</td>
-<td>Activate the 6th function layer (or deactivate, depending on mode)</td>
+<tr class="row-even"><td><p>SCANCODE_FN6</p></td>
+<td><p>Activate the 6th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FN7</td>
-<td>Activate the 7th function layer (or deactivate, depending on mode)</td>
+<tr class="row-odd"><td><p>SCANCODE_FN7</p></td>
+<td><p>Activate the 7th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_FN8</td>
-<td>Activate the 8th function layer (or deactivate, depending on mode)</td>
+<tr class="row-even"><td><p>SCANCODE_FN8</p></td>
+<td><p>Activate the 8th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FN9</td>
-<td>Activate the 9th function layer (or deactivate, depending on mode)</td>
+<tr class="row-odd"><td><p>SCANCODE_FN9</p></td>
+<td><p>Activate the 9th function layer (or deactivate, depending on mode)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BL_DIMMER</td>
-<td>Cycle through backlight brightness levels, also
-controls indicator LED brightness</td>
+<tr class="row-even"><td><p>SCANCODE_BL_DIMMER</p></td>
+<td><p>Cycle through backlight brightness levels, also
+controls indicator LED brightness</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_BL_MODE</td>
-<td>Cycle through the backlighting modes (static,
-breathing, reactive, and erosion)</td>
+<tr class="row-odd"><td><p>SCANCODE_BL_MODE</p></td>
+<td><p>Cycle through the backlighting modes (static,
+breathing, reactive, and erosion)</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BL_ENABLE</td>
-<td>Enable/disable the backlight and cycle through the
-different lighting zones</td>
+<tr class="row-even"><td><p>SCANCODE_BL_ENABLE</p></td>
+<td><p>Enable/disable the backlight and cycle through the
+different lighting zones</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_KEYLOCK</td>
-<td>(toggle) Disable sending scancodes to PC</td>
+<tr class="row-odd"><td><p>SCANCODE_KEYLOCK</p></td>
+<td><p>(toggle) Disable sending scancodes to PC</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_WINLOCK</td>
-<td>(toggle) Disable the windows key</td>
+<tr class="row-even"><td><p>SCANCODE_WINLOCK</p></td>
+<td><p>(toggle) Disable the windows key</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_ESCGRAVE</td>
-<td>Acts like grave key if shift is pressed (to make tilde).
-Otherwise acts like Esc key.  Used for 60% keyboards.</td>
+<tr class="row-odd"><td><p>SCANCODE_ESCGRAVE</p></td>
+<td><p>Acts like grave key if shift is pressed (to make tilde).
+Otherwise acts like Esc key.  Used for 60% keyboards.</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BOOT</td>
-<td>Jump to bootloader (Keyboard will not work again until it is reset)</td>
+<tr class="row-even"><td><p>SCANCODE_BOOT</p></td>
+<td><p>Jump to bootloader (Keyboard will not work again until it is reset)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_CONFIG</td>
-<td>Go into interactive configuration console</td>
+<tr class="row-odd"><td><p>SCANCODE_CONFIG</p></td>
+<td><p>Go into interactive configuration console</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M1</td>
-<td>Play macro 1</td>
+<tr class="row-even"><td><p>SCANCODE_M1</p></td>
+<td><p>Play macro 1</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M2</td>
-<td>Play macro 2</td>
+<tr class="row-odd"><td><p>SCANCODE_M2</p></td>
+<td><p>Play macro 2</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M3</td>
-<td>Play macro 3</td>
+<tr class="row-even"><td><p>SCANCODE_M3</p></td>
+<td><p>Play macro 3</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M4</td>
-<td>Play macro 4</td>
+<tr class="row-odd"><td><p>SCANCODE_M4</p></td>
+<td><p>Play macro 4</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M5</td>
-<td>Play macro 5</td>
+<tr class="row-even"><td><p>SCANCODE_M5</p></td>
+<td><p>Play macro 5</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M6</td>
-<td>Play macro 6</td>
+<tr class="row-odd"><td><p>SCANCODE_M6</p></td>
+<td><p>Play macro 6</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M7</td>
-<td>Play macro 7</td>
+<tr class="row-even"><td><p>SCANCODE_M7</p></td>
+<td><p>Play macro 7</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M8</td>
-<td>Play macro 8</td>
+<tr class="row-odd"><td><p>SCANCODE_M8</p></td>
+<td><p>Play macro 8</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M9</td>
-<td>Play macro 9</td>
+<tr class="row-even"><td><p>SCANCODE_M9</p></td>
+<td><p>Play macro 9</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M10</td>
-<td>Play macro 10</td>
+<tr class="row-odd"><td><p>SCANCODE_M10</p></td>
+<td><p>Play macro 10</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M11</td>
-<td>Play macro 11</td>
+<tr class="row-even"><td><p>SCANCODE_M11</p></td>
+<td><p>Play macro 11</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M12</td>
-<td>Play macro 12</td>
+<tr class="row-odd"><td><p>SCANCODE_M12</p></td>
+<td><p>Play macro 12</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M13</td>
-<td>Play macro 13</td>
+<tr class="row-even"><td><p>SCANCODE_M13</p></td>
+<td><p>Play macro 13</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M14</td>
-<td>Play macro 14</td>
+<tr class="row-odd"><td><p>SCANCODE_M14</p></td>
+<td><p>Play macro 14</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_M15</td>
-<td>Play macro 15</td>
+<tr class="row-even"><td><p>SCANCODE_M15</p></td>
+<td><p>Play macro 15</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_M16</td>
-<td>Play macro 16</td>
+<tr class="row-odd"><td><p>SCANCODE_M16</p></td>
+<td><p>Play macro 16</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MRAM_RECORD</td>
-<td>Start/Stop recording the RAM macro</td>
+<tr class="row-even"><td><p>SCANCODE_MRAM_RECORD</p></td>
+<td><p>Start/Stop recording the RAM macro</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_MRAM_PLAY</td>
-<td>Play the RAM macro</td>
+<tr class="row-odd"><td><p>SCANCODE_MRAM_PLAY</p></td>
+<td><p>Play the RAM macro</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MOUSE1</td>
-<td>Mouse button 1</td>
+<tr class="row-even"><td><p>SCANCODE_MOUSE1</p></td>
+<td><p>Mouse button 1</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_MOUSE2</td>
-<td>Mouse button 2</td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSE2</p></td>
+<td><p>Mouse button 2</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MOUSE3</td>
-<td>Mouse button 3</td>
+<tr class="row-even"><td><p>SCANCODE_MOUSE3</p></td>
+<td><p>Mouse button 3</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_MOUSEXL</td>
-<td>Move mouse pointer left</td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSEXL</p></td>
+<td><p>Move mouse pointer left</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MOUSEXR</td>
-<td>Move mouse pointer right</td>
+<tr class="row-even"><td><p>SCANCODE_MOUSEXR</p></td>
+<td><p>Move mouse pointer right</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_MOUSEYD</td>
-<td>Move mouse pointer down</td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSEYD</p></td>
+<td><p>Move mouse pointer down</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MOUSEYU</td>
-<td>Move mouse pointer up
+<tr class="row-even"><td><p>SCANCODE_MOUSEYU</p></td>
+<td><p>Move mouse pointer up
 (Double-tap the mouse keys to move the cursor faster.
-Triple-tap for even more speed, and so on.)</td>
+Triple-tap for even more speed, and so on.)</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_POWER</td>
-<td>Power down the system</td>
+<tr class="row-odd"><td><p>SCANCODE_POWER</p></td>
+<td><p>Power down the system</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_SLEEP</td>
-<td>Put the system to sleep</td>
+<tr class="row-even"><td><p>SCANCODE_SLEEP</p></td>
+<td><p>Put the system to sleep</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_WAKE</td>
-<td>Wake the system from sleep state</td>
+<tr class="row-odd"><td><p>SCANCODE_WAKE</p></td>
+<td><p>Wake the system from sleep state</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_NEXT_TRACK</td>
-<td>Skip to next track in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_NEXT_TRACK</p></td>
+<td><p>Skip to next track in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_PREV_TRACK</td>
-<td>Skip to last track in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_PREV_TRACK</p></td>
+<td><p>Skip to last track in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_STOP</td>
-<td>Stop playback in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_STOP</p></td>
+<td><p>Stop playback in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_PLAY_PAUSE</td>
-<td>Play or Pause playback in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_PLAY_PAUSE</p></td>
+<td><p>Play or Pause playback in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BRIGHT_INC</td>
-<td>Increase screen brightness in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_BRIGHT_INC</p></td>
+<td><p>Increase screen brightness in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_BRIGHT_DEC</td>
-<td>Decrease screen brightness in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_BRIGHT_DEC</p></td>
+<td><p>Decrease screen brightness in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MUTE</td>
-<td>Mute main volume in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_MUTE</p></td>
+<td><p>Mute main volume in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_BASS_BOOST</td>
-<td>Toggle bass boost in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_BASS_BOOST</p></td>
+<td><p>Toggle bass boost in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_VOL_INC</td>
-<td>Increase main volume in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_VOL_INC</p></td>
+<td><p>Increase main volume in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_VOL_DEC</td>
-<td>Decrease main volume in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_VOL_DEC</p></td>
+<td><p>Decrease main volume in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BASS_INC</td>
-<td>Increase bass equalizer in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_BASS_INC</p></td>
+<td><p>Increase bass equalizer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_BASS_DEC</td>
-<td>Decrease bass equalizer in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_BASS_DEC</p></td>
+<td><p>Decrease bass equalizer in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_TREB_INC</td>
-<td>Increase treble equalizer in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_TREB_INC</p></td>
+<td><p>Increase treble equalizer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_TREB_DEC</td>
-<td>Decrease treble equalizer in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_TREB_DEC</p></td>
+<td><p>Decrease treble equalizer in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MAIL</td>
-<td>Open system mail reader in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_MAIL</p></td>
+<td><p>Open system mail reader in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_CALC</td>
-<td>Open calculator in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_CALC</p></td>
+<td><p>Open calculator in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_MYCOMP</td>
-<td>Open My Computer in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_MYCOMP</p></td>
+<td><p>Open My Computer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_SEARCH</td>
-<td>Open search dialog in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_SEARCH</p></td>
+<td><p>Open search dialog in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_BROWSER</td>
-<td>Open web browser to homepage in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_BROWSER</p></td>
+<td><p>Open web browser to homepage in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_BACK</td>
-<td>Navigate backward in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_BACK</p></td>
+<td><p>Navigate backward in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_FORWARD</td>
-<td>Navigate forward in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_FORWARD</p></td>
+<td><p>Navigate forward in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_WWWSTOP</td>
-<td>Stop navigation in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_WWWSTOP</p></td>
+<td><p>Stop navigation in Windows</p></td>
 </tr>
-<tr class="row-even"><td>SCANCODE_REFRESH</td>
-<td>Refresh navigation in Windows</td>
+<tr class="row-even"><td><p>SCANCODE_REFRESH</p></td>
+<td><p>Refresh navigation in Windows</p></td>
 </tr>
-<tr class="row-odd"><td>SCANCODE_FAVES</td>
-<td>Open favorites dialog in Windows</td>
+<tr class="row-odd"><td><p>SCANCODE_FAVES</p></td>
+<td><p>Open favorites dialog in Windows</p></td>
 </tr>
 </tbody>
 </table>
@@ -434,29 +435,29 @@ table, below.  These special modes only work on standard keys (HID
 scancodes), modifiers, and Fn keys.</p>
 <p>A key ‘tap’ is a rapid press and release of a key by itself.  A ‘double tap’
 is two taps in quick succession. Think of mouse clicks.</p>
-<dl class="docutils">
-<dt>Normal</dt>
-<dd>Momentary switch.  Press to activate the key and un-press to deactivate.</dd>
-<dt>Toggle</dt>
-<dd>Toggle switch.  Press to change the state of the key.  If the key is
-deactivated, pressing will activate it and vice-versa.</dd>
-<dt>Sticky</dt>
-<dd>A single-use modifier toggle.  This is a common accessibility mode known
+<dl class="simple">
+<dt>Normal</dt><dd><p>Momentary switch.  Press to activate the key and un-press to deactivate.</p>
+</dd>
+<dt>Toggle</dt><dd><p>Toggle switch.  Press to change the state of the key.  If the key is
+deactivated, pressing will activate it and vice-versa.</p>
+</dd>
+<dt>Sticky</dt><dd><p>A single-use modifier toggle.  This is a common accessibility mode known
 as “sticky keys” in Windows.  It makes it possible to build modified
 keystrokes with individual button presses.  Pressing a modifier toggles
 it on.  Pressing any alphanumeric key (or the same modifier again) toggles
-it back off.  This is only available on modifiers and Fn keys.</dd>
-<dt>Tap Key</dt>
-<dd>Also known as a ‘dual use’ key.  When a key is assigned to this mode, it
+it back off.  This is only available on modifiers and Fn keys.</p>
+</dd>
+<dt>Tap Key</dt><dd><p>Also known as a ‘dual use’ key.  When a key is assigned to this mode, it
 acts the same as normal but, if tapped, will send a normal scancode of
-your choosing.  This is only available on modifiers and Fn keys.</dd>
-<dt>Lockable</dt>
-<dd>Acts the same as normal but double tapping the key will toggle it active.
-Pressing the key again will deactivate it.</dd>
-<dt>Rapid Fire</dt>
-<dd>This is an auto-repeating mode.  The key acts the same as normal except it
+your choosing.  This is only available on modifiers and Fn keys.</p>
+</dd>
+<dt>Lockable</dt><dd><p>Acts the same as normal but double tapping the key will toggle it active.
+Pressing the key again will deactivate it.</p>
+</dd>
+<dt>Rapid Fire</dt><dd><p>This is an auto-repeating mode.  The key acts the same as normal except it
 will be rapidly retyped when the key is held.  Think of old video game
-controllers.  This is only available on standard keys.</dd>
+controllers.  This is only available on standard keys.</p>
+</dd>
 </dl>
 <p>When a scancode is bound to a tap key, it will be sent on the upstroke, but
 only if the mod/fn key was tapped and not combined with another key. This is
@@ -497,7 +498,7 @@ normal scancodes are supported in the RAM macro at this time.</p>
         <a href="macros.html" class="btn btn-neutral float-right" title="Writing Macros" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="getstarted.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getstarted.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -506,7 +507,7 @@ normal scancodes are supported in the RAM macro at this time.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Howland.
+        &copy; Copyright 2018-2020, David Howland
 
     </p>
   </div>
@@ -523,35 +524,16 @@ normal scancodes are supported in the RAM macro at this time.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'3.02.01',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

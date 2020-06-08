@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frequently Asked Questions &mdash; EasyAVR 3.02.01 documentation</title>
+  <title>Frequently Asked Questions &mdash; EasyAVR 3.03.02 documentation</title>
   
 
   
@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Developer’s Guide" href="devguide.html" />
     <link rel="prev" title="Supporting Custom Boards" href="newboard.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                3.02.01
+                3.03.02
               </div>
             
           
@@ -167,65 +168,65 @@
             
   <div class="section" id="frequently-asked-questions">
 <h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
-<dl class="docutils">
-<dt>I recently upgraded to a newer version and now the keyboard doesn’t work in Windows.</dt>
-<dd>Sometimes Windows gets confused when the USB endpoints are changed around.
+<dl class="simple">
+<dt>I recently upgraded to a newer version and now the keyboard doesn’t work in Windows.</dt><dd><p>Sometimes Windows gets confused when the USB endpoints are changed around.
 You can either remove the keyboard in the “devices” control panel and
 reconnect it, or you can simply move it to a different usb port.  If
-neither is an option, you can work around the problem by disabling NKRO.</dd>
-<dt>I get a runtime error, “The program can’t start because MSVCP100.dll is missing from your computer.”</dt>
-<dd>Install the Visual Studio 2010 redistributable package for x86 from <a class="reference external" href="http://www.microsoft.com/en-in/download/details.aspx?id=5555">Microsoft</a>.</dd>
+neither is an option, you can work around the problem by disabling NKRO.</p>
+</dd>
+<dt>I get a runtime error, “The program can’t start because MSVCP100.dll is missing from your computer.”</dt><dd><p>Install the Visual Studio 2010 redistributable package for x86 from <a class="reference external" href="http://www.microsoft.com/en-in/download/details.aspx?id=5555">Microsoft</a>.</p>
+</dd>
 </dl>
-<dl class="docutils">
-<dt>Hey, my number row is mapping to numpad and I didn’t tell it to do that!</dt>
-<dd>Virtual Numpad is enabled.  Either turn off NumLock or disable Virtual Numpad.</dd>
-<dt>Why is my numpad is sending the wrong scancodes? -or- Why won’t the Numlock LED turn on?</dt>
-<dd>You have “Unlink Numlock” enabled.  Disable that setting to get normal
-numpad scancodes.</dd>
-<dt>Why doesn’t my Windows key work?</dt>
-<dd>Turn off Scroll Lock or disable the “Win Lock on Scroll Lock” setting.</dd>
-<dt>Why does my QFR turn on the Windows Lock LED when Scroll Lock is pressed?</dt>
-<dd>Disable the “Win Lock on Scroll Lock” setting.</dd>
-<dt>I lost all my configuration settings!</dt>
-<dd>You probably installed a new version of the firmware.  If the firmware
+<dl class="simple">
+<dt>Hey, my number row is mapping to numpad and I didn’t tell it to do that!</dt><dd><p>Virtual Numpad is enabled.  Either turn off NumLock or disable Virtual Numpad.</p>
+</dd>
+<dt>Why is my numpad is sending the wrong scancodes? -or- Why won’t the Numlock LED turn on?</dt><dd><p>You have “Unlink Numlock” enabled.  Disable that setting to get normal
+numpad scancodes.</p>
+</dd>
+<dt>Why doesn’t my Windows key work?</dt><dd><p>Turn off Scroll Lock or disable the “Win Lock on Scroll Lock” setting.</p>
+</dd>
+<dt>Why does my QFR turn on the Windows Lock LED when Scroll Lock is pressed?</dt><dd><p>Disable the “Win Lock on Scroll Lock” setting.</p>
+</dd>
+<dt>I lost all my configuration settings!</dt><dd><p>You probably installed a new version of the firmware.  If the firmware
 detects an different version of EEPROM data, it erases everything and
 installs defaults to be on the safe side.  The settings are easy to
-change, just put them back the way you like.</dd>
-<dt>I bricked my keyboard! What are you going to do about it?</dt>
-<dd>I’ll help you fix it if I can, but I don’t owe you anything.  I’ve
+change, just put them back the way you like.</p>
+</dd>
+<dt>I bricked my keyboard! What are you going to do about it?</dt><dd><p>I’ll help you fix it if I can, but I don’t owe you anything.  I’ve
 programmed all sorts of boards with all kinds of firmware (both good and
 bad) and I’ve never bricked anything.  Just press the reset switch.  If
-you really managed to brick it, it’s your own fault.</dd>
-<dt>My computer acts weird when the keyboard is plugged in, or the keyboard just isn’t recognized by some of my computers.</dt>
-<dd>Try disabling the advanced USB interfaces in the config console.  This
+you really managed to brick it, it’s your own fault.</p>
+</dd>
+<dt>My computer acts weird when the keyboard is plugged in, or the keyboard just isn’t recognized by some of my computers.</dt><dd><p>Try disabling the advanced USB interfaces in the config console.  This
 will limit you to 6KRO, but it should improve compatibility with quirky
-hosts.</dd>
-<dt>If this software is supposed to be so “easy”, why do I have to use Flip or Teensy Loader?</dt>
-<dd>It has to do with the bootloader software that’s already part of the
+hosts.</p>
+</dd>
+<dt>If this software is supposed to be so “easy”, why do I have to use Flip or Teensy Loader?</dt><dd><p>It has to do with the bootloader software that’s already part of the
 supported boards.  The short answer is that a goal of the project is to be
 easy to setup and use with good compatibility, and that means using the
-“OEM” software loading methods.</dd>
-<dt>Can you add a swap Caps/Ctrl (or Backspace/Backslash, Esc/grave, etc.) feature?</dt>
-<dd>Those are great features on a normal keyboard.  However, this firmware is
+“OEM” software loading methods.</p>
+</dd>
+<dt>Can you add a swap Caps/Ctrl (or Backspace/Backslash, Esc/grave, etc.) feature?</dt><dd><p>Those are great features on a normal keyboard.  However, this firmware is
 used on programmable keyboards.  The way to implement those features is
-with alternate layers.  You have 10 to work with.</dd>
-<dt>Why am I getting unwanted extra characters while typing in Linux when pressing the NON_US_HASHMARK_AND_TILDE and/or the BACKSLASH_AND_PIPE key?</dt>
-<dd>The bit-packed vector that is used for NKRO support is not well supported
+with alternate layers.  You have 10 to work with.</p>
+</dd>
+<dt>Why am I getting unwanted extra characters while typing in Linux when pressing the NON_US_HASHMARK_AND_TILDE and/or the BACKSLASH_AND_PIPE key?</dt><dd><p>The bit-packed vector that is used for NKRO support is not well supported
 in linux when using those keys.  I think there may be some kind of
 translation layer for internationalization that is causing keys to be
 virtually lifted and redetected even though the user holds the key steady
 IRL.  To work around this you can use the “Basic keyboard” config option
-to disable NKRO and use 6KRO instead.</dd>
-<dt>The F13-F24 keys don’t work.</dt>
-<dd>The NKRO field is not wide enough to fit those nonstandard scancodes.  AVR
+to disable NKRO and use 6KRO instead.</p>
+</dd>
+<dt>The F13-F24 keys don’t work.</dt><dd><p>The NKRO field is not wide enough to fit those nonstandard scancodes.  AVR
 microcontrollers are extremely limited in memory and this was a compromise
-that had to be made.  To use those scancodes, disable NKRO.</dd>
-<dt>The BOOT key doesn’t work.</dt>
-<dd>This usually means that the firmware doesn’t have the correct address of
+that had to be made.  To use those scancodes, disable NKRO.</p>
+</dd>
+<dt>The BOOT key doesn’t work.</dt><dd><p>This usually means that the firmware doesn’t have the correct address of
 the bootloader.  Make sure the “Teensy” config item is set correctly for
 your board.  On boards that use the Astar microcontroller, this is a known
 problem.  The custom bootloader on the Astar requires a special value in
-memory that is not reserved by the EasyAVR firmware.</dd>
+memory that is not reserved by the EasyAVR firmware.</p>
+</dd>
 </dl>
 </div>
 
@@ -240,7 +241,7 @@ memory that is not reserved by the EasyAVR firmware.</dd>
         <a href="devguide.html" class="btn btn-neutral float-right" title="Developer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="newboard.html" class="btn btn-neutral" title="Supporting Custom Boards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="newboard.html" class="btn btn-neutral float-left" title="Supporting Custom Boards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -249,7 +250,7 @@ memory that is not reserved by the EasyAVR firmware.</dd>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Howland.
+        &copy; Copyright 2018-2020, David Howland
 
     </p>
   </div>
@@ -266,35 +267,16 @@ memory that is not reserved by the EasyAVR firmware.</dd>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'3.02.01',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

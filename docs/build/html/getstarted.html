@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; EasyAVR 3.02.01 documentation</title>
+  <title>Getting Started &mdash; EasyAVR 3.03.02 documentation</title>
   
 
   
@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Special Functions and Modes" href="functions.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                3.02.01
+                3.03.02
               </div>
             
           
@@ -243,21 +244,20 @@ to.  You may build a .hex file and program yourself it using an external tool.</
 <div class="section" id="flip">
 <h3>Flip<a class="headerlink" href="#flip" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>Open the Atmel Flip app</li>
-<li>Click the microchip “Select a Target Device” icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)</li>
-<li>Put your keyboard into bootloader mode</li>
-<li>Click the USB “Select a Communications Medium” icon and choose “USB” from the menu</li>
-<li>Click the red “Load HEX File” icon and open the .hex file you created in the keymapper</li>
-<li>With the AVR now connected, click the “Run” button to reprogram with the new firmware</li>
-<li>With a successful completion, click the “Start Application” button</li>
+<li><p>Open the Atmel Flip app</p></li>
+<li><p>Click the microchip “Select a Target Device” icon and choose the AVR used by your board (usually ATmega32U4 or ATmega32U2)</p></li>
+<li><p>Put your keyboard into bootloader mode</p></li>
+<li><p>Click the USB “Select a Communications Medium” icon and choose “USB” from the menu</p></li>
+<li><p>Click the red “Load HEX File” icon and open the .hex file you created in the keymapper</p></li>
+<li><p>With the AVR now connected, click the “Run” button to reprogram with the new firmware</p></li>
+<li><p>With a successful completion, click the “Start Application” button</p></li>
 </ol>
 </div>
 <div class="section" id="dfu-programmer">
 <h3>dfu-programmer<a class="headerlink" href="#dfu-programmer" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Put your keyboard into bootloader mode</p>
-</li>
-<li><p class="first">Program your .hex file (replace device type as necessary):</p>
+<li><p>Put your keyboard into bootloader mode</p></li>
+<li><p>Program your .hex file (replace device type as necessary):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dfu</span><span class="o">-</span><span class="n">programmer</span> <span class="n">atmega32u4</span> <span class="n">erase</span>
 <span class="n">sleep</span> <span class="mi">10</span>
 <span class="n">sudo</span> <span class="n">dfu</span><span class="o">-</span><span class="n">programmer</span> <span class="n">atmega32u4</span> <span class="n">flash</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">firmware</span><span class="o">.</span><span class="n">hex</span>
@@ -285,7 +285,7 @@ to.  You may build a .hex file and program yourself it using an external tool.</
         <a href="functions.html" class="btn btn-neutral float-right" title="Special Functions and Modes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -294,7 +294,7 @@ to.  You may build a .hex file and program yourself it using an external tool.</
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Howland.
+        &copy; Copyright 2018-2020, David Howland
 
     </p>
   </div>
@@ -311,35 +311,16 @@ to.  You may build a .hex file and program yourself it using an external tool.</
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'3.02.01',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
