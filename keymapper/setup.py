@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # Easy AVR USB Keyboard Firmware
-# Copyright (C) 2013-2016 David Howland
+# Copyright (C) 2013-2020 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,10 +44,12 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: C',
         'Topic :: Utilities',
     ],
-    install_requires = ['wxPython >= 4.0.1'],
+    install_requires = ['wxPython >= 4.1.0'],
     packages = find_packages(),
     package_data = {
         'easykeymap': ['builds/*.hex', 'configs/*.cfg', 'res/*.*']

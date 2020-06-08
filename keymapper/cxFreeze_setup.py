@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # Easy AVR USB Keyboard Firmware
-# Copyright (C) 2017 David Howland
+# Copyright (C) 2017-2020 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,6 +55,8 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: C',
         'Topic :: Utilities',
     ],
@@ -77,7 +79,7 @@ setup(
             base="Win32GUI",
             targetName="easykeymap.exe",
             icon="easykeymap\\res\\keycap.ico",
-            copyright="Copyright 2016 David Howland"
+            copyright="Copyright 2020 David Howland"
         )
     ]
 )
