@@ -24,7 +24,7 @@ from easykeymap import __version__
 # -- Project information -----------------------------------------------------
 
 project = 'EasyAVR'
-copyright = '2018, David Howland'
+copyright = '2018-2020, David Howland'
 author = 'David Howland'
 
 # The short X.Y version

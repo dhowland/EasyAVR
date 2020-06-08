@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2018 David Howland
+# Copyright (C) 2018-2020 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -459,7 +459,7 @@ class MainFrame(wx.Frame):
         info.SetName("EasyAVR")
         info.SetVersion(version_string)
         info.SetDescription("Keymapper for the Easy AVR USB Keyboard Firmware")
-        info.SetCopyright("Copyright (C) 2013-2018 David Howland")
+        info.SetCopyright("Copyright (C) 2013-2020 David Howland")
         info.SetWebSite("https://github.com/dhowland/EasyAVR")
         iconpath = get_pkg_path('res/keycap.ico')
         info.SetIcon(wx.Icon(iconpath, type=wx.BITMAP_TYPE_ICO))
