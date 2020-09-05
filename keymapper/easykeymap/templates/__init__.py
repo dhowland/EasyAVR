@@ -33,7 +33,7 @@ matrix_dims = {
     'TKL': (6, 17),
     'SIXTY': (5, 15),
     'PAD': (6, 6),
-    'CARD': (1, 6)
+    'CARD': (1, 9)
 }
 
 macro_lengths = {

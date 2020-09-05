@@ -70,7 +70,7 @@
 #endif
 #ifdef BOARD_SIZE_CARD
 #define NUMBER_OF_ROWS (1)
-#define NUMBER_OF_COLS (6)
+#define NUMBER_OF_COLS (9)
 #endif
 
 #define MAX_DIMENSION (NUMBER_OF_COLS)
