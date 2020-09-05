@@ -37,7 +37,7 @@ matrix_hardware, matrix_strobe, matrix_sense = make_matrix_config(
     strobe_cols=strobe_cols,
     strobe_low=strobe_low,
     rows=[],
-    cols=[B5, B7, C7, D4, D1, D6, B1, B2, C2],
+    cols=[C7, B7, B5, D6, D1, D4, C2, B2, B1],
     device=firmware.device
 )
 
@@ -58,14 +58,14 @@ led_definition = [
 
 led_hardware = [
 #       Port    Pin    Direction
-    ( REF_PORTB, 4, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTB, 6, LED_DRIVER_PULLDOWN ),
     ( REF_PORTC, 6, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTD, 3, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTB, 6, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTB, 4, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 5, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTB, 0, LED_DRIVER_PULLDOWN ),
-    ( REF_PORTB, 3, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTD, 3, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 0, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTB, 3, LED_DRIVER_PULLDOWN ),
+    ( REF_PORTB, 0, LED_DRIVER_PULLDOWN ),
     ( REF_PORTD, 2, LED_DRIVER_PULLDOWN )
 ]
 
