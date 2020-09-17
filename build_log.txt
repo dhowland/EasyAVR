@@ -6,7 +6,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1144 bytes of 2560 (44.7 % full)
 Checking Flash usage
-Used 25714 bytes of 28672 (89.7 % full)
+Used 25724 bytes of 28672 (89.7 % full)
 Updating config source
 
 ATmega32U4_16MHz_COSTAR.hex
@@ -16,7 +16,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1136 bytes of 2560 (44.4 % full)
 Checking Flash usage
-Used 24720 bytes of 28672 (86.2 % full)
+Used 24730 bytes of 28672 (86.3 % full)
 Updating config source
 
 ATmega32U4_16MHz_TKL.hex
@@ -26,7 +26,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1140 bytes of 2560 (44.5 % full)
 Checking Flash usage
-Used 25668 bytes of 28672 (89.5 % full)
+Used 25678 bytes of 28672 (89.6 % full)
 Updating config source
 
 ATmega32U4_16MHz_SIXTY.hex
@@ -36,7 +36,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1005 bytes of 2560 (39.3 % full)
 Checking Flash usage
-Used 24844 bytes of 28672 (86.6 % full)
+Used 24854 bytes of 28672 (86.7 % full)
 Updating config source
 
 ATmega32U4_16MHz_PAD.hex
@@ -46,7 +46,7 @@ Parsing MAP file
 Checking RAM usage
 Used 810 bytes of 2560 (31.6 % full)
 Checking Flash usage
-Used 23614 bytes of 28672 (82.4 % full)
+Used 23624 bytes of 28672 (82.4 % full)
 Updating config source
 
 ATmega32U4_16MHz_CARD.hex
@@ -56,7 +56,7 @@ Parsing MAP file
 Checking RAM usage
 Used 436 bytes of 2560 (17.0 % full)
 Checking Flash usage
-Used 16114 bytes of 28672 (56.2 % full)
+Used 16124 bytes of 28672 (56.2 % full)
 Updating config source
 
 ATmega32U2_16MHz_COSTAR.hex
@@ -66,7 +66,7 @@ Parsing MAP file
 Checking RAM usage
 Used 754 bytes of 1024 (73.6 % full)
 Checking Flash usage
-Used 24880 bytes of 28672 (86.8 % full)
+Used 24890 bytes of 28672 (86.8 % full)
 Updating config source
 
 ATmega16U2_16MHz_CARD.hex
@@ -76,7 +76,7 @@ Parsing MAP file
 Checking RAM usage
 Used 251 bytes of 512 (49.0 % full)
 Checking Flash usage
-Used 12024 bytes of 12288 (97.9 % full)
+Used 12034 bytes of 12288 (97.9 % full)
 Updating config source
 
 AT90USB1286_16MHz_COSTAR.hex
@@ -86,7 +86,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1529 bytes of 8192 (18.7 % full)
 Checking Flash usage
-Used 31042 bytes of 122880 (25.3 % full)
+Used 31052 bytes of 122880 (25.3 % full)
 Updating config source
 
 AT90USB1286_16MHz_FULLSIZE.hex
@@ -96,7 +96,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1469 bytes of 8192 (17.9 % full)
 Checking Flash usage
-Used 30714 bytes of 122880 (25.0 % full)
+Used 30724 bytes of 122880 (25.0 % full)
 Updating config source
 
 AT90USB1286_16MHz_JUMBO.hex
@@ -106,7 +106,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1649 bytes of 8192 (20.1 % full)
 Checking Flash usage
-Used 31810 bytes of 122880 (25.9 % full)
+Used 31820 bytes of 122880 (25.9 % full)
 Updating config source
 
 AT90USB1286_8MHz_FULLSIZE.hex
@@ -116,7 +116,7 @@ Parsing MAP file
 Checking RAM usage
 Used 1469 bytes of 8192 (17.9 % full)
 Checking Flash usage
-Used 30716 bytes of 122880 (25.0 % full)
+Used 30726 bytes of 122880 (25.0 % full)
 Updating config source
 
 ATmega32U4_8MHz_TKL.hex
@@ -126,5 +126,5 @@ Parsing MAP file
 Checking RAM usage
 Used 1154 bytes of 2560 (45.1 % full)
 Checking Flash usage
-Used 25856 bytes of 28672 (90.2 % full)
+Used 25866 bytes of 28672 (90.2 % full)
 Updating config source
