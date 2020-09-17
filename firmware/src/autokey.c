@@ -74,6 +74,12 @@ void autokey_send(void)
 							/* This is a wait, and the mod is a delay count */
 							g_send_wait = code.bytes.msb;
 							g_send_buffer_pos++;
+							/* Lift the modifiers if they are set */
+							if (g_autokey_modifier != 0)
+							{
+								g_autokey_modifier = 0;
+								g_modifier_service = 1;
+							}
 						} else {
 							/* Make sure modifier changes precede alphanumerics */
 							if (g_autokey_modifier != code.bytes.msb)
