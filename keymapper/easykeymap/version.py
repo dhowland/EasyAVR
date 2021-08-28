@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2018-2020 David Howland
+# Copyright (C) 2018-2021 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,4 +20,4 @@
 """EasyAVR version string."""
 
 # Version is functionally required to be formatted as #.##.##
-version_string = '3.03.04'
+version_string = '3.04.01'
