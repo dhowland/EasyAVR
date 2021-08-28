@@ -28,6 +28,7 @@ from .scancodes import scancodes
 from .templates import matrix_dims, macro_lengths, max_leds
 from .version import version_string
 import easykeymap.intelhex as intelhex
+import sys as sys
 
 
 NUM_LAYERS = 10
@@ -257,7 +258,8 @@ def overlay_macros(user_data, hex_data, external_data):
     offset = config.firmware.macro_map - start
     for index in index_list:
         short_array = array('H', [index])
-        byte_array[offset:offset+2] = array('B', short_array.tostring())
+        array_bytes = short_array.tobytes() if sys.version_info >= (3, 2) else short_array.tostring()
+        byte_array[offset:offset+2] = array('B', array_bytes)
         offset += 2
     # map the non-empty macros into the byte array
     for i in range(NUM_MACROS):

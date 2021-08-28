@@ -129,7 +129,7 @@ class ProgramDialog(wx.Dialog):
         self.timer.Start(250)
 
     def OnTimer(self, event):
-        if not (self.runthread and self.runthread.isAlive()):
+        if not (self.runthread and self.runthread.is_alive()):
             self.log_text('\n\n')
             self.task_ch.Enable(True)
             self.run_btn.Enable(True)
