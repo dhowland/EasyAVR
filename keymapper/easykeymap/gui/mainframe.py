@@ -459,7 +459,7 @@ class MainFrame(wx.Frame):
         info.SetName("EasyAVR")
         info.SetVersion(version_string)
         info.SetDescription("Keymapper for the Easy AVR USB Keyboard Firmware")
-        info.SetCopyright("Copyright (C) 2013-2020 David Howland")
+        info.SetCopyright("Copyright (C) 2013-2021 David Howland")
         info.SetWebSite("https://github.com/dhowland/EasyAVR")
         iconpath = get_pkg_path('res/keycap.ico')
         info.SetIcon(wx.Icon(iconpath, type=wx.BITMAP_TYPE_ICO))
