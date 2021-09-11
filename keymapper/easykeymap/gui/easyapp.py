@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Easy AVR USB Keyboard Firmware Keymapper
-# Copyright (C) 2018 David Howland
+# Copyright (C) 2018-2021 David Howland
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ class EasyApp(wx.App):
         self.SetVendorName("dhowland")
         self.SetAppName("easykeymap")
         self.SetClassName("easykeymap")
+        wx.Locale().Init(wx.LANGUAGE_ENGLISH_US)
         main_frame = MainFrame(None)
         self.SetTopWindow(main_frame)
         main_frame.Show(True)
