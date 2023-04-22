@@ -28,6 +28,8 @@ SCANCODE_BL_MODE           Cycle through the backlighting modes (static,
 SCANCODE_BL_ENABLE         Enable/disable the backlight and cycle through the
                            different lighting zones
 
+SCANCODE_KEEPAWAKE         (toggle) Jiggle the mouse by imperceptible amounts to
+                           keep the attached PC awake.
 SCANCODE_KEYLOCK           (toggle) Disable sending scancodes to PC
 SCANCODE_WINLOCK           (toggle) Disable the windows key
 SCANCODE_ESCGRAVE          Acts like grave key if shift is pressed (to make tilde).
