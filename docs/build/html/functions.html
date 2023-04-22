@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Special Functions and Modes &mdash; EasyAVR 3.04.01 documentation</title>
+  <title>Special Functions and Modes &mdash; EasyAVR 3.05.01 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                3.04.01
+                3.05.01
               </div>
             
           
@@ -242,178 +242,182 @@ breathing, reactive, and erosion)</p></td>
 <td><p>Enable/disable the backlight and cycle through the
 different lighting zones</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_KEYLOCK</p></td>
+<tr class="row-odd"><td><p>SCANCODE_KEEPAWAKE</p></td>
+<td><p>(toggle) Jiggle the mouse by imperceptible amounts to
+keep the attached PC awake.</p></td>
+</tr>
+<tr class="row-even"><td><p>SCANCODE_KEYLOCK</p></td>
 <td><p>(toggle) Disable sending scancodes to PC</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_WINLOCK</p></td>
+<tr class="row-odd"><td><p>SCANCODE_WINLOCK</p></td>
 <td><p>(toggle) Disable the windows key</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_ESCGRAVE</p></td>
+<tr class="row-even"><td><p>SCANCODE_ESCGRAVE</p></td>
 <td><p>Acts like grave key if shift is pressed (to make tilde).
 Otherwise acts like Esc key.  Used for 60% keyboards.</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_BOOT</p></td>
+<tr class="row-odd"><td><p>SCANCODE_BOOT</p></td>
 <td><p>Jump to bootloader (Keyboard will not work again until it is reset)</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_CONFIG</p></td>
+<tr class="row-even"><td><p>SCANCODE_CONFIG</p></td>
 <td><p>Go into interactive configuration console</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M1</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M1</p></td>
 <td><p>Play macro 1</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M2</p></td>
+<tr class="row-even"><td><p>SCANCODE_M2</p></td>
 <td><p>Play macro 2</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M3</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M3</p></td>
 <td><p>Play macro 3</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M4</p></td>
+<tr class="row-even"><td><p>SCANCODE_M4</p></td>
 <td><p>Play macro 4</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M5</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M5</p></td>
 <td><p>Play macro 5</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M6</p></td>
+<tr class="row-even"><td><p>SCANCODE_M6</p></td>
 <td><p>Play macro 6</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M7</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M7</p></td>
 <td><p>Play macro 7</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M8</p></td>
+<tr class="row-even"><td><p>SCANCODE_M8</p></td>
 <td><p>Play macro 8</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M9</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M9</p></td>
 <td><p>Play macro 9</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M10</p></td>
+<tr class="row-even"><td><p>SCANCODE_M10</p></td>
 <td><p>Play macro 10</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M11</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M11</p></td>
 <td><p>Play macro 11</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M12</p></td>
+<tr class="row-even"><td><p>SCANCODE_M12</p></td>
 <td><p>Play macro 12</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M13</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M13</p></td>
 <td><p>Play macro 13</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M14</p></td>
+<tr class="row-even"><td><p>SCANCODE_M14</p></td>
 <td><p>Play macro 14</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_M15</p></td>
+<tr class="row-odd"><td><p>SCANCODE_M15</p></td>
 <td><p>Play macro 15</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_M16</p></td>
+<tr class="row-even"><td><p>SCANCODE_M16</p></td>
 <td><p>Play macro 16</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MRAM_RECORD</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MRAM_RECORD</p></td>
 <td><p>Start/Stop recording the RAM macro</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_MRAM_PLAY</p></td>
+<tr class="row-even"><td><p>SCANCODE_MRAM_PLAY</p></td>
 <td><p>Play the RAM macro</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MOUSE1</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSE1</p></td>
 <td><p>Mouse button 1</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_MOUSE2</p></td>
+<tr class="row-even"><td><p>SCANCODE_MOUSE2</p></td>
 <td><p>Mouse button 2</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MOUSE3</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSE3</p></td>
 <td><p>Mouse button 3</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_MOUSEXL</p></td>
+<tr class="row-even"><td><p>SCANCODE_MOUSEXL</p></td>
 <td><p>Move mouse pointer left</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MOUSEXR</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSEXR</p></td>
 <td><p>Move mouse pointer right</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_MOUSEYD</p></td>
+<tr class="row-even"><td><p>SCANCODE_MOUSEYD</p></td>
 <td><p>Move mouse pointer down</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MOUSEYU</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MOUSEYU</p></td>
 <td><p>Move mouse pointer up
 (Double-tap the mouse keys to move the cursor faster.
 Triple-tap for even more speed, and so on.)</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_POWER</p></td>
+<tr class="row-even"><td><p>SCANCODE_POWER</p></td>
 <td><p>Power down the system</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_SLEEP</p></td>
+<tr class="row-odd"><td><p>SCANCODE_SLEEP</p></td>
 <td><p>Put the system to sleep</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_WAKE</p></td>
+<tr class="row-even"><td><p>SCANCODE_WAKE</p></td>
 <td><p>Wake the system from sleep state</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_NEXT_TRACK</p></td>
+<tr class="row-odd"><td><p>SCANCODE_NEXT_TRACK</p></td>
 <td><p>Skip to next track in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_PREV_TRACK</p></td>
+<tr class="row-even"><td><p>SCANCODE_PREV_TRACK</p></td>
 <td><p>Skip to last track in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_STOP</p></td>
+<tr class="row-odd"><td><p>SCANCODE_STOP</p></td>
 <td><p>Stop playback in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_PLAY_PAUSE</p></td>
+<tr class="row-even"><td><p>SCANCODE_PLAY_PAUSE</p></td>
 <td><p>Play or Pause playback in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_BRIGHT_INC</p></td>
+<tr class="row-odd"><td><p>SCANCODE_BRIGHT_INC</p></td>
 <td><p>Increase screen brightness in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_BRIGHT_DEC</p></td>
+<tr class="row-even"><td><p>SCANCODE_BRIGHT_DEC</p></td>
 <td><p>Decrease screen brightness in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MUTE</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MUTE</p></td>
 <td><p>Mute main volume in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_BASS_BOOST</p></td>
+<tr class="row-even"><td><p>SCANCODE_BASS_BOOST</p></td>
 <td><p>Toggle bass boost in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_VOL_INC</p></td>
+<tr class="row-odd"><td><p>SCANCODE_VOL_INC</p></td>
 <td><p>Increase main volume in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_VOL_DEC</p></td>
+<tr class="row-even"><td><p>SCANCODE_VOL_DEC</p></td>
 <td><p>Decrease main volume in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_BASS_INC</p></td>
+<tr class="row-odd"><td><p>SCANCODE_BASS_INC</p></td>
 <td><p>Increase bass equalizer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_BASS_DEC</p></td>
+<tr class="row-even"><td><p>SCANCODE_BASS_DEC</p></td>
 <td><p>Decrease bass equalizer in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_TREB_INC</p></td>
+<tr class="row-odd"><td><p>SCANCODE_TREB_INC</p></td>
 <td><p>Increase treble equalizer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_TREB_DEC</p></td>
+<tr class="row-even"><td><p>SCANCODE_TREB_DEC</p></td>
 <td><p>Decrease treble equalizer in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MAIL</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MAIL</p></td>
 <td><p>Open system mail reader in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_CALC</p></td>
+<tr class="row-even"><td><p>SCANCODE_CALC</p></td>
 <td><p>Open calculator in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_MYCOMP</p></td>
+<tr class="row-odd"><td><p>SCANCODE_MYCOMP</p></td>
 <td><p>Open My Computer in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_SEARCH</p></td>
+<tr class="row-even"><td><p>SCANCODE_SEARCH</p></td>
 <td><p>Open search dialog in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_BROWSER</p></td>
+<tr class="row-odd"><td><p>SCANCODE_BROWSER</p></td>
 <td><p>Open web browser to homepage in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_BACK</p></td>
+<tr class="row-even"><td><p>SCANCODE_BACK</p></td>
 <td><p>Navigate backward in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_FORWARD</p></td>
+<tr class="row-odd"><td><p>SCANCODE_FORWARD</p></td>
 <td><p>Navigate forward in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_WWWSTOP</p></td>
+<tr class="row-even"><td><p>SCANCODE_WWWSTOP</p></td>
 <td><p>Stop navigation in Windows</p></td>
 </tr>
-<tr class="row-even"><td><p>SCANCODE_REFRESH</p></td>
+<tr class="row-odd"><td><p>SCANCODE_REFRESH</p></td>
 <td><p>Refresh navigation in Windows</p></td>
 </tr>
-<tr class="row-odd"><td><p>SCANCODE_FAVES</p></td>
+<tr class="row-even"><td><p>SCANCODE_FAVES</p></td>
 <td><p>Open favorites dialog in Windows</p></td>
 </tr>
 </tbody>

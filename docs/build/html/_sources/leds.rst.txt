@@ -76,6 +76,9 @@ Here is an explanation of all LED functions:
 'USB Init', 'USB Error', 'USB Suspend', 'USB Normal'
     Indicates the status of the USB connection to the host.
 
+'Keep Awake'
+    Lights up when the Keep Awake function is active.
+
 LED Auto Layer Select
 ---------------------
 
