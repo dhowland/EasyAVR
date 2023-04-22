@@ -122,6 +122,7 @@ int8_t g_mouse_req_Y;
 uint16_t g_media_key;
 uint8_t g_powermgmt_field;
 uint8_t g_hid_lock_flags;
+uint8_t g_keepawake_flag;
 uint8_t g_keylock_flag;
 uint8_t g_winlock_flag;
 uint8_t g_double_tap_key;
@@ -829,6 +830,13 @@ void handle_code_actuate(const uint8_t code, uint8_t action, const uint8_t wmods
 		led_dimmer();
 		break;
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
+	case SCANCODE_KEEPAWAKE:
+		g_keepawake_flag ^= 1;
+		if (g_keepawake_flag == 0)
+			led_host_off(LED_KEEP_AWAKE);
+		else
+			led_host_on(LED_KEEP_AWAKE);
+		break;
 	case SCANCODE_KEYLOCK:
 		g_keylock_flag ^= 1;
 		if (g_keylock_flag == 0)
@@ -1108,6 +1116,7 @@ void handle_code_deactuate(const uint8_t code, uint8_t action, const uint8_t wmo
 	case SCANCODE_BL_DIMMER:
 	case SCANCODE_BL_MODE:
 	case SCANCODE_BL_ENABLE:
+	case SCANCODE_KEEPAWAKE:
 	case SCANCODE_KEYLOCK:
 	case SCANCODE_WINLOCK:
 		break;

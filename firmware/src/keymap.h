@@ -65,6 +65,7 @@ extern int8_t g_mouse_req_Y;
 extern uint16_t g_media_key;
 extern uint8_t g_powermgmt_field;
 extern uint8_t g_hid_lock_flags;
+extern uint8_t g_keepawake_flag;
 extern uint8_t g_winlock_flag;
 #ifdef MACRO_RAM_SIZE
 extern uint16_t g_ram_macro[MACRO_RAM_SIZE];

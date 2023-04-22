@@ -46,6 +46,7 @@ uint8_t g_mouse_service;
 uint8_t g_cumulative_count;
 uint8_t g_slot;
 uint8_t g_mouse_multiply;
+uint8_t g_jiggle_count;
 
 void init_mouse(void)
 {
@@ -77,6 +78,40 @@ void update_mouse(void)
 			g_mouse_report_Y = mouse_report * g_mouse_req_Y;
 			/* Signal a new report */
 			g_mouse_service = 1;
+		}
+	}
+	else if (g_keepawake_flag)
+	{
+		switch (g_jiggle_count)
+		{
+		case 0:
+			if (!g_mouse_service)
+			{
+				g_mouse_report_X = 0;
+				g_mouse_service = 1;
+				g_jiggle_count--;
+			}
+			break;
+		case 1:
+			if (!g_mouse_service)
+			{
+				g_mouse_report_X = -1;
+				g_mouse_service = 1;
+				g_jiggle_count--;
+			}
+			break;
+		case 2:
+			if (!g_mouse_service)
+			{
+				g_mouse_report_X = 1;
+				g_mouse_service = 1;
+				g_jiggle_count--;
+			}
+			break;
+		default:
+			/* count off and intentionally loop around */
+			g_jiggle_count--;
+			break;
 		}
 	} else {
 		/* Signal a final report before halting movement */

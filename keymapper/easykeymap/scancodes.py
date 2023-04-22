@@ -298,7 +298,7 @@ scancodes = {
     # "": SCDef("", 0xC4, ""),
     # "": SCDef("", 0xC5, ""),
     # "": SCDef("", 0xC6, ""),
-    # "": SCDef("", 0xC7, ""),
+    "SCANCODE_KEEPAWAKE": SCDef("Keep\nAwake", 0xC7, "KpAw"),
     "SCANCODE_KEYLOCK": SCDef("KB\nLock", 0xC8, "KbLk"),
     "SCANCODE_WINLOCK": SCDef("Win\nLock", 0xC9, "WnLk"),
     "SCANCODE_ESCGRAVE": SCDef("~\nEsc", 0xCA, "~Esc"),

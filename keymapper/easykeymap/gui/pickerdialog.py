@@ -206,7 +206,7 @@ class PickerDialog(wx.Dialog):
         row.spacer(1)
         row.append("SCANCODE_KEYLOCK", Dim(4, 4))
         row.append("SCANCODE_WINLOCK", Dim(4, 4))
-        row.append("0", Dim(4, 4))
+        row.append("SCANCODE_KEEPAWAKE", Dim(4, 4))
         row.append("HID_KEYBOARD_SC_KEYPAD_EQUAL_SIGN", Dim(4, 4))
         layout.spacer(1)
         row = layout.append()

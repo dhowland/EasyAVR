@@ -59,6 +59,7 @@ typedef enum {
 	LED_USB_SUSPEND,
 	LED_USB_NORMAL,
 	LED_KB_LOCK,
+	LED_KEEP_AWAKE,
 	NUMBER_OF_LED_FUNCTIONS
 } led_function_t;
 

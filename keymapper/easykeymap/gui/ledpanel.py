@@ -42,7 +42,8 @@ view_order = ['Num Lock',    'Recording',      # noqa: E241
               'USB Init',    'Fn7 Active',     # noqa: E241
               'USB Error',   'Fn8 Active',     # noqa: E241
               'USB Suspend', 'Fn9 Active',     # noqa: E241
-              'USB Normal',  'Any Fn Active']  # noqa: E241
+              'USB Normal',  'Any Fn Active',  # noqa: E241
+              'Keep Awake']                    # noqa: E241
 
 
 class LedPanel(wx.Panel):

@@ -63,7 +63,8 @@ led_assignments = ['Num Lock', 'Caps Lock', 'Scroll Lock',
                    'Fn5 Active', 'Fn6 Active', 'Fn7 Active',
                    'Fn8 Active', 'Fn9 Active', 'Any Fn Active',
                    'Recording', 'USB Init', 'USB Error',
-                   'USB Suspend', 'USB Normal', 'KB Lock']
+                   'USB Suspend', 'USB Normal', 'KB Lock',
+                   'Keep Awake']
 
 # USB HID keyboard spec defines 5 LED indicators
 num_led_layers = 5
