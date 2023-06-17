@@ -45,7 +45,10 @@ uint8_t g_bl_usb_on;
 uint8_t g_pwm_bl_counter;
 #endif /* MAX_NUMBER_OF_BACKLIGHTS */
 
-const uint8_t PROGMEM BLIP_MAP[MAX_BLIPS+1] = { 1, 5, 8, 10, 12, 15, 16, 20, 20, 24, 24 };
+/* Factors of 240:
+     1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 16, 20, 24, 30, 40, 48, 60, 80, 120, 240
+   Maping must fit (i*2) blips, plus a separation wait (at least 6) */
+const uint8_t PROGMEM BLIP_MAP[MAX_BLIPS+1] = { 1, 8, 10, 12, 15, 16, 20, 20, 24, 24, 30 };
 
 void init_led(void)
 {
@@ -207,22 +210,17 @@ void show_led_host_setting(void)
 		if (g_led_state)
 		{
 			const uint8_t set = g_led_host[i];
-			if (set < 2)
-			{
-				if (set == 0)
-					led_output(i, 0);
-				else
-					led_output(i, 1);
-			}
-			else
+			uint8_t outval = set & 0x01;
+			if (set & 0xFE)
 			{
 				const uint8_t loop = pgm_read_byte(&BLIP_MAP[set/2]);
 				const uint8_t pos = (g_led_blip_cycle % loop);
 				if ((pos < set) && ((pos & 0x01) == 1))
-					led_output(i, 1);
-				else
-					led_output(i, 0);
+				{
+					outval ^= 0x01;
+				}
 			}
+			led_output(i, outval);
 		}
 		else
 		{
