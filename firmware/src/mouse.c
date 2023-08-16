@@ -79,8 +79,22 @@ void update_mouse(void)
 			/* Signal a new report */
 			g_mouse_service = 1;
 		}
+	} else {
+		/* Signal a final report before halting movement */
+		if (g_mouse_active)
+			g_mouse_service = 1;
+		/* When the user lifts up their fingers, reset everything */
+		g_mouse_active = 0;
+		g_cumulative_count = 0;
+		g_mouse_report_X = 0;
+		g_mouse_report_Y = 0;
+		/* If we have stopped controlling the mouse, get ready for a fast response
+			when we start up again.  The nature of the algorithm that splits up requests
+			over the mouse cycle puts small requests at the end of the cycle. */
+		g_slot = MOUSE_CYCLES;
 	}
-	else if (g_keepawake_flag)
+	
+	if (!g_mouse_active && g_keepawake_flag)
 	{
 		switch (g_jiggle_count)
 		{
@@ -113,19 +127,6 @@ void update_mouse(void)
 			g_jiggle_count--;
 			break;
 		}
-	} else {
-		/* Signal a final report before halting movement */
-		if (g_mouse_active)
-			g_mouse_service = 1;
-		/* When the user lifts up their fingers, reset everything */
-		g_mouse_active = 0;
-		g_cumulative_count = 0;
-		g_mouse_report_X = 0;
-		g_mouse_report_Y = 0;
-		/* If we have stopped controlling the mouse, get ready for a fast response
-			when we start up again.  The nature of the algorithm that splits up requests
-			over the mouse cycle puts small requests at the end of the cycle. */
-		g_slot = MOUSE_CYCLES;
 	}
 }
 
